@@ -120,7 +120,7 @@ const imgAreaEl   = ref(null)
 const fileInput   = ref(null)
 const selectedIdx = ref(null)
 const defaultRadius = ref(32)
-let hotspots      = ref([])
+const hotspots    = ref([])
 let hist          = null
 let drag          = null
 
@@ -176,6 +176,7 @@ function onMousedown(e) {
   if (f.x < 0 || f.x > 1 || f.y < 0 || f.y > 1) return
 
   if (mode.value === 'place') {
+    if (hotspots.value.length >= 10) return
     snapshot()
     const id = hotspots.value.length + 1
     hotspots.value.push({ id, x: f.x, y: f.y, r: defaultRadius.value })
@@ -221,6 +222,7 @@ function onMouseup() {
 function onFileLoad(e) {
   const file = e.target.files[0]
   if (!file) return
+  if (imgSrc.value) URL.revokeObjectURL(imgSrc.value)
   currentFile.value = file.name
   imgSrc.value = URL.createObjectURL(file)
 }
