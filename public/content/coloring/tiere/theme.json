@@ -1,0 +1,8 @@
+{
+  "name": "Tiere",
+  "tts": "Wähle eine Farbe und tippe auf das Bild zum Anmalen!",
+  "pages": [
+    { "id": "lion",     "svg": "svgs/lion.svg",     "label": "Löwe",    "tts": "Der Löwe" },
+    { "id": "elephant", "svg": "svgs/elephant.svg", "label": "Elefant", "tts": "Der Elefant" }
+  ]
+}
