@@ -1,0 +1,34 @@
+{
+  "games": [
+    {
+      "id": "memory",
+      "name": "Memory",
+      "emoji": "🃏",
+      "description": "Paare finden",
+      "color": "#FFD93D",
+      "shadow": "#c9a800",
+      "tts": "Willkommen beim Memory! Wähle ein Thema.",
+      "themes": ["tiere"]
+    },
+    {
+      "id": "differences",
+      "name": "Unterschiede",
+      "emoji": "🔍",
+      "description": "10 Unterschiede finden",
+      "color": "#6BCB77",
+      "shadow": "#4aaf59",
+      "tts": "Willkommen beim Unterschiedespiel! Wähle ein Thema.",
+      "themes": ["bauernhof"]
+    },
+    {
+      "id": "coloring",
+      "name": "Ausmalen",
+      "emoji": "🎨",
+      "description": "Bilder anmalen",
+      "color": "#4D96FF",
+      "shadow": "#2a6fcc",
+      "tts": "Willkommen beim Ausmalen! Wähle ein Thema.",
+      "themes": ["tiere"]
+    }
+  ]
+}
