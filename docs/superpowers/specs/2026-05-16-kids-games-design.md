@@ -131,14 +131,14 @@ Coordinates are 0–1 fractions of image dimensions. The `r` value (radius in px
 - Two matching cards: both go green, TTS speaks the item name
 - Two non-matching cards: flip back after 1 second
 - Progress shown as filled dots at the bottom
-- Difficulty selector on theme screen: Leicht (3×4), Mittel (4×4), Schwer (4×6)
+- Difficulty selector on theme screen: Leicht (3×4), Mittel (4×4), Schwer (4×6). The `gridSize` field in `theme.json` sets the default; the user can override it per play session on the theme screen.
 - Completion: confetti animation + TTS "Toll gemacht! Alle Paare gefunden!"
 - Cards support both photo images and emoji (theme.json decides)
 
 ### 6.2 Unterschiede finden
 
 - Two images displayed side by side (iPad landscape recommended for this game)
-- Tap/click a difference on either image → red circle appears, TTS names the difference
+- Tap/click a difference on the **modified** (right) image only → red circle appears, TTS names the difference
 - Wrong tap → image shakes briefly
 - Counter: `X / 10 gefunden` shown in header
 - 💡 Tipp button: briefly flashes a yellow hint circle on the next unfound difference
