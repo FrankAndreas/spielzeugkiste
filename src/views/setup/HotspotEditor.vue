@@ -177,7 +177,6 @@ function onMousedown(e) {
 
   if (mode.value === 'place') {
     if (hotspots.value.length >= 10) return
-    snapshot()
     const id = hotspots.value.length + 1
     hotspots.value.push({ id, x: f.x, y: f.y, r: defaultRadius.value })
     selectedIdx.value = hotspots.value.length - 1
