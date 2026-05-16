@@ -1,0 +1,54 @@
+:root {
+  --color-bg:        #fff9f0;
+  --color-primary:   #FF6B6B;
+  --color-shadow-primary: #c0392b;
+  --color-yellow:    #FFD93D;
+  --color-green:     #6BCB77;
+  --color-blue:      #4D96FF;
+  --color-text:      #333;
+  --radius-card:     20px;
+  --radius-btn:      24px;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--color-bg);
+  color: var(--color-text);
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  background: none;
+}
+
+/* Touch-friendly: minimum 44px tap targets */
+.btn {
+  min-height: 44px;
+  min-width: 44px;
+  border-radius: var(--radius-btn);
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
