@@ -1,0 +1,15 @@
+{
+  "name": "Tiere",
+  "tts": "Tier-Memory! Finde alle Paare.",
+  "gridSize": "4x4",
+  "pairs": [
+    { "id": "lion",     "image": "images/lion.svg",     "label": "Löwe",    "tts": "Löwe" },
+    { "id": "elephant", "image": "images/elephant.svg", "label": "Elefant", "tts": "Elefant" },
+    { "id": "fox",      "image": "images/fox.svg",      "label": "Fuchs",   "tts": "Fuchs" },
+    { "id": "bird",     "image": "images/bird.svg",     "label": "Vogel",   "tts": "Vogel" },
+    { "id": "dolphin",  "image": "images/dolphin.svg",  "label": "Delfin",  "tts": "Delfin" },
+    { "id": "rabbit",   "image": "images/rabbit.svg",   "label": "Hase",    "tts": "Hase" },
+    { "id": "tiger",    "image": "images/tiger.svg",    "label": "Tiger",   "tts": "Tiger" },
+    { "id": "bear",     "image": "images/bear.svg",     "label": "Bär",     "tts": "Bär" }
+  ]
+}
