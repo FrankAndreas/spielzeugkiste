@@ -62,7 +62,7 @@ import AppHeader from '../../components/AppHeader.vue'
 const route   = useRoute()
 const store   = useContentStore()
 const themeId = computed(() => route.params.theme)
-const gridStr = computed(() => route.query.grid ?? '4x4')
+const gridStr = computed(() => route.query.grid ?? theme.value?.gridSize ?? '4x4')
 const grid    = computed(() => parseGrid(gridStr.value))
 const theme   = computed(() => store.currentTheme)
 
