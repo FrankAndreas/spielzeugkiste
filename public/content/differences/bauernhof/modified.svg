@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#87CEEB"/>
+  <rect x="0" y="400" width="800" height="200" fill="#6BCB77"/>
+  <!-- Sun — DIFFERENCE 5 (x=0.793, y=0.226): sun moved/changed colour -->
+  <circle cx="680" cy="80" r="50" fill="#FF6B6B"/>
+  <!-- Barn — DIFFERENCE 1 (x=0.133, y=0.143): roof colour changed -->
+  <rect x="150" y="200" width="200" height="200" fill="#FF6B6B"/>
+  <polygon points="150,200 250,100 350,200" fill="#4D96FF"/>
+  <rect x="210" y="320" width="80" height="80" fill="#8B4513"/>
+  <!-- Small house — DIFFERENCE 2 (x=0.5, y=0.476): house wall colour changed -->
+  <rect x="450" y="250" width="180" height="150" fill="#4D96FF"/>
+  <polygon points="450,250 540,170 630,250" fill="#FFA500"/>
+  <rect x="510" y="330" width="60" height="70" fill="#8B4513"/>
+  <!-- Tree left — DIFFERENCE 8 (x=0.25, y=0.3): left tree crown missing -->
+  <rect x="80" y="350" width="20" height="60" fill="#8B4513"/>
+  <!-- (no circle = tree crown removed) -->
+  <!-- Tree right — DIFFERENCE 3 (x=0.79, y=0.5): right tree crown colour changed -->
+  <rect x="680" y="360" width="20" height="50" fill="#8B4513"/>
+  <circle cx="690" cy="340" r="35" fill="#FFD93D"/>
+  <!-- Fence — DIFFERENCE 4 (x=0.183, y=0.643): one fence post missing -->
+  <rect x="0" y="390" width="800" height="10" fill="#DEB887"/>
+  <rect x="100" y="360" width="10" height="40" fill="#DEB887"/>
+  <!-- post at x=200 removed = DIFFERENCE 4 -->
+  <rect x="300" y="360" width="10" height="40" fill="#DEB887"/>
+  <rect x="400" y="360" width="10" height="40" fill="#DEB887"/>
+  <rect x="500" y="360" width="10" height="40" fill="#DEB887"/>
+  <rect x="600" y="360" width="10" height="40" fill="#DEB887"/>
+  <rect x="700" y="360" width="10" height="40" fill="#DEB887"/>
+  <!-- Cloud — DIFFERENCE 10 (x=0.45, y=0.2): cloud shape changed -->
+  <ellipse cx="200" cy="80" rx="70" ry="35" fill="white"/>
+  <ellipse cx="240" cy="65" rx="50" ry="30" fill="white"/>
+  <ellipse cx="160" cy="70" rx="45" ry="28" fill="white"/>
+  <ellipse cx="360" cy="90" rx="55" ry="28" fill="white"/>
+  <ellipse cx="390" cy="75" rx="40" ry="25" fill="white"/>
+  <!-- Cow — DIFFERENCE 6 (x=0.35, y=0.8) + DIFFERENCE 7 (x=0.65, y=0.75): cow colour changed -->
+  <rect x="340" y="430" width="80" height="50" fill="#FF9A3C"/>
+  <rect x="340" y="430" width="30" height="20" fill="#333"/>
+  <rect x="350" y="475" width="12" height="25" fill="#FF9A3C"/>
+  <rect x="375" y="475" width="12" height="25" fill="#FF9A3C"/>
+  <rect x="398" y="475" width="12" height="25" fill="#FF9A3C"/>
+  <ellipse cx="320" cy="450" rx="30" ry="20" fill="#FF9A3C"/>
+  <circle cx="308" cy="443" r="4" fill="#333"/>
+  <!-- DIFFERENCE 9 (x=0.7, y=0.35): extra window on barn -->
+  <rect x="530" y="270" width="40" height="40" fill="#87CEEB" stroke="#8B4513" stroke-width="3"/>
+  <text x="400" y="580" text-anchor="middle" font-size="18" fill="#555" font-family="sans-serif">Suchbild</text>
+</svg>
