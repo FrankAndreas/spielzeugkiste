@@ -8,7 +8,7 @@
       "color": "#FFD93D",
       "shadow": "#c9a800",
       "tts": "Willkommen beim Memory! Wähle ein Thema.",
-      "themes": ["tiere"]
+      "themes": ["tiere", "einhorn"]
     },
     {
       "id": "differences",
@@ -29,6 +29,16 @@
       "shadow": "#2a6fcc",
       "tts": "Willkommen beim Ausmalen! Wähle ein Thema.",
       "themes": ["tiere"]
+    },
+    {
+      "id": "cheese",
+      "name": "Käseklicker",
+      "emoji": "🧀",
+      "description": "Klick den Käse!",
+      "color": "#FF9A3C",
+      "shadow": "#c96a00",
+      "tts": "Käseklicker! Klick auf den Käse!",
+      "themes": []
     }
   ]
 }

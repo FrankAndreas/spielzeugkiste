@@ -1,0 +1,31 @@
+{
+  "name": "Einhorn & Prinzessin",
+  "tts": "Einhorn-Memory! Finde alle Paare.",
+  "gridSize": "4x4",
+  "pairs": [
+    { "id": "unicorn",   "image": "images/unicorn.svg",   "label": "Einhorn",      "tts": "Einhorn" },
+    { "id": "princess",  "image": "images/princess.svg",  "label": "Prinzessin",   "tts": "Prinzessin" },
+    { "id": "crown",     "image": "images/crown.svg",     "label": "Krone",        "tts": "Krone" },
+    { "id": "castle",    "image": "images/castle.svg",    "label": "Schloss",      "tts": "Schloss" },
+    { "id": "rainbow",   "image": "images/rainbow.svg",   "label": "Regenbogen",   "tts": "Regenbogen" },
+    { "id": "fairy",     "image": "images/fairy.svg",     "label": "Fee",          "tts": "Fee" },
+    { "id": "heart",     "image": "images/heart.svg",     "label": "Herz",         "tts": "Herz" },
+    { "id": "dragon",    "image": "images/dragon.svg",    "label": "Drache",       "tts": "Drache" },
+    { "id": "flower",    "image": "images/flower.svg",    "label": "Blume",        "tts": "Blume" },
+    { "id": "moon",      "image": "images/moon.svg",      "label": "Mond",         "tts": "Mond" },
+    { "id": "diamond",   "image": "images/diamond.svg",   "label": "Diamant",      "tts": "Diamant" },
+    { "id": "star",      "image": "images/star.svg",      "label": "Stern",        "tts": "Stern" },
+    { "id": "swan",      "image": "images/swan.svg",      "label": "Schwan",       "tts": "Schwan" },
+    { "id": "rose",      "image": "images/rose.svg",      "label": "Rose",         "tts": "Rose" },
+    { "id": "crystal",   "image": "images/crystal.svg",   "label": "Kristallkugel","tts": "Kristallkugel" },
+    { "id": "ring",      "image": "images/ring.svg",      "label": "Ring",         "tts": "Ring" },
+    { "id": "sparkles",  "image": "images/sparkles.svg",  "label": "Funkeln",      "tts": "Funkeln" },
+    { "id": "butterfly", "image": "images/butterfly.svg", "label": "Schmetterling","tts": "Schmetterling" },
+    { "id": "wand",      "image": "images/wand.svg",      "label": "Zauberstab",   "tts": "Zauberstab" },
+    { "id": "cake",      "image": "images/cake.svg",      "label": "Torte",        "tts": "Torte" },
+    { "id": "balloon",   "image": "images/balloon.svg",   "label": "Luftballon",   "tts": "Luftballon" },
+    { "id": "treasure",  "image": "images/treasure.svg",  "label": "Schatz",       "tts": "Schatz" },
+    { "id": "dove",      "image": "images/dove.svg",      "label": "Taube",        "tts": "Taube" },
+    { "id": "potion",    "image": "images/potion.svg",    "label": "Zaubertrank",  "tts": "Zaubertrank" }
+  ]
+}

@@ -36,7 +36,11 @@ onMounted(async () => {
 })
 
 function onSelect(game) {
-  router.push(`/${game.id}`)
+  if (!game.themes?.length) {
+    router.push(`/${game.id}/play`)
+  } else {
+    router.push(`/${game.id}`)
+  }
 }
 </script>
 

@@ -53,9 +53,11 @@ const game     = computed(() => store.findGame(gameId.value))
 const difficulty = ref('4x4')
 
 const difficultyOptions = [
-  { label: 'Leicht (3×4)', value: '3x4' },
-  { label: 'Mittel (4×4)', value: '4x4' },
-  { label: 'Schwer (4×6)', value: '4x6' },
+  { label: 'Leicht (3×4)',  value: '3x4'  },
+  { label: 'Mittel (4×4)',  value: '4x4'  },
+  { label: 'Schwer (4×6)',  value: '4x6'  },
+  { label: 'Profi (6×8)',   value: '6x8'  },
+  { label: 'Meister (8×10)', value: '8x10' },
 ]
 
 onMounted(async () => {
