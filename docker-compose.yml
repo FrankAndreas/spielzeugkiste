@@ -1,0 +1,11 @@
+services:
+  kids-games:
+    image: ghcr.io/${GITHUB_REPOSITORY:-your-user/kids-games}:latest
+    ports:
+      - "${PORT:-8080}:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
