@@ -31,8 +31,8 @@ describe('hitTest', () => {
 
   it('returns true when tap is within scaled edge radius', () => {
     const hotspot = { x: 0.05, y: 0.5, r: 30 }
-    const scale   = edgeScale(0.05, 0.5)
-    const screenR = hotspot.r * scale
+    const scale    = edgeScale(0.05, 0.5)
+    const _screenR = hotspot.r * scale  // computed but centre-tap test doesn't need it
     // Tap at hotspot centre — always hits regardless of scale
     expect(hitTest(0.05, 0.5, hotspot, rect)).toBe(true)
   })

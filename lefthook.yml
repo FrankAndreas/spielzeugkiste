@@ -1,0 +1,13 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: "*.{js,vue}"
+      run: npx eslint --max-warnings 0 {staged_files}
+    test:
+      run: npm test
+
+pre-push:
+  commands:
+    build:
+      run: npm run build
