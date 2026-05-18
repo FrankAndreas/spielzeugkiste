@@ -1,6 +1,6 @@
 services:
   kids-games:
-    image: ghcr.io/${GITHUB_REPOSITORY:-your-user/kids-games}:latest
+    image: ghcr.io/${GITHUB_REPOSITORY:-your-user/spielzeugkiste}:latest
     ports:
       - "${PORT:-8080}:80"
     restart: unless-stopped
