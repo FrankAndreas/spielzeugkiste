@@ -197,10 +197,11 @@ function onTouchEnd() { lastTouchDist = null }
   background: #fff9f0; display: flex; align-items: center; justify-content: center;
 }
 .svg-wrapper {
-  max-width: 100%; max-height: 100%;
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
   transform-origin: center center; will-change: transform;
 }
-.svg-wrapper :deep(svg) { max-width: 100%; max-height: 100%; display: block; }
+.svg-wrapper :deep(svg) { width: auto; height: auto; max-width: 100%; max-height: 100%; display: block; }
 .svg-wrapper :deep([data-region]) { cursor: pointer; }
 
 .zoom-badge {
