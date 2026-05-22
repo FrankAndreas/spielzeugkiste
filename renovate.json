@@ -3,20 +3,26 @@
   "extends": ["config:recommended"],
   "minimumReleaseAge": "3 days",
   "internalChecksFilter": "strict",
+  "automerge": true,
+  "automergeType": "pr",
+  "automergeStrategy": "squash",
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch"],
       "groupName": "non-major dependencies",
-      "groupSlug": "non-major"
+      "groupSlug": "non-major",
+      "automerge": true
     },
     {
       "matchUpdateTypes": ["major"],
       "minimumReleaseAge": "7 days",
+      "automerge": false,
       "addLabels": ["major-update"]
     }
   ],
   "vulnerabilityAlerts": {
     "enabled": true,
-    "minimumReleaseAge": "0 days"
+    "minimumReleaseAge": "0 days",
+    "automerge": true
   }
 }
