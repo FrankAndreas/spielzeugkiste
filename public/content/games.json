@@ -18,7 +18,7 @@
       "color": "#6BCB77",
       "shadow": "#4aaf59",
       "tts": "Willkommen beim Unterschiedespiel! Wähle ein Thema.",
-      "themes": ["bauernhof"]
+      "themes": ["bauernhof", "meer", "weltraum", "spielplatz"]
     },
     {
       "id": "coloring",

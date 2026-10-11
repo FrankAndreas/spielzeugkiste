@@ -1,0 +1,18 @@
+{
+  "name": "Spielplatz",
+  "tts": "Finde die 10 Unterschiede! Tippe auf die Unterschiede in einem der Bilder.",
+  "original": "original.svg",
+  "modified": "modified.svg",
+  "hotspots": [
+    {"id": 1, "x": 0.7, "y": 0.183, "r": 45, "label": "Der Drachen ist grün!"},
+    {"id": 2, "x": 0.254, "y": 0.278, "r": 30, "label": "Die Fahne ist lila!"},
+    {"id": 3, "x": 0.206, "y": 0.572, "r": 28, "label": "Eine Sprosse fehlt!"},
+    {"id": 4, "x": 0.725, "y": 0.555, "r": 35, "label": "Die Schaukel ist gelb!"},
+    {"id": 5, "x": 0.557, "y": 0.3, "r": 30, "label": "Da sitzt ein Vogel!"},
+    {"id": 6, "x": 0.925, "y": 0.42, "r": 43, "label": "Am Baum hängen Äpfel!"},
+    {"id": 7, "x": 0.212, "y": 0.83, "r": 30, "label": "Der Eimer ist blau!"},
+    {"id": 8, "x": 0.315, "y": 0.837, "r": 30, "label": "Die Sandburg fehlt!"},
+    {"id": 9, "x": 0.525, "y": 0.867, "r": 35, "label": "Der Ball ist grün!"},
+    {"id": 10, "x": 0.812, "y": 0.81, "r": 70, "label": "Die Bank ist blau!"}
+  ]
+}
