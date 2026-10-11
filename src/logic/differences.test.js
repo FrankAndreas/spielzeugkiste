@@ -43,3 +43,20 @@ describe('hitTest', () => {
     expect(hitTest(0.75, 0.5, hotspot, rect)).toBe(false)
   })
 })
+
+describe('hitTest scaling', () => {
+  const hotspot = { x: 0.5, y: 0.5, r: 40 }
+
+  it('shrinks the radius with the rendered image', () => {
+    // 400px wide → radius 20px; tap 30px right of centre misses
+    const rect = { width: 400, height: 300 }
+    expect(hitTest(0.5 + 30 / 400, 0.5, hotspot, rect)).toBe(false)
+    expect(hitTest(0.5 + 15 / 400, 0.5, hotspot, rect)).toBe(true)
+  })
+
+  it('grows the radius with the rendered image', () => {
+    // 1600px wide → radius 80px; tap 60px right of centre hits
+    const rect = { width: 1600, height: 1200 }
+    expect(hitTest(0.5 + 60 / 1600, 0.5, hotspot, rect)).toBe(true)
+  })
+})

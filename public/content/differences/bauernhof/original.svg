@@ -38,5 +38,4 @@
   <rect x="398" y="475" width="12" height="25" fill="white"/>
   <ellipse cx="320" cy="450" rx="30" ry="20" fill="white"/>
   <circle cx="308" cy="443" r="4" fill="#333"/>
-  <text x="400" y="580" text-anchor="middle" font-size="18" fill="#555" font-family="sans-serif">Original</text>
 </svg>

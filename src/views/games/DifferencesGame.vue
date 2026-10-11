@@ -21,34 +21,32 @@
       </button>
     </div>
 
-    <div class="images-row" v-if="theme">
-      <!-- Original (left) — display only, no tap -->
-      <div class="img-wrap">
-        <span class="img-label">Original</span>
-        <img
-          :src="`/content/differences/${themeId}/${theme.original}`"
-          :alt="theme.name"
-          class="scene-img"
-        />
-      </div>
-
-      <!-- Modified (right) — tappable -->
-      <div class="img-wrap tappable" ref="modifiedWrap" @click="onTap">
-        <span class="img-label">Suchbild</span>
-        <img
-          :src="`/content/differences/${themeId}/${theme.modified}`"
-          :alt="theme.name"
-          class="scene-img"
-        />
-        <!-- Found markers -->
+    <div class="images-area" v-if="theme">
+      <div class="images-row">
+        <!-- Both images are tappable — a missing object is easier to spot
+             where it still exists -->
         <div
-          v-for="h in theme.hotspots"
-          v-show="found.has(h.id) || hintId === h.id"
-          :key="h.id"
-          class="marker"
-          :class="{ hint: hintId === h.id && !found.has(h.id) }"
-          :style="markerStyle(h)"
-        />
+          v-for="img in images"
+          :key="img.label"
+          class="img-wrap tappable"
+          @click="onTap"
+        >
+          <span class="img-label">{{ img.label }}</span>
+          <img
+            :src="`/content/differences/${themeId}/${img.file}`"
+            :alt="theme.name"
+            class="scene-img"
+          />
+          <!-- Found markers -->
+          <div
+            v-for="h in theme.hotspots"
+            v-show="found.has(h.id) || hintId === h.id"
+            :key="h.id"
+            class="marker"
+            :class="{ hint: hintId === h.id && !found.has(h.id) }"
+            :style="markerStyle(h)"
+          />
+        </div>
       </div>
     </div>
 
@@ -71,14 +69,17 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useContentStore } from '../../stores/content.js'
 import { speak } from '../../services/tts.js'
-import { edgeScale, hitTest } from '../../logic/differences.js'
+import { edgeScale, hitTest, REF_WIDTH } from '../../logic/differences.js'
 import AppHeader from '../../components/AppHeader.vue'
 
 const route        = useRoute()
 const store        = useContentStore()
 const themeId      = computed(() => route.params.theme)
 const theme        = computed(() => store.currentTheme)
-const modifiedWrap = ref(null)
+const images       = computed(() => [
+  { label: 'Original', file: theme.value.original },
+  { label: 'Suchbild', file: theme.value.modified },
+])
 
 const found  = ref(new Set())
 const hintId = ref(null)
@@ -100,8 +101,9 @@ function restart() {
 }
 
 function onTap(e) {
-  if (!modifiedWrap.value || !theme.value) return
-  const rect = modifiedWrap.value.getBoundingClientRect()
+  if (!theme.value) return
+  const wrap = e.currentTarget
+  const rect = wrap.getBoundingClientRect()
   const tapX  = (e.clientX - rect.left)  / rect.width
   const tapY  = (e.clientY - rect.top)   / rect.height
 
@@ -118,9 +120,9 @@ function onTap(e) {
       return
     }
   }
-  // Wrong tap — brief shake animation on the right image wrapper
-  modifiedWrap.value.classList.add('shake')
-  setTimeout(() => modifiedWrap.value?.classList.remove('shake'), 400)
+  // Wrong tap — brief shake animation on the tapped image
+  wrap.classList.add('shake')
+  setTimeout(() => wrap.classList.remove('shake'), 400)
 }
 
 function showHint() {
@@ -134,13 +136,11 @@ function showHint() {
 }
 
 function markerStyle(h) {
-  const scale = edgeScale(h.x, h.y)
-  const r     = h.r * scale
+  const r = h.r * edgeScale(h.x, h.y)
   return {
-    left:   `${h.x * 100}%`,
-    top:    `${h.y * 100}%`,
-    width:  `${r * 2}px`,
-    height: `${r * 2}px`,
+    left:  `${h.x * 100}%`,
+    top:   `${h.y * 100}%`,
+    width: `${(r * 2 / REF_WIDTH) * 100}%`,
   }
 }
 </script>
@@ -158,13 +158,27 @@ function markerStyle(h) {
 .score-text { font-size: 0.9rem; font-weight: bold; color: #6BCB77; white-space: nowrap; }
 .hint-btn { font-size: 1.2rem; }
 
+.images-area { flex: 1; min-height: 0; position: relative; }
+/* Absolutely positioned so the size container has a definite height —
+   cqh resolves to 0 on a flex-grown container. */
 .images-row {
-  display: flex; gap: 6px; padding: 6px;
-  flex: 1; min-height: 0;
+  position: absolute; inset: 6px;
+  display: flex; gap: 6px;
+  align-items: center; justify-content: center;
+  container-type: size;
 }
+/* Wrappers keep the scenes' 4:3 ratio so the image is never cropped and
+   hotspot fractions map 1:1 onto it. Outline instead of border keeps the
+   tap rect identical to the image. */
 .img-wrap {
-  flex: 1; position: relative; border-radius: 12px;
-  overflow: hidden; border: 3px solid #FFD93D;
+  flex: none; position: relative; border-radius: 12px;
+  overflow: hidden; outline: 3px solid #FFD93D;
+  aspect-ratio: 4 / 3;
+  width: min(calc((100cqw - 6px) / 2), calc(100cqh * 4 / 3));
+}
+@media (orientation: portrait) {
+  .images-row { flex-direction: column; }
+  .img-wrap   { width: min(100cqw, calc((100cqh - 6px) / 2 * 4 / 3)); }
 }
 .img-wrap.tappable { cursor: crosshair; }
 .img-label {
@@ -174,7 +188,7 @@ function markerStyle(h) {
   border-radius: 8px; padding: 2px 8px;
   pointer-events: none;
 }
-.scene-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scene-img { width: 100%; height: 100%; display: block; }
 
 .marker {
   position: absolute;
@@ -182,6 +196,7 @@ function markerStyle(h) {
   border: 3px solid #FF6B6B;
   background: rgba(255, 107, 107, 0.25);
   transform: translate(-50%, -50%);
+  aspect-ratio: 1;
   pointer-events: none;
   transition: transform 0.3s cubic-bezier(.34, 1.56, .64, 1);
 }

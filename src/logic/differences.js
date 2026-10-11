@@ -1,6 +1,9 @@
 const EDGE_ZONE = 0.12
 const MAX_SCALE = 1.9
 
+/** Hotspot radii are given in pixels of an image rendered this wide. */
+export const REF_WIDTH = 800
+
 /**
  * Returns a hit-radius multiplier based on proximity to the image edge.
  * Hotspots near an edge are harder to tap accurately, so we enlarge their
@@ -18,6 +21,7 @@ export function edgeScale(x, y) {
 
 /**
  * Tests whether a tap lands within the (edge-scaled) hotspot radius.
+ * The radius scales with the rendered image width (see REF_WIDTH).
  *
  * @param {number} tapX - normalised tap x (0–1)
  * @param {number} tapY - normalised tap y (0–1)
@@ -27,7 +31,7 @@ export function edgeScale(x, y) {
  */
 export function hitTest(tapX, tapY, hotspot, containerRect) {
   const scale   = edgeScale(hotspot.x, hotspot.y)
-  const screenR = hotspot.r * scale
+  const screenR = hotspot.r * scale * containerRect.width / REF_WIDTH
   const dx      = (tapX - hotspot.x) * containerRect.width
   const dy      = (tapY - hotspot.y) * containerRect.height
   return Math.sqrt(dx * dx + dy * dy) <= screenR
