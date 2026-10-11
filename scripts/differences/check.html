@@ -1,0 +1,39 @@
+<!--
+  Verifies every difference variant of every scene: it must change some pixels,
+  and only inside its own hotspot. Open as
+  file://…/check.html#file://…/public/content/differences
+  with Chrome's --allow-file-access-from-files (see generate.py).
+-->
+<body><pre id=o></pre><script>
+const base = location.hash.slice(1)
+const toImg = svg => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg) })
+async function px(svg) { const c = document.createElement('canvas'); c.width = 800; c.height = 600; const x = c.getContext('2d'); x.drawImage(await toImg(svg), 0, 0, 800, 600); return x.getImageData(0, 0, 800, 600).data }
+;(async () => {
+  const lines = []; let problems = 0
+  const games  = await (await fetch(`${base}/../games.json`)).json()
+  const themes = games.games.find(g => g.id === 'differences').themes
+  for (const t of themes) {
+    const text = await (await fetch(`${base}/${t}/scene.svg`)).text()
+    const a = await px(text)
+    const doc = new DOMParser().parseFromString(text, 'image/svg+xml')
+    for (const g of doc.querySelectorAll('[data-diff]')) {
+      const cx = +g.dataset.cx, cy = +g.dataset.cy, r = +g.dataset.r
+      for (const v of [...g.children].filter(v => v.dataset.variant !== 'orig')) {
+        const d = doc.cloneNode(true)
+        const gg = d.querySelector(`[data-diff="${g.dataset.diff}"]`)
+        gg.querySelector('[data-variant="orig"]').setAttribute('display', 'none')
+        gg.querySelector(`[data-variant="${v.dataset.variant}"]`).removeAttribute('display')
+        const b = await px(new XMLSerializer().serializeToString(d))
+        let inside = 0, outside = 0
+        for (let y = 0; y < 600; y++) for (let x = 0; x < 800; x++) {
+          const i = (y * 800 + x) * 4
+          if (Math.abs(a[i] - b[i]) + Math.abs(a[i+1] - b[i+1]) + Math.abs(a[i+2] - b[i+2]) < 40) continue
+          if (Math.hypot(x - cx, y - cy) <= r) inside++; else outside++
+        }
+        if (outside || inside < 60) { problems++; lines.push(`${t}/${g.dataset.diff}/${v.dataset.variant} (${v.dataset.label}): inside=${inside} outside=${outside}`) }
+      }
+    }
+  }
+  document.getElementById('o').textContent = `RESULT problems=${problems}\n` + lines.join('\n')
+})().catch(e => document.getElementById('o').textContent = 'RESULT ERR ' + e)
+</script>

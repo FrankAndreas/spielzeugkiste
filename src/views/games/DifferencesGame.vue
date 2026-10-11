@@ -6,22 +6,22 @@
       color="#6BCB77"
     />
 
-    <div class="score-bar" v-if="theme">
+    <div class="score-bar" v-if="round">
       <div class="dots">
         <div
-          v-for="h in theme.hotspots"
+          v-for="h in round.hotspots"
           :key="h.id"
           class="dot"
           :class="{ found: found.has(h.id) }"
         />
       </div>
-      <span class="score-text">{{ found.size }} / {{ theme.hotspots.length }}</span>
-      <button class="icon-btn hint-btn" @click="showHint" :disabled="found.size === theme.hotspots.length">
+      <span class="score-text">{{ found.size }} / {{ round.hotspots.length }}</span>
+      <button class="icon-btn hint-btn" @click="showHint" :disabled="found.size === round.hotspots.length">
         💡
       </button>
     </div>
 
-    <div class="images-area" v-if="theme">
+    <div class="images-area" v-if="round">
       <div class="images-row">
         <!-- Both images are tappable — a missing object is easier to spot
              where it still exists -->
@@ -33,13 +33,13 @@
         >
           <span class="img-label">{{ img.label }}</span>
           <img
-            :src="`/content/differences/${themeId}/${img.file}`"
+            :src="img.src"
             :alt="theme.name"
             class="scene-img"
           />
           <!-- Found markers -->
           <div
-            v-for="h in theme.hotspots"
+            v-for="h in round.hotspots"
             v-show="found.has(h.id) || hintId === h.id"
             :key="h.id"
             class="marker"
@@ -69,31 +69,41 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useContentStore } from '../../stores/content.js'
 import { speak } from '../../services/tts.js'
-import { edgeScale, hitTest, REF_WIDTH } from '../../logic/differences.js'
+import { edgeScale, hitTest, buildRound, REF_WIDTH } from '../../logic/differences.js'
 import AppHeader from '../../components/AppHeader.vue'
 
 const route        = useRoute()
 const store        = useContentStore()
 const themeId      = computed(() => route.params.theme)
 const theme        = computed(() => store.currentTheme)
+const round        = ref(null)
 const images       = computed(() => [
-  { label: 'Original', file: theme.value.original },
-  { label: 'Suchbild', file: theme.value.modified },
+  { label: 'Original', src: svgUrl(round.value.original) },
+  { label: 'Suchbild', src: svgUrl(round.value.modified) },
 ])
 
 const found  = ref(new Set())
 const hintId = ref(null)
 const won    = ref(false)
 let hintTimer = null
+let sceneSvg  = ''
 
 onMounted(async () => {
   await store.loadTheme('differences', themeId.value)
+  const res = await fetch(`/content/differences/${themeId.value}/${theme.value.scene}`)
+  sceneSvg = await res.text()
   restart()
 })
 
 onUnmounted(() => clearTimeout(hintTimer))
 
+function svgUrl(svg) {
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`
+}
+
+// Every round picks a fresh random set of differences from the scene's pool
 function restart() {
+  round.value  = buildRound(sceneSvg, theme.value.count ?? 10)
   found.value  = new Set()
   hintId.value = null
   won.value    = false
@@ -101,20 +111,20 @@ function restart() {
 }
 
 function onTap(e) {
-  if (!theme.value) return
+  if (!round.value) return
   const wrap = e.currentTarget
   const rect = wrap.getBoundingClientRect()
   const tapX  = (e.clientX - rect.left)  / rect.width
   const tapY  = (e.clientY - rect.top)   / rect.height
 
-  for (const h of theme.value.hotspots) {
+  for (const h of round.value.hotspots) {
     if (found.value.has(h.id)) continue
     if (hitTest(tapX, tapY, h, rect)) {
       const next = new Set(found.value)
       next.add(h.id)
       found.value = next
       speak(h.label ?? `Unterschied ${h.id}`)
-      if (next.size === theme.value.hotspots.length) {
+      if (next.size === round.value.hotspots.length) {
         setTimeout(() => { won.value = true; speak('Super! Alle Unterschiede gefunden!') }, 500)
       }
       return
@@ -126,8 +136,8 @@ function onTap(e) {
 }
 
 function showHint() {
-  if (!theme.value) return
-  const remaining = theme.value.hotspots.filter(h => !found.value.has(h.id))
+  if (!round.value) return
+  const remaining = round.value.hotspots.filter(h => !found.value.has(h.id))
   if (!remaining.length) return
   hintId.value = remaining[0].id
   clearTimeout(hintTimer)

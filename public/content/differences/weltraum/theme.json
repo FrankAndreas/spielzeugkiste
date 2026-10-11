@@ -1,18 +1,6 @@
 {
   "name": "Weltraum",
   "tts": "Finde die 10 Unterschiede! Tippe auf die Unterschiede in einem der Bilder.",
-  "original": "original.svg",
-  "modified": "modified.svg",
-  "hotspots": [
-    {"id": 1, "x": 0.225, "y": 0.283, "r": 100, "label": "Der Ring ist grün!"},
-    {"id": 2, "x": 0.4, "y": 0.15, "r": 32, "label": "Da ist ein neuer Planet!"},
-    {"id": 3, "x": 0.625, "y": 0.2, "r": 30, "label": "Ein Stern fehlt!"},
-    {"id": 4, "x": 0.84, "y": 0.23, "r": 30, "label": "Ein Krater fehlt!"},
-    {"id": 5, "x": 0.932, "y": 0.417, "r": 28, "label": "Dem Satelliten fehlt ein Flügel!"},
-    {"id": 6, "x": 0.5, "y": 0.5, "r": 28, "label": "Das Fenster ist gelb!"},
-    {"id": 7, "x": 0.5, "y": 0.675, "r": 32, "label": "Das Feuer ist blau!"},
-    {"id": 8, "x": 0.775, "y": 0.55, "r": 52, "label": "Die Lichter sind rot!"},
-    {"id": 9, "x": 0.632, "y": 0.803, "r": 62, "label": "Der Komet hat keinen Schweif!"},
-    {"id": 10, "x": 0.194, "y": 0.667, "r": 28, "label": "Das Visier ist rosa!"}
-  ]
+  "scene": "scene.svg",
+  "count": 10
 }

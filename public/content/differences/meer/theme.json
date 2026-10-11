@@ -1,18 +1,6 @@
 {
   "name": "Meer",
   "tts": "Finde die 10 Unterschiede! Tippe auf die Unterschiede in einem der Bilder.",
-  "original": "original.svg",
-  "modified": "modified.svg",
-  "hotspots": [
-    {"id": 1, "x": 0.756, "y": 0.067, "r": 45, "label": "Das Segel ist rot!"},
-    {"id": 2, "x": 0.287, "y": 0.333, "r": 78, "label": "Der grosse Fisch ist lila!"},
-    {"id": 3, "x": 0.425, "y": 0.25, "r": 30, "label": "Eine Blase fehlt!"},
-    {"id": 4, "x": 0.759, "y": 0.5, "r": 30, "label": "Die Schwanzflosse ist grün!"},
-    {"id": 5, "x": 0.85, "y": 0.33, "r": 52, "label": "Die Qualle ist grün!"},
-    {"id": 6, "x": 0.188, "y": 0.908, "r": 38, "label": "Der Seestern ist rot!"},
-    {"id": 7, "x": 0.556, "y": 0.878, "r": 30, "label": "Der Krabbe fehlt eine Schere!"},
-    {"id": 8, "x": 0.65, "y": 0.758, "r": 58, "label": "Da ist eine neue Pflanze!"},
-    {"id": 9, "x": 0.7, "y": 0.93, "r": 35, "label": "Die Muschel fehlt!"},
-    {"id": 10, "x": 0.943, "y": 0.903, "r": 32, "label": "Da liegen Goldmünzen!"}
-  ]
+  "scene": "scene.svg",
+  "count": 10
 }

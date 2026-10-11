@@ -1,18 +1,6 @@
 {
   "name": "Bauernhof",
   "tts": "Finde die 10 Unterschiede! Tippe auf die Unterschiede in einem der Bilder.",
-  "original": "original.svg",
-  "modified": "modified.svg",
-  "hotspots": [
-    { "id": 1, "x": 0.313, "y": 0.267, "r": 55 },
-    { "id": 2, "x": 0.675, "y": 0.5, "r": 60 },
-    { "id": 3, "x": 0.863, "y": 0.567, "r": 42 },
-    { "id": 4, "x": 0.256, "y": 0.633, "r": 30 },
-    { "id": 5, "x": 0.85, "y": 0.133, "r": 55 },
-    { "id": 6, "x": 0.45, "y": 0.767, "r": 65 },
-    { "id": 7, "x": 0.113, "y": 0.55, "r": 45 },
-    { "id": 8, "x": 0.469, "y": 0.137, "r": 55 },
-    { "id": 9, "x": 0.313, "y": 0.433, "r": 30 },
-    { "id": 10, "x": 0.775, "y": 0.808, "r": 40 }
-  ]
+  "scene": "scene.svg",
+  "count": 10
 }

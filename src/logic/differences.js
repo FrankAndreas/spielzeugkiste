@@ -36,3 +36,54 @@ export function hitTest(tapX, tapY, hotspot, containerRect) {
   const dy      = (tapY - hotspot.y) * containerRect.height
   return Math.sqrt(dx * dx + dy * dy) <= screenR
 }
+
+function shuffle(items, random) {
+  const a = [...items]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
+/**
+ * Builds one round from a scene SVG by picking `count` random candidate
+ * differences and one variant of each.
+ *
+ * A candidate is a `<g data-diff="key" data-cx data-cy data-r>` group (hotspot
+ * in viewBox units) holding a `<g data-variant="orig">` plus one or more
+ * alternatives `<g data-variant="…" data-label="…" display="none">`. The scene
+ * file as-is renders as the original image.
+ *
+ * @param {string} svgText - scene SVG source
+ * @param {number} count - number of differences to pick
+ * @param {() => number} [random] - RNG returning [0, 1)
+ * @returns {{ original: string, modified: string,
+ *             hotspots: { id: number, key: string, x: number, y: number, r: number, label: string }[] }}
+ */
+export function buildRound(svgText, count, random = Math.random) {
+  const doc = new DOMParser().parseFromString(svgText, 'image/svg+xml')
+  const svg = doc.documentElement
+  const [, , vbW, vbH] = svg.getAttribute('viewBox').split(/[\s,]+/).map(Number)
+  const original = new XMLSerializer().serializeToString(doc)
+
+  const candidates = [...svg.querySelectorAll('[data-diff]')]
+  const picked = shuffle(candidates, random).slice(0, count)
+
+  const hotspots = picked.map((g, i) => {
+    const variants = [...g.children].filter(v => v.getAttribute('data-variant') !== 'orig')
+    const variant  = variants[Math.floor(random() * variants.length)]
+    g.querySelector('[data-variant="orig"]').setAttribute('display', 'none')
+    variant.removeAttribute('display')
+    return {
+      id:    i + 1,
+      key:   g.getAttribute('data-diff'),
+      x:     +g.getAttribute('data-cx') / vbW,
+      y:     +g.getAttribute('data-cy') / vbH,
+      r:     +g.getAttribute('data-r') * REF_WIDTH / vbW,
+      label: variant.getAttribute('data-label'),
+    }
+  })
+
+  return { original, modified: new XMLSerializer().serializeToString(doc), hotspots }
+}
