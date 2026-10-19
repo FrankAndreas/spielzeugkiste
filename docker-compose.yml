@@ -1,11 +1,16 @@
+# Spielzeugkiste on a NAS (or any Docker host), with the image published by CI.
+# Copy it to the app folder on the NAS as compose.yaml; see docs/deploy-nas.md.
+#
+# The app is static (nginx serving the built files) and keeps no data, so it
+# needs no volumes or .env. The image brings its own healthcheck.
+#
+# To try your local changes instead: docker compose up -d --build
+
 services:
-  kids-games:
-    image: ghcr.io/${GITHUB_REPOSITORY:-your-user/spielzeugkiste}:latest
+  spielzeugkiste:
+    image: ghcr.io/frankandreas/spielzeugkiste:latest
+    build: .
+    container_name: spielzeugkiste
     ports:
-      - "${PORT:-8080}:80"
+      - "${PORT:-8084}:80"
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost/"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
