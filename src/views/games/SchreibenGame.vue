@@ -1,9 +1,19 @@
 <template>
   <div class="layout">
-    <AppHeader :title="`✏️ Schreiben — ${letter.name}`" :tts="intro" color="#E67E22" />
+    <AppHeader :title="`✏️ Schreiben — ${target}`" :tts="prompt" color="#E67E22" />
 
-    <div class="stars">
-      <span v-for="i in ROUNDS" :key="i" :class="['star', { done: i <= round }]">⭐</span>
+    <div v-if="mode === 'name'" class="name-row">
+      <div
+        v-for="(l, i) in tasks"
+        :key="i"
+        :class="['name-letter', { done: i < done, current: i === done }]"
+      >
+        <InkThumb v-if="i < done" :ink="inks[i]" />
+        <span v-else>{{ l.letter }}</span>
+      </div>
+    </div>
+    <div v-else class="stars">
+      <span v-for="i in tasks.length" :key="i" :class="['star', { done: i <= done }]">⭐</span>
     </div>
 
     <div ref="area" class="area">
@@ -16,7 +26,7 @@
         @pointercancel="onUp"
       />
       <div v-if="debug" class="debug">
-        <div>Fortschritt {{ progressPct }} % · Strich {{ strokeNo }}/{{ letter.strokes.length }}</div>
+        <div>{{ letter?.name }} · Fortschritt {{ progressPct }} % · Strich {{ strokeNo }}/{{ letter?.strokes.length }}</div>
         <div v-for="(l, i) in debugLines" :key="i">{{ l }}</div>
       </div>
     </div>
@@ -25,10 +35,10 @@
       <div v-if="won" class="win">
         <div class="win-content">
           <div class="win-emoji">🎉</div>
-          <div class="win-text">Super geschrieben!</div>
+          <div class="win-text">{{ mode === 'name' ? `Du hast ${target} geschrieben!` : 'Super geschrieben!' }}</div>
           <div class="win-buttons">
             <button class="btn again-btn" @click="restart">Nochmal</button>
-            <button class="btn done-btn" @click="router.push('/')">Fertig</button>
+            <button class="btn done-btn" @click="router.push({ path: '/schreiben/play', query: route.query })">Fertig</button>
           </div>
         </div>
       </div>
@@ -41,33 +51,38 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { speak, stopSpeaking } from '../../services/tts.js'
 import { createTraceLog, logEvent, sendTraces } from '../../services/traceLog.js'
-import { LETTERS, BOX } from '../../logic/letters.js'
+import { drawLetter, drawOthers } from '../../services/letterCanvas.js'
+import { LETTERS, BOX, writingTasks } from '../../logic/letters.js'
 import { createTracer, penDown, penMove, penUp } from '../../logic/tracing.js'
 import AppHeader from '../../components/AppHeader.vue'
+import InkThumb from '../../components/InkThumb.vue'
 
 const route  = useRoute()
 const router = useRouter()
 
-const ROUNDS       = 3
-const HELP         = ['full', 'dots', 'start']   // less help each round
 const WIN_PAUSE_MS = 800
 const HINT_GAP_MS  = 4000   // don't repeat the start-dot hint more often
 const SMALL_TRY    = 8      // guide points; lifting before this is just a tap
 
-const letter = LETTERS.S
+// A name letter by letter, or one letter practised three times
+const mode   = route.params.name ? 'name' : 'letter'
+const target = route.params.name ?? route.params.letter
+const tasks  = writingTasks(mode === 'name' ? { name: target } : { letter: target })
 const debug  = 'debug' in route.query
-const intro  = `Schreib ein ${letter.name}! Fang beim grünen Punkt an.`
 
 const area   = ref(null)
 const canvas = ref(null)
-const round  = ref(0)
+const done   = ref(0)          // finished tasks
+const inks   = ref([])         // the child's lines per finished task
 const won    = ref(false)
+const prompt = ref('')
 const debugLines  = ref([])
 const progressPct = ref(0)
 const strokeNo    = ref(1)
+const letter      = ref(null)
 
-let tracer   = createTracer(letter)
-let ink      = []           // strokes drawn by the pen, in letter space
+let tracer   = null
+let ink      = []           // lines of the current letter, in letter space
 let others   = new Map()    // other touches (debug): id -> { p, size, reason }
 let fit      = { scale: 1, ox: 0, oy: 0 }
 let log      = null
@@ -75,34 +90,49 @@ let left     = false
 let lastHint = 0
 
 onMounted(() => {
+  if (!tasks.length) {
+    router.replace({ path: '/schreiben/play', query: route.query })
+    return
+  }
   resize()
   window.addEventListener('resize', resize)
   document.addEventListener('visibilitychange', onHidden)
-  startRound()
-  speak(intro)
+  startTask()
+  say(mode === 'name'
+    ? `Wir schreiben ${target}! Zuerst ein ${letter.value.say}.`
+    : `Schreib ein ${letter.value.say}! Fang beim grünen Punkt an.`)
 })
 
 onUnmounted(() => {
   left = true
   window.removeEventListener('resize', resize)
   document.removeEventListener('visibilitychange', onHidden)
-  sendTraces(log, { result: 'left' })
+  if (log) sendTraces(log, { result: 'left' })
   stopSpeaking()
 })
 
+// Speaks and remembers the text for the 🔊 button
+function say(text) {
+  prompt.value = text
+  return speak(text)
+}
+
 // Copies the tracer's state into the debug line
 function sync() {
-  progressPct.value = Math.round(100 * tracer.progress / (letter.strokes[tracer.stroke].length - 1))
+  progressPct.value = Math.round(100 * tracer.progress / (letter.value.strokes[tracer.stroke].length - 1))
   strokeNo.value    = tracer.stroke + 1
 }
 
-function startRound() {
-  tracer = createTracer(letter, tracer.smallest)
+function startTask() {
+  const task = tasks[done.value]
+  letter.value = LETTERS[task.letter]
+  tracer = createTracer(letter.value, tracer?.smallest)
   sync()
   ink = []
   others = new Map()
   log = createTraceLog({
-    game: 'schreiben', letter: letter.name, round: round.value + 1, help: HELP[round.value],
+    game: 'schreiben', mode, ...(mode === 'name' && { name: target }), letter: task.letter,
+    task: done.value + 1, help: task.help,
     viewport: [window.innerWidth, window.innerHeight], dpr: window.devicePixelRatio,
     scale: +fit.scale.toFixed(3), ua: navigator.userAgent,
   })
@@ -110,10 +140,11 @@ function startRound() {
 }
 
 function restart() {
-  round.value = 0
-  won.value   = false
-  startRound()
-  speak(intro)
+  done.value = 0
+  inks.value = []
+  won.value  = false
+  startTask()
+  say(mode === 'name' ? `Wir schreiben ${target}! Zuerst ein ${letter.value.say}.` : `Schreib ein ${letter.value.say}!`)
 }
 
 // Letter box centred in the area, as big as fits with a margin
@@ -154,10 +185,10 @@ function record(kind, e, p, extra = {}) {
 }
 
 function onDown(e) {
-  if (won.value) return
+  if (won.value || !tracer) return
   const p = toLetter(e)
   const { accepted, reason } = penDown(tracer, e.pointerId, p, contact(e))
-  record('down', e, p, accepted ? { pen: true } : { reason })
+  record('down', e, p, accepted ? { pen: true, stroke: tracer.stroke + 1 } : { reason })
   if (accepted) {
     canvas.value.setPointerCapture?.(e.pointerId)
     ink.push([p])
@@ -173,6 +204,7 @@ function onDown(e) {
 }
 
 function onMove(e) {
+  if (!tracer) return
   const p = toLetter(e)
   if (e.pointerId !== tracer.pen) {
     if (others.has(e.pointerId)) {
@@ -192,22 +224,22 @@ function onMove(e) {
     if (result) break
   }
   sync()
-  if (result) finishStroke(result, e, p)
+  if (result === 'letter-done') finishLetter(e, p)
   draw()
 }
 
 function onUp(e) {
-  // Neither the pen nor a known other touch: the pen lifting after a finished letter
-  if (e.pointerId !== tracer.pen && !others.has(e.pointerId)) return
+  // Neither the pen nor a known other touch: the pen lifting after a finished stroke
+  if (!tracer || (e.pointerId !== tracer.pen && !others.has(e.pointerId))) return
   others.delete(e.pointerId)
   const p        = toLetter(e)
   const progress = tracer.progress
   const result   = penUp(tracer, e.pointerId)
-  record(e.type === 'pointercancel' ? 'cancel' : 'up', e, p, result ? { result, progress } : {})
+  record(e.type === 'pointercancel' ? 'cancel' : 'up', e, p, result ? { result, progress, stroke: tracer.stroke + 1 } : {})
   if (result === 'too-short') {
-    ink = []
+    ink.pop()   // only the unfinished stroke; finished strokes stay
     sync()
-    sendTraces(log, { result: 'too-short', progress })
+    sendTraces(log, { result: 'too-short', progress, stroke: tracer.stroke + 1 })
     if (progress >= SMALL_TRY) speak('Fast! Fang nochmal beim grünen Punkt an.')
   } else if (tracer.pen === null && !others.size) {
     // All fingers off and no pen taken: send them anyway, so ignored touches show up too
@@ -218,118 +250,44 @@ function onUp(e) {
 
 // The iPad may switch apps or lock without leaving the game
 function onHidden() {
-  if (document.visibilityState === 'hidden') sendTraces(log, { result: 'hidden' })
+  if (document.visibilityState === 'hidden' && log) sendTraces(log, { result: 'hidden' })
 }
 
-function finishStroke(result, e, p) {
-  if (result !== 'letter-done') return   // multi-stroke letters continue with the next stroke
-  record('done', e, p, { result })
-  sendTraces(log, { result })
-  const finished = ++round.value
-  speak(`Super! Ein ${letter.name}!`).then(() => {
-    if (left || finished !== round.value) return
-    if (finished === ROUNDS) {
-      setTimeout(() => {
-        if (left || finished !== round.value) return
-        won.value = true
-        speak('Super geschrieben!')
-      }, WIN_PAUSE_MS)
-    } else {
-      startRound()
+function finishLetter(e, p) {
+  record('done', e, p, { result: 'letter-done' })
+  sendTraces(log, { result: 'letter-done' })
+  inks.value = [...inks.value, ink]
+  const finished = ++done.value
+  const last     = finished === tasks.length
+  const next     = last ? null : LETTERS[tasks[finished].letter]
+  const text = mode === 'letter' ? `Super! Ein ${letter.value.say}!`
+             : last              ? `Super! Du hast ${target} geschrieben!`
+             :                     `Jetzt ein ${next.say}.`
+  if (!last && mode === 'name') startTask()   // the next letter shows while its name is spoken
+  say(text).then(() => {
+    if (left || finished !== done.value) return
+    if (!last) {
+      if (mode === 'letter') startTask()
+      return
     }
+    setTimeout(() => {
+      if (left || finished !== done.value) return
+      won.value = true
+      if (mode === 'letter') say('Super geschrieben!')
+    }, WIN_PAUSE_MS)
   })
 }
 
-// ---- Drawing -------------------------------------------------------------
-
 function draw() {
   const ctx = canvas.value?.getContext?.('2d')
-  if (!ctx) return
+  if (!ctx || !tracer) return
   const { scale, ox, oy, dpr = 1 } = fit
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
   ctx.translate(ox, oy)
   ctx.scale(scale, scale)
-  ctx.lineCap = ctx.lineJoin = 'round'
-
-  const help = HELP[Math.min(round.value, ROUNDS - 1)]
-  const tr   = tracer
-  letter.strokes.forEach((g, s) => {
-    // Wide band to trace in, a dotted centre line, then the traced part in green
-    path(ctx, g)
-    ctx.strokeStyle = help === 'start' ? '#f1ece4' : '#ece3d6'
-    ctx.lineWidth = 22
-    ctx.stroke()
-    if (help !== 'start') {
-      ctx.setLineDash([0.1, 6])
-      ctx.strokeStyle = '#b9a58c'
-      ctx.lineWidth = 3
-      path(ctx, g)
-      ctx.stroke()
-      ctx.setLineDash([])
-    }
-    const traced = s < tr.stroke || tr.done ? g : s === tr.stroke ? g.slice(0, tr.progress + 1) : []
-    if (traced.length > 1) {
-      path(ctx, traced)
-      ctx.strokeStyle = '#7ED957'
-      ctx.lineWidth = 22
-      ctx.stroke()
-    }
-    if (help === 'full') arrows(ctx, g)
-  })
-
-  // Ink of the pen
-  ctx.strokeStyle = '#7B2FBE'
-  ctx.lineWidth = 7
-  for (const line of ink) { if (line.length > 1) { path(ctx, line); ctx.stroke() } }
-
-  // Start dot of the next stroke, with an arrow showing the way
-  if (!tr.done) {
-    const g = letter.strokes[tr.stroke]
-    ctx.fillStyle = '#2ECC71'
-    ctx.beginPath()
-    ctx.arc(g[0].x, g[0].y, 9, 0, Math.PI * 2)
-    ctx.fill()
-    if (help !== 'full') arrow(ctx, g, 6)
-  }
-
-  if (debug) {
-    for (const { p, size, reason } of others.values()) {
-      ctx.strokeStyle = reason === 'too-big' ? '#E74C3C' : '#F39C12'
-      ctx.lineWidth = 1.5
-      ctx.beginPath()
-      ctx.arc(p.x, p.y, Math.max(3, size / 2 / scale), 0, Math.PI * 2)
-      ctx.stroke()
-    }
-  }
-}
-
-function path(ctx, pts) {
-  ctx.beginPath()
-  ctx.moveTo(pts[0].x, pts[0].y)
-  for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y)
-}
-
-// Small chevrons along the stroke, pointing the way to write
-function arrows(ctx, g) {
-  for (let i = 14; i < g.length - 8; i += 18) arrow(ctx, g, i)
-}
-
-function arrow(ctx, g, i) {
-  const a = g[i]
-  const b = g[Math.min(g.length - 1, i + 2)]
-  const ang = Math.atan2(b.y - a.y, b.x - a.x)
-  ctx.save()
-  ctx.translate(a.x, a.y)
-  ctx.rotate(ang)
-  ctx.strokeStyle = '#E67E22'
-  ctx.lineWidth = 3
-  ctx.beginPath()
-  ctx.moveTo(-4, -5)
-  ctx.lineTo(3, 0)
-  ctx.lineTo(-4, 5)
-  ctx.stroke()
-  ctx.restore()
+  drawLetter(ctx, { letter: letter.value, tracer, help: tasks[Math.min(done.value, tasks.length - 1)].help, ink })
+  if (debug) drawOthers(ctx, others, scale)
 }
 </script>
 
@@ -338,6 +296,13 @@ function arrow(ctx, g, i) {
 .stars { display: flex; justify-content: center; gap: 8px; padding: 8px; flex-shrink: 0; }
 .star { font-size: 1.6rem; filter: grayscale(1); opacity: 0.35; transition: all 0.3s; }
 .star.done { filter: none; opacity: 1; transform: scale(1.1); }
+.name-row { display: flex; justify-content: center; gap: 6px; padding: 8px; flex-shrink: 0; }
+.name-letter {
+  width: 44px; height: 60px; display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; font-weight: bold; color: #ccc; border-bottom: 3px solid #e8dccb;
+}
+.name-letter.current { color: #E67E22; border-bottom-color: #E67E22; }
+.name-letter.done { border-bottom-color: #7ED957; }
 .area { position: relative; flex: 1; min-height: 0; }
 .board { display: block; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 .debug {

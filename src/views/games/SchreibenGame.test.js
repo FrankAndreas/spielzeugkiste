@@ -15,24 +15,35 @@ vi.mock('../../services/tts.js', () => ({
 const W = 1000, H = 1400, SCALE = 8.2, OX = 90, OY = 126
 const px = p => ({ clientX: OX + p.x * SCALE, clientY: OY + p.y * SCALE })
 const guide = LETTERS.S.strokes[0]
+let nextId = 100
 
 const said  = () => speak.mock.calls.map(c => c[0])
 const posts = () => navigator.sendBeacon.mock.calls.map(c => c[1])
 
-async function play(query = '') {
+async function play(path = '/schreiben/letter/S') {
   const router = createRouter({
     history: createMemoryHistory(),
-    routes: [{ path: '/', component: { template: '<div />' } }, { path: '/schreiben/play', component: SchreibenGame }],
+    routes: [
+      { path: '/', component: { template: '<div />' } },
+      { path: '/schreiben/play', component: { template: '<div class="menu" />' } },
+      { path: '/schreiben/letter/:letter', component: SchreibenGame },
+      { path: '/schreiben/name/:name', component: SchreibenGame },
+    ],
   })
-  await router.push(`/schreiben/play${query}`)
+  await router.push(path)
   await router.isReady()
   return mount(SchreibenGame, { global: { plugins: [router] }, attachTo: document.body })
 }
 
 // jsdom has no PointerEvent, and MouseEvent's clientX can't be set: use a plain event
 async function fire(w, type, props) {
-  w.find('canvas').element.dispatchEvent(Object.assign(new Event(type, { bubbles: true }), props))
+  w.find('canvas.board').element.dispatchEvent(Object.assign(new Event(type, { bubbles: true }), props))
   await flushPromises()
+}
+
+// Writes every stroke of a letter, each with a new pen touch
+async function writeLetter(w, letter) {
+  for (const g of LETTERS[letter].strokes) await write(w, nextId++, g)
 }
 
 async function write(w, id = 1, points = guide, size = 10) {
@@ -61,17 +72,17 @@ describe('SchreibenGame', () => {
 
   it('says what to do', async () => {
     wrapper = await play()
-    expect(said()).toEqual(['Schreib ein S! Fang beim grünen Punkt an.'])
+    expect(said()).toEqual(['Schreib ein Es! Fang beim grünen Punkt an.'])
   })
 
   it('cheers a traced S, fills a star and posts the trace', async () => {
     wrapper = await play()
     await write(wrapper)
-    expect(said()).toContain('Super! Ein S!')
+    expect(said()).toContain('Super! Ein Es!')
     expect(wrapper.findAll('.star.done')).toHaveLength(1)
     const body = JSON.parse(await posts()[0].text())
-    expect(body).toMatchObject({ game: 'schreiben', letter: 'S', round: 1, result: 'letter-done' })
-    expect(body.events[0]).toMatchObject({ kind: 'down', id: 1, type: 'touch', pen: true })
+    expect(body).toMatchObject({ game: 'schreiben', mode: 'letter', letter: 'S', task: 1, help: 'full', result: 'letter-done' })
+    expect(body.events[0]).toMatchObject({ kind: 'down', id: 1, type: 'touch', pen: true, stroke: 1 })
     expect(body.events.some(e => e.kind === 'move')).toBe(true)
   })
 
@@ -83,12 +94,12 @@ describe('SchreibenGame', () => {
   })
 
   it('ignores a resting hand and records it', async () => {
-    wrapper = await play('?debug')
+    wrapper = await play('/schreiben/letter/S?debug')
     await fire(wrapper, 'pointerdown', { pointerId: 9, pointerType: 'touch', width: 80, height: 70, ...px({ x: 90, y: 130 }) })
     // Before any pen touch there is no size to compare with: its place gives it away
     expect(wrapper.find('.debug').text()).toContain('far-from-start')
     await write(wrapper, 1)
-    expect(said()).toContain('Super! Ein S!')
+    expect(said()).toContain('Super! Ein Es!')
     const body = JSON.parse(await posts()[0].text())
     expect(body.events[0]).toMatchObject({ kind: 'down', id: 9, w: 80, h: 70, reason: 'far-from-start' })
   })
@@ -126,5 +137,40 @@ describe('SchreibenGame', () => {
     vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('hidden')
     document.dispatchEvent(new Event('visibilitychange'))
     expect(JSON.parse(await posts()[0].text()).result).toBe('hidden')
+  })
+
+  it('writes a letter with several strokes', async () => {
+    wrapper = await play('/schreiben/letter/H?debug')
+    expect(said()).toEqual(['Schreib ein Ha! Fang beim grünen Punkt an.'])
+    const [s1, s2, s3] = LETTERS.H.strokes
+    await write(wrapper, 1, s1)
+    expect(wrapper.find('.debug').text()).toContain('Strich 2/3')
+    // Lifting halfway through stroke 2 starts only stroke 2 over
+    await write(wrapper, 2, s2.slice(0, s2.length / 2))
+    expect(wrapper.find('.debug').text()).toContain('Strich 2/3')
+    await write(wrapper, 3, s2)
+    await write(wrapper, 4, s3)
+    expect(said()).toContain('Super! Ein Ha!')
+    expect(wrapper.findAll('.star.done')).toHaveLength(1)
+  })
+
+  it('writes a name letter by letter and celebrates it', async () => {
+    wrapper = await play('/schreiben/name/SINA?debug')
+    expect(said()).toEqual(['Wir schreiben SINA! Zuerst ein Es.'])
+    expect(wrapper.findAll('.name-letter').map(l => l.text())).toEqual(['S', 'I', 'N', 'A'])
+    await writeLetter(wrapper, 'S')
+    expect(said().at(-1)).toBe('Jetzt ein I.')
+    expect(wrapper.findAll('.name-letter.done')).toHaveLength(1)
+    for (const l of 'INA') await writeLetter(wrapper, l)
+    expect(said()).toContain('Super! Du hast SINA geschrieben!')
+    await new Promise(resolve => setTimeout(resolve, 900))
+    await flushPromises()
+    expect(wrapper.find('.win').text()).toContain('SINA')
+  })
+
+  it('goes back to the menu for a letter it cannot teach', async () => {
+    wrapper = await play('/schreiben/letter/Q')
+    await flushPromises()
+    expect(wrapper.vm.$router.currentRoute.value.path).toBe('/schreiben/play')
   })
 })
