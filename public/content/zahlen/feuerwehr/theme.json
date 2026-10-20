@@ -1,0 +1,35 @@
+{
+  "name": "Feuerwehr",
+  "tts": "Zählen mit der Feuerwehr! Tatü tata!",
+  "colors": {
+    "bg": "#FEE2E2",
+    "accent": "#EF4444"
+  },
+  "objects": [
+    {
+      "emoji": "🚒",
+      "one": "ein Feuerwehrauto",
+      "many": "Feuerwehrautos"
+    },
+    {
+      "emoji": "⛑️",
+      "one": "ein Helm",
+      "many": "Helme"
+    },
+    {
+      "emoji": "🧯",
+      "one": "ein Feuerlöscher",
+      "many": "Feuerlöscher"
+    },
+    {
+      "emoji": "🪜",
+      "one": "eine Leiter",
+      "many": "Leitern"
+    }
+  ],
+  "basket": "🧺",
+  "listen": {
+    "sound": "siren",
+    "picture": "🚨"
+  }
+}

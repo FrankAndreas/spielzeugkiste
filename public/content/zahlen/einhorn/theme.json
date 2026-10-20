@@ -1,0 +1,35 @@
+{
+  "name": "Einhorn",
+  "tts": "Zählen mit Einhörnern!",
+  "colors": {
+    "bg": "#F3E8FF",
+    "accent": "#A855F7"
+  },
+  "objects": [
+    {
+      "emoji": "🦄",
+      "one": "ein Einhorn",
+      "many": "Einhörner"
+    },
+    {
+      "emoji": "🌈",
+      "one": "ein Regenbogen",
+      "many": "Regenbögen"
+    },
+    {
+      "emoji": "⭐",
+      "one": "ein Stern",
+      "many": "Sterne"
+    },
+    {
+      "emoji": "🧁",
+      "one": "ein Törtchen",
+      "many": "Törtchen"
+    }
+  ],
+  "basket": "🧺",
+  "listen": {
+    "sound": "sparkle",
+    "picture": "✨"
+  }
+}

@@ -59,6 +59,16 @@
       "shadow": "#c94a8c",
       "tts": "Willkommen bei Pac-Man! Wähle ein Thema und wie schnell es geht.",
       "themes": ["einhorn", "prinzessin"]
+    },
+    {
+      "id": "zahlen",
+      "name": "Zahlen",
+      "emoji": "🔢",
+      "description": "Zählen und rechnen",
+      "color": "#00B8A9",
+      "shadow": "#008577",
+      "tts": "Willkommen bei den Zahlen! Wähle ein Thema und wie weit wir zählen.",
+      "themes": ["einhorn", "prinzessin", "eisprinzessin", "feuerwehr", "ballett", "musik"]
     }
   ]
 }

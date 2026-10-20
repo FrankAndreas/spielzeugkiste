@@ -9,6 +9,7 @@ const ColoringGame    = () => import('../views/games/ColoringGame.vue')
 const CheeseGame      = () => import('../views/games/CheeseGame.vue')
 const SnakeGame       = () => import('../views/games/SnakeGame.vue')
 const PacmanGame      = () => import('../views/games/PacmanGame.vue')
+const ZahlenGame      = () => import('../views/games/ZahlenGame.vue')
 
 export default createRouter({
   history: createWebHashHistory(),
@@ -21,5 +22,6 @@ export default createRouter({
     { path: '/cheese/play',              component: CheeseGame },
     { path: '/snake/:theme/play',        component: SnakeGame },
     { path: '/pacman/:theme/play',       component: PacmanGame },
+    { path: '/zahlen/:theme/play',       component: ZahlenGame },
   ],
 })

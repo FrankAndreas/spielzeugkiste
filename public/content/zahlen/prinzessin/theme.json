@@ -1,0 +1,35 @@
+{
+  "name": "Prinzessin",
+  "tts": "Zählen mit der Prinzessin!",
+  "colors": {
+    "bg": "#FFE4F1",
+    "accent": "#FF69B4"
+  },
+  "objects": [
+    {
+      "emoji": "👑",
+      "one": "eine Krone",
+      "many": "Kronen"
+    },
+    {
+      "emoji": "💎",
+      "one": "ein Edelstein",
+      "many": "Edelsteine"
+    },
+    {
+      "emoji": "🏰",
+      "one": "ein Schloss",
+      "many": "Schlösser"
+    },
+    {
+      "emoji": "👸",
+      "one": "eine Prinzessin",
+      "many": "Prinzessinnen"
+    }
+  ],
+  "basket": "🧺",
+  "listen": {
+    "sound": "bell",
+    "picture": "🔔"
+  }
+}

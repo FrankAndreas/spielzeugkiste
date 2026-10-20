@@ -1,0 +1,35 @@
+{
+  "name": "Ballett",
+  "tts": "Zählen im Ballett!",
+  "colors": {
+    "bg": "#FCE7F3",
+    "accent": "#EC4899"
+  },
+  "objects": [
+    {
+      "emoji": "🩰",
+      "one": "ein Ballettschuh",
+      "many": "Ballettschuhe"
+    },
+    {
+      "emoji": "🎀",
+      "one": "eine Schleife",
+      "many": "Schleifen"
+    },
+    {
+      "emoji": "🌸",
+      "one": "eine Blume",
+      "many": "Blumen"
+    },
+    {
+      "emoji": "💃",
+      "one": "eine Tänzerin",
+      "many": "Tänzerinnen"
+    }
+  ],
+  "basket": "🧺",
+  "listen": {
+    "sound": "piano",
+    "picture": "🎹"
+  }
+}

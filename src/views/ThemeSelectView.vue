@@ -49,6 +49,21 @@
         </button>
       </div>
     </div>
+
+    <!-- Zahlen-only: how far to count -->
+    <div v-if="gameId === 'zahlen'" class="difficulty">
+      <p class="diff-label">Zählen bis</p>
+      <div class="diff-row">
+        <button
+          v-for="opt in levelOptions"
+          :key="opt.value"
+          :class="['diff-btn', { active: level === opt.value }]"
+          @click="level = opt.value"
+        >
+          {{ opt.label }}
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -74,6 +89,12 @@ const speedOptions = [
   { label: 'Schnell ⚡', value: 'schnell' },
 ]
 
+const level = ref('9')
+const levelOptions = [
+  { label: 'Bis 9 🖐',  value: '9'  },
+  { label: 'Bis 20 🙌', value: '20' },
+]
+
 const difficultyOptions = [
   { label: 'Leicht (3×4)',  value: '3x4'  },
   { label: 'Mittel (4×4)',  value: '4x4'  },
@@ -90,6 +111,7 @@ onMounted(async () => {
 function onThemeSelect(theme) {
   const query = gameId.value === 'memory' ? { grid: difficulty.value }
               : gameId.value === 'pacman' ? { speed: speed.value }
+              : gameId.value === 'zahlen' ? { level: level.value }
               : {}
   router.push({ path: `/${gameId.value}/${theme}/play`, query })
 }

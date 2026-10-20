@@ -1,0 +1,35 @@
+{
+  "name": "Eisprinzessin",
+  "tts": "Zählen mit der Eisprinzessin!",
+  "colors": {
+    "bg": "#E0F2FE",
+    "accent": "#38BDF8"
+  },
+  "objects": [
+    {
+      "emoji": "❄️",
+      "one": "eine Schneeflocke",
+      "many": "Schneeflocken"
+    },
+    {
+      "emoji": "⛄",
+      "one": "ein Schneemann",
+      "many": "Schneemänner"
+    },
+    {
+      "emoji": "🧊",
+      "one": "ein Eiswürfel",
+      "many": "Eiswürfel"
+    },
+    {
+      "emoji": "👸",
+      "one": "eine Eisprinzessin",
+      "many": "Eisprinzessinnen"
+    }
+  ],
+  "basket": "🧺",
+  "listen": {
+    "sound": "chime",
+    "picture": "❄️"
+  }
+}

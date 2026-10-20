@@ -1,0 +1,40 @@
+{
+  "name": "Musik",
+  "tts": "Zählen mit Musik! Bühne frei!",
+  "colors": {
+    "bg": "#FEF3C7",
+    "accent": "#F59E0B"
+  },
+  "objects": [
+    {
+      "emoji": "🎤",
+      "one": "ein Mikrofon",
+      "many": "Mikrofone"
+    },
+    {
+      "emoji": "🥁",
+      "one": "eine Trommel",
+      "many": "Trommeln"
+    },
+    {
+      "emoji": "🐨",
+      "one": "ein Koala",
+      "many": "Koalas"
+    },
+    {
+      "emoji": "🐷",
+      "one": "ein Schwein",
+      "many": "Schweine"
+    },
+    {
+      "emoji": "🎸",
+      "one": "eine Gitarre",
+      "many": "Gitarren"
+    }
+  ],
+  "basket": "🧺",
+  "listen": {
+    "sound": "drum",
+    "picture": "🥁"
+  }
+}
