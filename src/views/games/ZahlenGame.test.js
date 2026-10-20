@@ -3,6 +3,7 @@ import { mount, flushPromises } from '@vue/test-utils'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import { createPinia, setActivePinia } from 'pinia'
 import { speak } from '../../services/tts.js'
+import { unlockAudio } from '../../services/sound.js'
 import ZahlenGame from './ZahlenGame.vue'
 
 vi.mock('../../services/tts.js', () => ({
@@ -154,6 +155,31 @@ describe('ZahlenGame', () => {
     const pending = []
     speak.mockImplementation(() => new Promise(resolve => pending.push(resolve)))
     await pick(wrapper, 2)
+    wrapper.unmount()
+    wrapper = null
+    const before = speak.mock.calls.length
+    while (pending.length) { pending.shift()(); await flushPromises() }
+    expect(speak.mock.calls.length).toBe(before)
+  })
+
+  it('unlocks audio on a tap, which iOS accepts as a gesture', async () => {
+    wrapper = await play()
+    unlockAudio.mockClear()
+    await wrapper.find('.layout').trigger('click')
+    expect(unlockAudio).toHaveBeenCalled()
+  })
+
+  it('stays silent after leaving while an empty basket is counted', async () => {
+    wrapper = await play()
+    await pick(wrapper, 3)
+    await flushPromises()
+    await pick(wrapper, 4)
+    await flushPromises()
+    const pending = []
+    speak.mockImplementation(() => new Promise(resolve => pending.push(resolve)))
+    await wrapper.find('button.check').trigger('click')
+    while (pending.length && !said().includes('Schau, da ist gar nichts. Null!')) { pending.shift()(); await flushPromises() }
+    expect(said().at(-1)).toBe('Schau, da ist gar nichts. Null!')
     wrapper.unmount()
     wrapper = null
     const before = speak.mock.calls.length

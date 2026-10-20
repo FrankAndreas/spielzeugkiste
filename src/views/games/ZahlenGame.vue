@@ -3,6 +3,8 @@
     class="layout"
     :style="{ background: theme?.colors.bg, '--accent': theme?.colors.accent }"
     @pointerdown="unlockAudio"
+    @touchend="unlockAudio"
+    @click="unlockAudio"
   >
     <AppHeader title="🔢 Zahlen" :tts="question" color="#00B8A9" />
 
@@ -245,6 +247,7 @@ async function countAlong(t) {
     await speak(numberWord(i + 1))
     if (!alive(t)) return
   }
+  if (!alive(t)) return
   if (type === 'build') await speak(`Wir brauchen ${numberWord(answer)}.`)
 }
 </script>
