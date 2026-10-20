@@ -1,0 +1,13 @@
+{
+  "name": "Prinzessin",
+  "tts": "Prinzessin-Schlange! Sammle Kronen und Edelsteine.",
+  "collective": "Schätze",
+  "colors": {
+    "bg": "#FFE4EE",
+    "grid": "rgba(255,255,255,0.5)",
+    "head": "#D02090",
+    "body": ["#FF69B4", "#FF82AB"]
+  },
+  "face": "👸",
+  "items": ["👑", "💎"]
+}

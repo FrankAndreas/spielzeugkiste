@@ -1,0 +1,13 @@
+{
+  "name": "Einhorn",
+  "tts": "Einhorn-Schlange! Sammle Sterne und Herzen.",
+  "collective": "Schätze",
+  "colors": {
+    "bg": "#FFF0FA",
+    "grid": "rgba(0,0,0,0.05)",
+    "head": "#B39DDB",
+    "body": ["#FF6B6B", "#FF9A3C", "#FFD93D", "#6BCB77", "#4D96FF", "#9B59B6"]
+  },
+  "face": "🦄",
+  "items": ["⭐", "💖"]
+}

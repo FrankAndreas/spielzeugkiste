@@ -39,6 +39,16 @@
       "shadow": "#c96a00",
       "tts": "Käseklicker! Klick auf den Käse!",
       "themes": []
+    },
+    {
+      "id": "snake",
+      "name": "Schlange",
+      "emoji": "🐍",
+      "description": "Sammle Schätze",
+      "color": "#9B59B6",
+      "shadow": "#6f3d87",
+      "tts": "Willkommen bei der Schlange! Wähle ein Thema.",
+      "themes": ["einhorn", "prinzessin"]
     }
   ]
 }
