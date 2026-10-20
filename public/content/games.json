@@ -69,6 +69,16 @@
       "shadow": "#008577",
       "tts": "Willkommen bei den Zahlen! Wähle ein Thema und wie weit wir zählen.",
       "themes": ["einhorn", "prinzessin", "eisprinzessin", "feuerwehr", "ballett", "musik"]
+    },
+    {
+      "id": "schreiben",
+      "name": "Schreiben",
+      "emoji": "✏️",
+      "description": "Buchstaben nachspuren",
+      "color": "#E67E22",
+      "shadow": "#b35f12",
+      "tts": "Schreiben! Nimm deinen Stift.",
+      "themes": []
     }
   ]
 }

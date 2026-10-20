@@ -105,3 +105,28 @@ the compose file on the NAS. The compose file belongs to your deployment and is 
 | *Bind for 0.0.0.0:8084 failed: port is already allocated* | Another app uses 8084 | Change the port in `compose.yaml` and run `sudo docker-compose up -d` |
 | The iPad shows an old version after an update | Safari cached the page | Reload the page, or remove and re-add the home-screen icon |
 | Email from Task Scheduler: *app not healthy* | A new version fails to start | Check `logs/update.log` (it ends with the app's log), then [roll back](#rolling-back-an-update) |
+
+## Handwriting traces
+
+The handwriting game (Schreiben) posts every try with the pen to `/api/traces`:
+all touches with position, contact size and pressure, and whether they were
+taken as the pen. nginx appends each post as one JSON line inside the
+container, for tuning the pen and palm detection.
+
+Copy them off the NAS:
+
+```bash
+ssh <user>@<nas> "sudo docker exec spielzeugkiste cat /var/log/traces/traces.jsonl" > traces.jsonl
+```
+
+The file lives in the container only, so it is gone after the next image
+update. To keep it across updates, add a volume to `compose.yaml` on the NAS:
+
+```yaml
+    volumes:
+      - ./traces:/var/log/traces
+```
+
+Locally, `npm run dev` writes the same lines to `traces/traces.jsonl`
+(git-ignored). Add `?debug` to the game's URL (`#/schreiben/play?debug`) to
+see every touch and why it was taken or ignored.
