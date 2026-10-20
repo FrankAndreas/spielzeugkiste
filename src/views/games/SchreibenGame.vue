@@ -51,8 +51,8 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { speak, stopSpeaking } from '../../services/tts.js'
 import { createTraceLog, logEvent, sendTraces } from '../../services/traceLog.js'
-import { drawLetter, drawOthers } from '../../services/letterCanvas.js'
-import { LETTERS, BOX, writingTasks } from '../../logic/letters.js'
+import { drawLetter, drawLines, drawOthers } from '../../services/letterCanvas.js'
+import { GLYPHS, BOX, writingTasks } from '../../logic/letters.js'
 import { createTracer, penDown, penMove, penUp } from '../../logic/tracing.js'
 import AppHeader from '../../components/AppHeader.vue'
 import InkThumb from '../../components/InkThumb.vue'
@@ -63,6 +63,14 @@ const router = useRouter()
 const WIN_PAUSE_MS = 800
 const HINT_GAP_MS  = 4000   // don't repeat the start-dot hint more often
 const SMALL_TRY    = 8      // guide points; lifting before this is just a tap
+const FIT          = 0.9    // of the area the letter box fills
+
+// Spoken hints for a touch that missed the start dot; none beside the letter
+const HINTS = {
+  'wrong-end':      'Andersherum! Fang beim grünen Punkt an.',
+  'far-from-start': 'Fang beim grünen Punkt an.',
+}
+const capital = text => text[0].toUpperCase() + text.slice(1)
 
 // A name letter by letter, or one letter practised three times
 const mode   = route.params.name ? 'name' : 'letter'
@@ -99,8 +107,8 @@ onMounted(() => {
   document.addEventListener('visibilitychange', onHidden)
   startTask()
   say(mode === 'name'
-    ? `Wir schreiben ${target}! Zuerst ein ${letter.value.say}.`
-    : `Schreib ein ${letter.value.say}! Fang beim grünen Punkt an.`)
+    ? `Wir schreiben ${target}! Zuerst ${letter.value.say}.`
+    : `Schreib ${letter.value.say}! Fang beim grünen Punkt an.`)
 })
 
 onUnmounted(() => {
@@ -125,7 +133,7 @@ function sync() {
 
 function startTask() {
   const task = tasks[done.value]
-  letter.value = LETTERS[task.letter]
+  letter.value = GLYPHS[task.letter]
   tracer = createTracer(letter.value, tracer?.smallest)
   sync()
   ink = []
@@ -144,7 +152,7 @@ function restart() {
   inks.value = []
   won.value  = false
   startTask()
-  say(mode === 'name' ? `Wir schreiben ${target}! Zuerst ein ${letter.value.say}.` : `Schreib ein ${letter.value.say}!`)
+  say(mode === 'name' ? `Wir schreiben ${target}! Zuerst ${letter.value.say}.` : `Schreib ${letter.value.say}!`)
 }
 
 // Letter box centred in the area, as big as fits with a margin
@@ -159,7 +167,7 @@ function resize() {
   c.height = h * dpr
   c.style.width  = `${w}px`
   c.style.height = `${h}px`
-  const scale = Math.min(w / BOX.width, h / BOX.height) * 0.82
+  const scale = Math.min(w / BOX.width, h / BOX.height) * FIT
   fit = { scale, ox: (w - BOX.width * scale) / 2, oy: (h - BOX.height * scale) / 2, dpr }
   draw()
 }
@@ -194,10 +202,10 @@ function onDown(e) {
     ink.push([p])
   } else {
     others.set(e.pointerId, { p, size: contact(e), reason })
-    // A small touch away from the start: probably the pen in the wrong place
-    if (reason === 'far-from-start' && performance.now() - lastHint > HINT_GAP_MS) {
+    // On the letter but not at the start dot: probably the pen in the wrong place
+    if (HINTS[reason] && performance.now() - lastHint > HINT_GAP_MS) {
       lastHint = performance.now()
-      speak('Fang beim grünen Punkt an.')
+      speak(HINTS[reason])
     }
   }
   draw()
@@ -259,10 +267,10 @@ function finishLetter(e, p) {
   inks.value = [...inks.value, ink]
   const finished = ++done.value
   const last     = finished === tasks.length
-  const next     = last ? null : LETTERS[tasks[finished].letter]
-  const text = mode === 'letter' ? `Super! Ein ${letter.value.say}!`
+  const next     = last ? null : GLYPHS[tasks[finished].letter]
+  const text = mode === 'letter' ? `Super! ${capital(letter.value.say)}!`
              : last              ? `Super! Du hast ${target} geschrieben!`
-             :                     `Jetzt ein ${next.say}.`
+             :                     `Jetzt ${next.say}.`
   if (!last && mode === 'name') startTask()   // the next letter shows while its name is spoken
   say(text).then(() => {
     if (left || finished !== done.value) return
@@ -286,6 +294,7 @@ function draw() {
   ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
   ctx.translate(ox, oy)
   ctx.scale(scale, scale)
+  drawLines(ctx, BOX)
   drawLetter(ctx, { letter: letter.value, tracer, help: tasks[Math.min(done.value, tasks.length - 1)].help, ink })
   if (debug) drawOthers(ctx, others, scale)
 }

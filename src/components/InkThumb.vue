@@ -10,8 +10,8 @@ import { drawInk } from '../services/letterCanvas.js'
 // A finished letter in the child's own handwriting, small
 const props = defineProps({ ink: { type: Array, required: true } })
 
-const W = 40
-const H = 56
+const W = 36
+const H = 61   // the letter box with its bottom band
 const dpr = window.devicePixelRatio || 1
 const canvas = ref(null)
 
@@ -25,5 +25,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.thumb { width: 40px; height: 56px; display: block; }
+.thumb { width: 36px; height: 61px; display: block; }
 </style>

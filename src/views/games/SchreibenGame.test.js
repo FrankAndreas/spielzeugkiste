@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import { speak } from '../../services/tts.js'
-import { LETTERS } from '../../logic/letters.js'
+import { GLYPHS, BOX } from '../../logic/letters.js'
 import SchreibenGame from './SchreibenGame.vue'
 
 vi.mock('../../services/tts.js', () => ({
@@ -10,11 +10,13 @@ vi.mock('../../services/tts.js', () => ({
   stopSpeaking: vi.fn(),
 }))
 
-// jsdom has no layout: give the board area a size, so letter space maps to
-// scale 8.2 with the box at (90, 126)
-const W = 1000, H = 1400, SCALE = 8.2, OX = 90, OY = 126
+// jsdom has no layout: give the board area a size; letter space maps to it
+// like the game does (the box as big as fits, times 0.9, centred)
+const W = 1000, H = 1400
+const SCALE = Math.min(W / BOX.width, H / BOX.height) * 0.9
+const OX = (W - BOX.width * SCALE) / 2, OY = (H - BOX.height * SCALE) / 2
 const px = p => ({ clientX: OX + p.x * SCALE, clientY: OY + p.y * SCALE })
-const guide = LETTERS.S.strokes[0]
+const guide = GLYPHS.S.strokes[0]
 let nextId = 100
 
 const said  = () => speak.mock.calls.map(c => c[0])
@@ -43,7 +45,7 @@ async function fire(w, type, props) {
 
 // Writes every stroke of a letter, each with a new pen touch
 async function writeLetter(w, letter) {
-  for (const g of LETTERS[letter].strokes) await write(w, nextId++, g)
+  for (const g of GLYPHS[letter].strokes) await write(w, nextId++, g)
 }
 
 async function write(w, id = 1, points = guide, size = 10) {
@@ -96,12 +98,12 @@ describe('SchreibenGame', () => {
   it('ignores a resting hand and records it', async () => {
     wrapper = await play('/schreiben/letter/S?debug')
     await fire(wrapper, 'pointerdown', { pointerId: 9, pointerType: 'touch', width: 80, height: 70, ...px({ x: 90, y: 130 }) })
-    // Before any pen touch there is no size to compare with: its place gives it away
-    expect(wrapper.find('.debug').text()).toContain('far-from-start')
+    // Before any pen touch there is no size to compare with: its place beside the letter gives it away
+    expect(wrapper.find('.debug').text()).toContain('off-letter')
     await write(wrapper, 1)
     expect(said()).toContain('Super! Ein Es!')
     const body = JSON.parse(await posts()[0].text())
-    expect(body.events[0]).toMatchObject({ kind: 'down', id: 9, w: 80, h: 70, reason: 'far-from-start' })
+    expect(body.events[0]).toMatchObject({ kind: 'down', id: 9, w: 80, h: 70, reason: 'off-letter' })
   })
 
   it('encourages after lifting halfway and posts that try', async () => {
@@ -142,7 +144,7 @@ describe('SchreibenGame', () => {
   it('writes a letter with several strokes', async () => {
     wrapper = await play('/schreiben/letter/H?debug')
     expect(said()).toEqual(['Schreib ein Ha! Fang beim grünen Punkt an.'])
-    const [s1, s2, s3] = LETTERS.H.strokes
+    const [s1, s2, s3] = GLYPHS.H.strokes
     await write(wrapper, 1, s1)
     expect(wrapper.find('.debug').text()).toContain('Strich 2/3')
     // Lifting halfway through stroke 2 starts only stroke 2 over
@@ -172,5 +174,24 @@ describe('SchreibenGame', () => {
     wrapper = await play('/schreiben/letter/Q')
     await flushPromises()
     expect(wrapper.vm.$router.currentRoute.value.path).toBe('/schreiben/play')
+  })
+
+  it('says which way round when the pen starts at the wrong end', async () => {
+    wrapper = await play()
+    await fire(wrapper, 'pointerdown', { pointerId: 7, pointerType: 'touch', width: 10, height: 10, ...px(guide.at(-1)) })
+    expect(said().at(-1)).toBe('Andersherum! Fang beim grünen Punkt an.')
+  })
+
+  it('stays quiet for a touch beside the letter', async () => {
+    wrapper = await play()
+    await fire(wrapper, 'pointerdown', { pointerId: 7, pointerType: 'touch', width: 10, height: 10, ...px({ x: 2, y: 165 }) })
+    expect(said()).toEqual(['Schreib ein Es! Fang beim grünen Punkt an.'])
+  })
+
+  it('speaks digits with their article', async () => {
+    wrapper = await play('/schreiben/letter/7')
+    expect(said()).toEqual(['Schreib eine Sieben! Fang beim grünen Punkt an.'])
+    await writeLetter(wrapper, '7')
+    expect(said()).toContain('Super! Eine Sieben!')
   })
 })

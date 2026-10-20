@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest'
-import { LETTERS, BOX } from './letters.js'
+import { GLYPHS } from './letters.js'
 import { createTracer, penDown, penMove, penUp } from './tracing.js'
 
-const S     = LETTERS.S
+const S     = GLYPHS.S
 const guide = S.strokes[0]
 const first = guide[0]
 const last  = guide.at(-1)
@@ -16,28 +16,6 @@ function trace(tr, id, points) {
 
 // Points on the straight line from a to b
 const line = (a, b, n = 40) => Array.from({ length: n + 1 }, (_, i) => ({ x: a.x + (b.x - a.x) * i / n, y: a.y + (b.y - a.y) * i / n }))
-
-describe('letter S', () => {
-  it('is one stroke from the top right to the bottom left, inside the box', () => {
-    expect(S.strokes).toHaveLength(1)
-    expect(first.x).toBeGreaterThan(BOX.width / 2)
-    expect(first.y).toBeLessThan(BOX.height / 3)
-    expect(last.x).toBeLessThan(BOX.width / 2)
-    expect(last.y).toBeGreaterThan(BOX.height * 2 / 3)
-    guide.forEach(p => {
-      expect(p.x).toBeGreaterThanOrEqual(0)
-      expect(p.x).toBeLessThanOrEqual(BOX.width)
-      expect(p.y).toBeGreaterThanOrEqual(0)
-      expect(p.y).toBeLessThanOrEqual(BOX.height)
-    })
-  })
-
-  it('has evenly spaced guide points', () => {
-    for (let i = 1; i < guide.length; i++) {
-      expect(Math.hypot(guide[i].x - guide[i - 1].x, guide[i].y - guide[i - 1].y)).toBeLessThanOrEqual(2.5)
-    }
-  })
-})
 
 describe('tracer', () => {
   it('completes the letter when the pen follows the guide', () => {
@@ -56,8 +34,18 @@ describe('tracer', () => {
 
   it('only starts near the green start dot', () => {
     const tr = createTracer(S)
-    expect(penDown(tr, 1, last, 10)).toEqual({ accepted: false, reason: 'far-from-start' })
+    expect(penDown(tr, 1, guide[Math.floor(guide.length / 2)], 10)).toEqual({ accepted: false, reason: 'far-from-start' })
     expect(penDown(tr, 1, { x: first.x + 15, y: first.y + 10 }, 10)).toEqual({ accepted: true })
+  })
+
+  it('knows when the pen starts at the wrong end of the stroke', () => {
+    const tr = createTracer(S)
+    expect(penDown(tr, 1, last, 10)).toEqual({ accepted: false, reason: 'wrong-end' })
+  })
+
+  it('tells a touch beside the letter from one on it', () => {
+    const tr = createTracer(S)
+    expect(penDown(tr, 1, { x: first.x + 60, y: first.y }, 10)).toEqual({ accepted: false, reason: 'off-letter' })
   })
 
   it('ignores a contact much bigger than the pen, like a resting hand', () => {

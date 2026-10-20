@@ -1,6 +1,7 @@
 // Drawing a letter to trace on a canvas, in letter space (see BOX in letters.js)
 
 export const INK = '#7B2FBE'
+const BAND = 20   // width of the path to trace in
 
 export function path(ctx, pts) {
   ctx.beginPath()
@@ -16,6 +17,22 @@ export function drawInk(ctx, ink, width = 7) {
   for (const line of ink) if (line.length > 1) { path(ctx, line); ctx.stroke() }
 }
 
+/** The lines of the "Schreibhaus": cap line, middle, baseline and descender line. */
+export function drawLines(ctx, box) {
+  const [top, mid, base, desc] = box.lines
+  const left = -box.width * 0.6
+  const right = box.width * 1.6
+  ctx.setLineDash([])
+  for (const [y, colour, width] of [[top, '#b8d0ea', 1], [mid, '#d6e3f2', 1], [base, '#7fa7d4', 1.6], [desc, '#b8d0ea', 1]]) {
+    ctx.strokeStyle = colour
+    ctx.lineWidth = width
+    ctx.beginPath()
+    ctx.moveTo(left, y)
+    ctx.lineTo(right, y)
+    ctx.stroke()
+  }
+}
+
 /**
  * The letter with as much help as asked for ('full', 'dots' or 'start'):
  * bands to trace in, the traced part in green, the child's ink, and the
@@ -27,7 +44,7 @@ export function drawLetter(ctx, { letter, tracer, help, ink }) {
   letter.strokes.forEach(g => {
     path(ctx, g)
     ctx.strokeStyle = help === 'start' ? '#f1ece4' : '#ece3d6'
-    ctx.lineWidth = 22
+    ctx.lineWidth = BAND
     ctx.stroke()
     if (help !== 'start') {
       ctx.setLineDash([0.1, 6])
@@ -44,7 +61,7 @@ export function drawLetter(ctx, { letter, tracer, help, ink }) {
     if (traced.length > 1) {
       path(ctx, traced)
       ctx.strokeStyle = '#7ED957'
-      ctx.lineWidth = 22
+      ctx.lineWidth = BAND
       ctx.stroke()
     }
     if (help === 'full' && s >= tracer.stroke && !tracer.done) arrows(ctx, g)
@@ -79,9 +96,12 @@ export function drawOthers(ctx, others, scale) {
   }
 }
 
-// Small chevrons along the stroke, pointing the way to write
+// Small chevrons along the stroke, pointing the way to write. None where the
+// stroke runs back over itself (up and down the stem of G and 9): the two
+// directions would cover each other.
 function arrows(ctx, g) {
-  for (let i = 14; i < g.length - 8; i += 18) arrow(ctx, g, i)
+  const retraced = i => g.some((q, j) => Math.abs(i - j) > 10 && Math.hypot(q.x - g[i].x, q.y - g[i].y) < 5)
+  for (let i = 14; i < g.length - 8; i += 18) if (!retraced(i)) arrow(ctx, g, i)
 }
 
 function arrow(ctx, g, i) {

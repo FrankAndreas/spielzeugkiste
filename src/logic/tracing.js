@@ -4,6 +4,7 @@ const TOLERANCE    = 16   // how far from the guide still counts as on it
 const WINDOW       = 12   // guide points the pen may move ahead per sample (≈ 24 units)
 const END_SLACK    = 3    // guide points short of the end that still finish a stroke
 const HAND_FACTOR  = 2    // a touch this many times the smallest one seen is a resting hand
+const NEAR_LETTER  = 25   // a touch further than this from every stroke is beside the letter
 
 const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y)
 
@@ -30,10 +31,19 @@ export function penDown(tr, id, p, contactPx) {
   if (tr.done)                         return { accepted: false, reason: 'done' }
   if (tr.pen !== null)                 return { accepted: false, reason: 'pen-busy' }
   if (contactPx > HAND_FACTOR * tr.smallest) return { accepted: false, reason: 'too-big' }
-  if (dist(p, guide(tr)[0]) > START_RADIUS) return { accepted: false, reason: 'far-from-start' }
+  const g = guide(tr)
+  if (dist(p, g[0]) > START_RADIUS) return { accepted: false, reason: missReason(tr, p, g) }
   tr.pen      = id
   tr.progress = 0
   return { accepted: true }
+}
+
+// Why a touch away from the start dot missed: at the stroke's other end
+// ('wrong-end'), elsewhere on the letter ('far-from-start') or beside it
+function missReason(tr, p, g) {
+  if (dist(p, g.at(-1)) <= START_RADIUS) return 'wrong-end'
+  const onLetter = tr.letter.strokes.some(s => s.some(q => dist(p, q) <= NEAR_LETTER))
+  return onLetter ? 'far-from-start' : 'off-letter'
 }
 
 /**

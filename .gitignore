@@ -4,3 +4,7 @@ node_modules/
 .deploy.env
 traces/
 *.jsonl
+# Official font, not ours to redistribute (docs/handwriting/basisschrift.md)
+*.ttf
+*.otf
+__pycache__/

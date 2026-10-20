@@ -28,10 +28,11 @@ describe('SchreibenMenu', () => {
   })
   afterEach(() => vi.unstubAllGlobals())
 
-  it('shows the names and the letters', async () => {
+  it('shows the names, the letters and the digits', async () => {
     const { wrapper } = await open()
     expect(wrapper.findAll('.name-card').map(b => b.text())).toEqual(['SINA', 'DIEGO'])
     expect(wrapper.findAll('.letter-btn').map(b => b.text()).join('')).toBe('ACDEGHIJLNOPRS')
+    expect(wrapper.findAll('.digit-btn').map(b => b.text()).join('')).toBe('0123456789')
   })
 
   it('opens a name or a letter, keeping debug on', async () => {

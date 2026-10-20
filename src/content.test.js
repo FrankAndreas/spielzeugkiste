@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { SOUND_KINDS } from './services/sound.js'
-import { LETTERS } from './logic/letters.js'
+import { GLYPHS } from './logic/letters.js'
 
 // Vitest runs from the repo root
 const read = path => JSON.parse(readFileSync(resolve('public/content', path), 'utf8'))
@@ -37,6 +37,6 @@ describe('Schreiben content', () => {
   it('has names made only of letters the game can teach', () => {
     const { names } = read('schreiben/names.json')
     expect(names.length).toBeGreaterThan(0)
-    for (const name of names) for (const l of name) expect(LETTERS[l], `${name}: ${l}`).toBeTruthy()
+    for (const name of names) for (const l of name) expect(GLYPHS[l], `${name}: ${l}`).toBeTruthy()
   })
 })
