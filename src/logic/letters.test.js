@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { GLYPHS, LETTERS, DIGITS, BOX, writingTasks } from './letters.js'
+import { GLYPHS, LETTERS, DIGITS, BOX, writingTasks, lettersOf, viewBox, fitView } from './letters.js'
 import { createTracer, penDown, penMove, penUp } from './tracing.js'
 
 const ALL = Object.keys(GLYPHS)
@@ -7,7 +7,8 @@ const [TOP, , BASE, DESC] = BOX.lines
 
 // Stroke counts of the official templates (docs/handwriting/basisschrift.md)
 const STROKES = {
-  A: 2, C: 1, D: 2, E: 3, G: 1, H: 3, I: 1, J: 1, L: 1, N: 2, O: 1, P: 2, R: 2, S: 1,
+  A: 2, B: 2, C: 1, D: 2, E: 3, F: 3, G: 1, H: 3, I: 1, J: 1, K: 2, L: 1, M: 1, N: 2, O: 1, P: 2,
+  Q: 2, R: 2, S: 1, T: 2, U: 1, V: 1, W: 1, X: 2, Y: 1, Z: 1, Ä: 4, Ö: 3, Ü: 3,
   0: 1, 1: 1, 2: 1, 3: 1, 4: 2, 5: 2, 6: 1, 7: 2, 8: 1, 9: 1,
 }
 
@@ -16,8 +17,8 @@ const start = (ch, s = 0) => GLYPHS[ch].strokes[s][0]
 const end   = (ch, s = 0) => GLYPHS[ch].strokes[s].at(-1)
 
 describe('glyphs', () => {
-  it('has the letters of the family names and the digits 0-9', () => {
-    expect(LETTERS.join('')).toBe('ACDEGHIJLNOPRS')
+  it('has the whole alphabet with Ä, Ö, Ü and the digits 0-9', () => {
+    expect(LETTERS.join('')).toBe('ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ')
     expect(DIGITS.join('')).toBe('0123456789')
     expect(ALL.sort()).toEqual([...DIGITS, ...LETTERS].sort())
   })
@@ -28,11 +29,12 @@ describe('glyphs', () => {
 
   it.each(ALL)('%s stays in the box with evenly spaced points', ch => {
     for (const g of GLYPHS[ch].strokes) {
+      if (g.length === 1) continue   // a dot
       expect(g.length).toBeGreaterThan(5)
       for (let i = 0; i < g.length; i++) {
         expect(g[i].x).toBeGreaterThanOrEqual(0)
         expect(g[i].x).toBeLessThanOrEqual(BOX.width)
-        expect(g[i].y).toBeGreaterThanOrEqual(TOP - 2)
+        expect(g[i].y).toBeGreaterThanOrEqual(0)
         expect(g[i].y).toBeLessThanOrEqual(DESC + 2)
         if (i) expect(Math.hypot(g[i].x - g[i - 1].x, g[i].y - g[i - 1].y)).toBeLessThanOrEqual(2.5)
       }
@@ -66,6 +68,18 @@ describe('glyphs', () => {
     expect(near(end('7', 0), { x: end('7', 0).x, y: BASE })).toBe(true)
     // 9: the loop first, then the stem down
     expect(end('9').y).toBeGreaterThan(BASE - 8)
+    // T: the line down first, then the bar
+    expect(end('T', 0).y).toBeGreaterThan(BASE - 8)
+    // M: up from the bottom left, like A
+    expect(start('M').y).toBeGreaterThan(BASE - 8)
+    // Ä, Ö, Ü: the letter, then the left dot and the right dot above the cap line
+    for (const ch of 'ÄÖÜ') {
+      const [left, right] = GLYPHS[ch].strokes.slice(-2)
+      expect(left).toHaveLength(1)
+      expect(right).toHaveLength(1)
+      expect(left[0].x).toBeLessThan(right[0].x)
+      expect(left[0].y).toBeLessThan(TOP)
+    }
   })
 
   it.each(ALL)('%s can be traced stroke by stroke', ch => {
@@ -86,6 +100,42 @@ describe('glyphs', () => {
   })
 })
 
+describe('lettersOf', () => {
+  it('gives each letter of the words once, in alphabetical order', () => {
+    expect(lettersOf(['SINA', 'NINA', 'DIEGO']).join('')).toBe('ADEGINOS')
+    expect(lettersOf(['BÄR', 'ZOO']).join('')).toBe('BORZÄ')
+    expect(lettersOf([])).toEqual([])
+  })
+})
+
+describe('viewBox', () => {
+  it('shows the lines with room for the bottom band', () => {
+    const v = viewBox(['S', 'I'])
+    expect(v.x).toBe(0)
+    expect(v.width).toBe(BOX.width)
+    expect(v.y).toBeLessThan(TOP)
+    expect(v.y + v.height).toBeGreaterThan(DESC)
+  })
+
+  it('makes room above the cap line only for dots', () => {
+    const plain = viewBox(['A'])
+    const dots  = viewBox(['Ä'])
+    expect(dots.y).toBeLessThan(Math.min(...GLYPHS.Ä.strokes.flat().map(p => p.y)))
+    expect(dots.height).toBeGreaterThan(plain.height)
+    expect(plain.y).toBeGreaterThan(TOP - 15)
+  })
+})
+
+describe('fitView', () => {
+  it('centres the view box as big as fits, with a little room', () => {
+    const v = { x: 0, y: 20, width: 120, height: 200 }
+    const f = fitView(v, 1000, 1000)
+    expect(f.scale).toBeCloseTo(1000 / 200 * 0.95)
+    expect(f.ox + (v.x + v.width / 2) * f.scale).toBeCloseTo(500)
+    expect(f.oy + (v.y + v.height / 2) * f.scale).toBeCloseTo(500)
+  })
+})
+
 describe('writingTasks', () => {
   it('practises a letter or digit three times with less help each time', () => {
     expect(writingTasks({ letter: 'A' })).toEqual([
@@ -101,7 +151,7 @@ describe('writingTasks', () => {
   })
 
   it('returns nothing for glyphs it does not know', () => {
-    expect(writingTasks({ letter: 'Q' })).toEqual([])
-    expect(writingTasks({ name: 'SIQA' })).toEqual([])
+    expect(writingTasks({ letter: 'ß' })).toEqual([])
+    expect(writingTasks({ name: 'SI-NA' })).toEqual([])
   })
 })

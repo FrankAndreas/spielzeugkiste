@@ -63,7 +63,10 @@ export function penMove(tr, id, p) {
   }
   if (best > tr.progress) tr.progress = best
   if (tr.progress < g.length - 1 - END_SLACK) return null
+  return finishStroke(tr)
+}
 
+function finishStroke(tr) {
   tr.pen = null
   if (tr.stroke === tr.letter.strokes.length - 1) {
     tr.done = true
@@ -74,9 +77,13 @@ export function penMove(tr, id, p) {
   return 'stroke-done'
 }
 
-/** The pen lifted. Lifting before the end of the stroke starts that stroke over. */
+/**
+ * The pen lifted. Lifting before the end of the stroke starts that stroke
+ * over; a dot (Ä, Ö, Ü) is done with the tap.
+ */
 export function penUp(tr, id) {
   if (id !== tr.pen) return null
+  if (guide(tr).length === 1) return finishStroke(tr)
   tr.pen      = null
   tr.progress = 0
   return 'too-short'

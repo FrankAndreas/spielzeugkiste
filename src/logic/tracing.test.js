@@ -113,4 +113,20 @@ describe('tracer', () => {
     expect(penUp(tr, 1)).toBeNull()
     expect(penDown(tr, 2, first, 10)).toEqual({ accepted: false, reason: 'done' })
   })
+
+  it('counts a dot as soon as it is tapped', () => {
+    const tr = createTracer(GLYPHS.Ä)
+    const strokes = GLYPHS.Ä.strokes
+    for (const [s, g] of strokes.slice(0, 2).entries()) {
+      penDown(tr, s, g[0], 10)
+      for (const p of g) penMove(tr, s, p)
+      penUp(tr, s)
+    }
+    const [left, right] = strokes.slice(2).map(g => g[0])
+    expect(penDown(tr, 7, left, 10)).toEqual({ accepted: true })
+    expect(penUp(tr, 7)).toBe('stroke-done')
+    expect(penDown(tr, 8, right, 10)).toEqual({ accepted: true })
+    expect(penUp(tr, 8)).toBe('letter-done')
+    expect(tr.done).toBe(true)
+  })
 })

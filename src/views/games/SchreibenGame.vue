@@ -8,7 +8,7 @@
         :key="i"
         :class="['name-letter', { done: i < done, current: i === done }]"
       >
-        <InkThumb v-if="i < done" :ink="inks[i]" />
+        <InkThumb v-if="i < done" :ink="inks[i]" :view="view" />
         <span v-else>{{ l.letter }}</span>
       </div>
     </div>
@@ -52,7 +52,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { speak, stopSpeaking } from '../../services/tts.js'
 import { createTraceLog, logEvent, sendTraces } from '../../services/traceLog.js'
 import { drawLetter, drawLines, drawOthers } from '../../services/letterCanvas.js'
-import { GLYPHS, BOX, writingTasks } from '../../logic/letters.js'
+import { GLYPHS, BOX, writingTasks, viewBox, fitView } from '../../logic/letters.js'
 import { createTracer, penDown, penMove, penUp } from '../../logic/tracing.js'
 import AppHeader from '../../components/AppHeader.vue'
 import InkThumb from '../../components/InkThumb.vue'
@@ -63,7 +63,6 @@ const router = useRouter()
 const WIN_PAUSE_MS = 800
 const HINT_GAP_MS  = 4000   // don't repeat the start-dot hint more often
 const SMALL_TRY    = 8      // guide points; lifting before this is just a tap
-const FIT          = 0.9    // of the area the letter box fills
 
 // Spoken hints for a touch that missed the start dot; none beside the letter
 const HINTS = {
@@ -76,6 +75,7 @@ const capital = text => text[0].toUpperCase() + text.slice(1)
 const mode   = route.params.name ? 'name' : 'letter'
 const target = route.params.name ?? route.params.letter
 const tasks  = writingTasks(mode === 'name' ? { name: target } : { letter: target })
+const view   = viewBox(tasks.map(t => t.letter))   // one size for every letter of a word
 const debug  = 'debug' in route.query
 
 const area   = ref(null)
@@ -167,8 +167,7 @@ function resize() {
   c.height = h * dpr
   c.style.width  = `${w}px`
   c.style.height = `${h}px`
-  const scale = Math.min(w / BOX.width, h / BOX.height) * FIT
-  fit = { scale, ox: (w - BOX.width * scale) / 2, oy: (h - BOX.height * scale) / 2, dpr }
+  fit = { ...fitView(view, w, h), dpr }
   draw()
 }
 
@@ -244,12 +243,14 @@ function onUp(e) {
   const progress = tracer.progress
   const result   = penUp(tracer, e.pointerId)
   record(e.type === 'pointercancel' ? 'cancel' : 'up', e, p, result ? { result, progress, stroke: tracer.stroke + 1 } : {})
-  if (result === 'too-short') {
+  if (result === 'letter-done') {
+    finishLetter(e, p)   // a tapped dot can end the letter (Ä, Ö, Ü)
+  } else if (result === 'too-short') {
     ink.pop()   // only the unfinished stroke; finished strokes stay
     sync()
     sendTraces(log, { result: 'too-short', progress, stroke: tracer.stroke + 1 })
     if (progress >= SMALL_TRY) speak('Fast! Fang nochmal beim grünen Punkt an.')
-  } else if (tracer.pen === null && !others.size) {
+  } else if (!result && tracer.pen === null && !others.size) {
     // All fingers off and no pen taken: send them anyway, so ignored touches show up too
     sendTraces(log, { result: 'no-pen' })
   }
@@ -294,7 +295,7 @@ function draw() {
   ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
   ctx.translate(ox, oy)
   ctx.scale(scale, scale)
-  drawLines(ctx, BOX)
+  drawLines(ctx, BOX, view)
   drawLetter(ctx, { letter: letter.value, tracer, help: tasks[Math.min(done.value, tasks.length - 1)].help, ink })
   if (debug) drawOthers(ctx, others, scale)
 }

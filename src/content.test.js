@@ -34,8 +34,8 @@ describe('Zahlen content', () => {
 })
 
 describe('Schreiben content', () => {
-  it('has names made only of letters the game can teach', () => {
-    const { names } = read('schreiben/names.json')
+  it('has default words made only of letters the game can teach', () => {
+    const { words: names } = read('schreiben/words.json')
     expect(names.length).toBeGreaterThan(0)
     for (const name of names) for (const l of name) expect(GLYPHS[l], `${name}: ${l}`).toBeTruthy()
   })

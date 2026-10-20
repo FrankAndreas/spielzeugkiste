@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import { speak } from '../../services/tts.js'
-import { GLYPHS, BOX } from '../../logic/letters.js'
+import { GLYPHS, viewBox, fitView } from '../../logic/letters.js'
 import SchreibenGame from './SchreibenGame.vue'
 
 vi.mock('../../services/tts.js', () => ({
@@ -11,11 +11,10 @@ vi.mock('../../services/tts.js', () => ({
 }))
 
 // jsdom has no layout: give the board area a size; letter space maps to it
-// like the game does (the box as big as fits, times 0.9, centred)
+// like the game does, for the glyphs of the current game (see play)
 const W = 1000, H = 1400
-const SCALE = Math.min(W / BOX.width, H / BOX.height) * 0.9
-const OX = (W - BOX.width * SCALE) / 2, OY = (H - BOX.height * SCALE) / 2
-const px = p => ({ clientX: OX + p.x * SCALE, clientY: OY + p.y * SCALE })
+let fit = null
+const px = p => ({ clientX: fit.ox + p.x * fit.scale, clientY: fit.oy + p.y * fit.scale })
 const guide = GLYPHS.S.strokes[0]
 let nextId = 100
 
@@ -34,6 +33,8 @@ async function play(path = '/schreiben/letter/S') {
   })
   await router.push(path)
   await router.isReady()
+  const { letter, name } = router.currentRoute.value.params
+  fit = fitView(viewBox([...(name ?? letter)]), W, H)
   return mount(SchreibenGame, { global: { plugins: [router] }, attachTo: document.body })
 }
 
@@ -97,7 +98,7 @@ describe('SchreibenGame', () => {
 
   it('ignores a resting hand and records it', async () => {
     wrapper = await play('/schreiben/letter/S?debug')
-    await fire(wrapper, 'pointerdown', { pointerId: 9, pointerType: 'touch', width: 80, height: 70, ...px({ x: 90, y: 130 }) })
+    await fire(wrapper, 'pointerdown', { pointerId: 9, pointerType: 'touch', width: 80, height: 70, ...px({ x: 118, y: 185 }) })
     // Before any pen touch there is no size to compare with: its place beside the letter gives it away
     expect(wrapper.find('.debug').text()).toContain('off-letter')
     await write(wrapper, 1)
@@ -171,7 +172,7 @@ describe('SchreibenGame', () => {
   })
 
   it('goes back to the menu for a letter it cannot teach', async () => {
-    wrapper = await play('/schreiben/letter/Q')
+    wrapper = await play('/schreiben/letter/ß')
     await flushPromises()
     expect(wrapper.vm.$router.currentRoute.value.path).toBe('/schreiben/play')
   })
@@ -184,7 +185,7 @@ describe('SchreibenGame', () => {
 
   it('stays quiet for a touch beside the letter', async () => {
     wrapper = await play()
-    await fire(wrapper, 'pointerdown', { pointerId: 7, pointerType: 'touch', width: 10, height: 10, ...px({ x: 2, y: 165 }) })
+    await fire(wrapper, 'pointerdown', { pointerId: 7, pointerType: 'touch', width: 10, height: 10, ...px({ x: 2, y: 195 }) })
     expect(said()).toEqual(['Schreib ein Es! Fang beim grünen Punkt an.'])
   })
 
@@ -193,5 +194,25 @@ describe('SchreibenGame', () => {
     expect(said()).toEqual(['Schreib eine Sieben! Fang beim grünen Punkt an.'])
     await writeLetter(wrapper, '7')
     expect(said()).toContain('Super! Eine Sieben!')
+  })
+
+  it('writes a word with an umlaut, dots last', async () => {
+    wrapper = await play('/schreiben/name/BÄR')
+    expect(said()).toEqual(['Wir schreiben BÄR! Zuerst ein Be.'])
+    for (const l of 'BÄR') await writeLetter(wrapper, l)
+    expect(said()).toContain('Super! Du hast BÄR geschrieben!')
+  })
+
+  it('finishes an umlaut when its dots are only tapped, without moving', async () => {
+    wrapper = await play('/schreiben/letter/Ü')
+    const strokes = GLYPHS.Ü.strokes
+    await write(wrapper, 1, strokes[0])
+    for (const [i, g] of strokes.slice(1).entries()) {
+      const touch = { pointerId: 10 + i, pointerType: 'touch', width: 10, height: 10, ...px(g[0]) }
+      await fire(wrapper, 'pointerdown', touch)
+      await fire(wrapper, 'pointerup', touch)
+    }
+    expect(said()).toContain('Super! Ein Ü!')
+    expect(wrapper.findAll('.star.done')).toHaveLength(1)
   })
 })

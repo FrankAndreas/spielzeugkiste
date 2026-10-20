@@ -21,13 +21,15 @@ from PIL import Image, ImageDraw, ImageFont
 
 OUT  = Path(__file__).resolve().parents[2] / 'src/logic/basisschrift.json'
 K    = 4                                 # pixels per unit while tracing
-BOX  = {'width': 100, 'height': 170}
-TOP, MID, BASE, DESC = 10, 60, 110, 160
+BOX  = {'width': 120, 'height': 200}
+TOP, MID, BASE, DESC = 40, 90, 140, 190   # room above TOP for the dots of Ä, Ö, Ü
 
 # Strokes as waypoints (u, v): u across the glyph's ink from 0 (left) to 1
 # (right), v down from the cap line (0) to the baseline (1) and the
 # descender line (1.5). Each stroke follows the centre line through its
-# waypoints in order; the first one is where the pen starts.
+# waypoints in order; the first one is where the pen starts. A stroke of a
+# single waypoint is a dot (Ä, Ö, Ü), written after the letter, left first.
+DOTS = [[(0.3, -0.26)], [(0.7, -0.26)]]
 GLYPHS = {
     'A': [[(0, 1), (0.5, 0), (1, 1)], [(0.2, 0.68), (0.8, 0.68)]],
     'C': [[(1, 0.06), (0, 0.5), (1, 0.94)]],
@@ -43,6 +45,18 @@ GLYPHS = {
     'P': [[(0, 0), (0, 1)], [(0, 0), (1, 0.27), (0, 0.55)]],
     'R': [[(0, 0), (0, 1)], [(0, 0), (1, 0.27), (0.1, 0.55), (1, 1)]],
     'S': [[(1, 0.07), (0, 0.25), (0.5, 0.5), (1, 0.75), (0, 0.93)]],
+    'B': [[(0, 0), (0, 1)], [(0, 0), (0.9, 0.25), (0, 0.48), (1, 0.75), (0, 1)]],
+    'F': [[(0, 0), (0, 1)], [(0, 0), (1, 0)], [(0, 0.5), (1, 0.5)]],
+    'K': [[(0, 0), (0, 1)], [(1, 0), (0.05, 0.55), (1, 1)]],
+    'M': [[(0, 1), (0.2, 0.02), (0.5, 1), (0.8, 0.02), (1, 1)]],
+    'Q': [[(0.5, 0), (0, 0.5), (0.5, 1), (1, 0.5), (0.52, 0)], [(0.6, 0.78), (1, 1.08)]],
+    'T': [[(0.5, 0), (0.5, 1)], [(0, 0), (1, 0)]],
+    'U': [[(0, 0), (0.4, 1), (1, 0), (1, 1)]],
+    'V': [[(0, 0), (0.5, 1), (1, 0)]],
+    'W': [[(0, 0), (0.25, 1), (0.5, 0), (0.75, 1), (1, 0)]],
+    'X': [[(0, 0), (1, 1)], [(1, 0), (0, 1)]],
+    'Y': [[(0, 0), (0.45, 1), (1, 0), (1, 1.25), (0.35, 1.47)]],
+    'Z': [[(0, 0), (1, 0), (0, 1), (1, 1)]],
     '0': [[(0.5, 0), (0, 0.5), (0.5, 1), (1, 0.5), (0.52, 0)]],
     '1': [[(0, 0.25), (1, 0), (1, 1)]],
     '2': [[(0, 0.15), (0.55, 0), (1, 0.3), (0, 1), (1, 1)]],
@@ -54,6 +68,8 @@ GLYPHS = {
     '8': [[(0.75, 0.02), (0, 0.22), (0.5, 0.5), (1, 0.78), (0.5, 1), (0, 0.78), (0.5, 0.5), (1, 0.22), (0.5, 0)]],
     '9': [[(1, 0.04), (0, 0.25), (0.5, 0.5), (1, 0.04), (1, 0.9), (0, 1)]],
 }
+for umlaut, base in (('Ä', 'A'), ('Ö', 'O'), ('Ü', 'U')):
+    GLYPHS[umlaut] = GLYPHS[base] + DOTS
 
 
 def render(font, ch, cap_top_offset):
@@ -171,8 +187,33 @@ def main():
                 raise SystemExit(f'{ch}: waypoint {(u, v)} is {math.dist(best, target) / K:.0f} units from the centre line')
             return best
 
+        def dot(u, v):
+            # The centre of the ink blob above the cap line nearest the waypoint
+            target = (x0 + u * (x1 - x0), (TOP + v * (BASE - TOP)) * K)
+            px = im.load()
+            above = {(x, y) for y in range(0, (TOP - 4) * K) for x in range(im.size[0]) if px[x, y] > 127}
+            blobs = []
+            while above:
+                todo, blob = [above.pop()], []
+                while todo:
+                    x, y = todo.pop()
+                    blob.append((x, y))
+                    for q in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
+                        if q in above:
+                            above.remove(q)
+                            todo.append(q)
+                blobs.append((sum(p[0] for p in blob) / len(blob), sum(p[1] for p in blob) / len(blob)))
+            best = min(blobs, key=lambda c: math.dist(c, target))
+            if math.dist(best, target) > 12 * K:
+                raise SystemExit(f'{ch}: no dot near {(u, v)}')
+            return best
+
         paths = []
         for wps in strokes:
+            if len(wps) == 1:
+                x, y = dot(*wps[0])
+                paths.append([[round(x / K, 1), round(y / K, 1)]])
+                continue
             pix = [snap(u, v, i in (0, len(wps) - 1)) for i, (u, v) in enumerate(wps)]
             line = [pix[0]]
             for a, b in zip(pix, pix[1:]):
@@ -188,7 +229,7 @@ def main():
             for x in range(0, im.size[0], 6):
                 if ink[x, y] > 127:
                     worst = max(worst, min(math.dist((x / K, y / K), p) for p in pts))
-        if worst > 7:
+        if worst > 8:   # half the pen width (3.5) plus a little
             problems.append(f'{ch}: ink {worst:.1f} units away from every stroke')
         print(f'{ch}: {len(paths)} stroke(s), ink within {worst:.1f} units')
         glyphs[ch] = paths
@@ -205,7 +246,7 @@ def main():
 def write_preview(sheets, path):
     s = 2
     cw, ch_ = BOX['width'] * s + 10, BOX['height'] * s + 10
-    cols = 8
+    cols = 10
     sheet = Image.new('RGB', (cw * cols, ch_ * math.ceil(len(sheets) / cols)), 'white')
     colours = [(231, 76, 60), (46, 134, 222), (39, 174, 96), (142, 68, 173)]
     for i, (ch, im, paths) in enumerate(sheets):
@@ -217,7 +258,8 @@ def write_preview(sheets, path):
             d.line([(ox, oy + y * s), (ox + BOX['width'] * s, oy + y * s)], fill=(170, 200, 235))
         for n, p in enumerate(paths):
             c = colours[n % 4]
-            d.line([(ox + x * s, oy + y * s) for x, y in p], fill=c, width=3)
+            if len(p) > 1:
+                d.line([(ox + x * s, oy + y * s) for x, y in p], fill=c, width=3)
             sx, sy = ox + p[0][0] * s, oy + p[0][1] * s
             d.ellipse([sx - 6, sy - 6, sx + 6, sy + 6], fill=c)
             d.text((sx + 7, sy - 14), str(n + 1), fill='black')

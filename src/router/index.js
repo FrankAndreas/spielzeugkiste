@@ -12,6 +12,7 @@ const PacmanGame      = () => import('../views/games/PacmanGame.vue')
 const ZahlenGame      = () => import('../views/games/ZahlenGame.vue')
 const SchreibenGame   = () => import('../views/games/SchreibenGame.vue')
 const SchreibenMenu   = () => import('../views/games/SchreibenMenu.vue')
+const SchreibenWords  = () => import('../views/games/SchreibenWords.vue')
 
 export default createRouter({
   history: createWebHashHistory(),
@@ -26,6 +27,7 @@ export default createRouter({
     { path: '/pacman/:theme/play',       component: PacmanGame },
     { path: '/zahlen/:theme/play',       component: ZahlenGame },
     { path: '/schreiben/play',           component: SchreibenMenu },
+    { path: '/schreiben/words',          component: SchreibenWords },
     { path: '/schreiben/name/:name',     component: SchreibenGame },
     { path: '/schreiben/letter/:letter', component: SchreibenGame },
   ],

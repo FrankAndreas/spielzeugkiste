@@ -3,6 +3,14 @@
 export const INK = '#7B2FBE'
 const BAND = 20   // width of the path to trace in
 
+// A dot (Ä, Ö, Ü) is a stroke of a single point: drawn as a filled circle
+function dot(ctx, p, width, colour) {
+  ctx.fillStyle = colour
+  ctx.beginPath()
+  ctx.arc(p.x, p.y, width / 2, 0, Math.PI * 2)
+  ctx.fill()
+}
+
 export function path(ctx, pts) {
   ctx.beginPath()
   ctx.moveTo(pts[0].x, pts[0].y)
@@ -14,14 +22,17 @@ export function drawInk(ctx, ink, width = 7) {
   ctx.lineCap = ctx.lineJoin = 'round'
   ctx.strokeStyle = INK
   ctx.lineWidth = width
-  for (const line of ink) if (line.length > 1) { path(ctx, line); ctx.stroke() }
+  for (const line of ink) {
+    if (line.length > 1) { path(ctx, line); ctx.stroke() }
+    else if (line.length === 1) dot(ctx, line[0], width, INK)   // a tapped dot
+  }
 }
 
 /** The lines of the "Schreibhaus": cap line, middle, baseline and descender line. */
-export function drawLines(ctx, box) {
+export function drawLines(ctx, box, view) {
   const [top, mid, base, desc] = box.lines
-  const left = -box.width * 0.6
-  const right = box.width * 1.6
+  const left = view.x - view.width
+  const right = view.x + view.width * 2
   ctx.setLineDash([])
   for (const [y, colour, width] of [[top, '#b8d0ea', 1], [mid, '#d6e3f2', 1], [base, '#7fa7d4', 1.6], [desc, '#b8d0ea', 1]]) {
     ctx.strokeStyle = colour
@@ -42,6 +53,7 @@ export function drawLetter(ctx, { letter, tracer, help, ink }) {
   ctx.lineCap = ctx.lineJoin = 'round'
   const many = letter.strokes.length > 1
   letter.strokes.forEach(g => {
+    if (g.length === 1) return dot(ctx, g[0], BAND, help === 'start' ? '#f1ece4' : '#ece3d6')
     path(ctx, g)
     ctx.strokeStyle = help === 'start' ? '#f1ece4' : '#ece3d6'
     ctx.lineWidth = BAND
@@ -58,6 +70,10 @@ export function drawLetter(ctx, { letter, tracer, help, ink }) {
   // Traced parts on top, so a later band never covers a finished stroke
   letter.strokes.forEach((g, s) => {
     const traced = s < tracer.stroke || tracer.done ? g : s === tracer.stroke ? g.slice(0, tracer.progress + 1) : []
+    if (g.length === 1) {
+      if (s < tracer.stroke || tracer.done) dot(ctx, g[0], BAND, '#7ED957')
+      return
+    }
     if (traced.length > 1) {
       path(ctx, traced)
       ctx.strokeStyle = '#7ED957'
