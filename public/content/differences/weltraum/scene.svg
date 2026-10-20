@@ -22,6 +22,38 @@
     <g data-variant="orig"></g>
     <g data-variant="v1" data-label="Da ist ein neuer Stern!" display="none"><polygon points="720.0,450.0 724.7,463.5 739.0,463.8 727.6,472.5 731.8,486.2 720.0,478.0 708.2,486.2 712.4,472.5 701.0,463.8 715.3,463.5" fill="#FFD93D"/></g>
   </g>
+  <g data-diff="blueplanet" data-cx="60" data-cy="60" data-r="30">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da ist ein blauer Planet!" display="none"><circle cx="60" cy="60" r="22" fill="#4D96FF"/><path d="M40,54 Q60,48 80,54" stroke="#2A6FCC" stroke-width="5" fill="none"/></g>
+  </g>
+  <g data-diff="purpleplanet" data-cx="260" data-cy="300" data-r="30">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da ist ein lila Planet!" display="none"><circle cx="260" cy="300" r="22" fill="#9B59B6"/><circle cx="252" cy="293" r="5" fill="#7D3C98"/><circle cx="268" cy="308" r="4" fill="#7D3C98"/></g>
+  </g>
+  <g data-diff="shooting" data-cx="418" data-cy="54" data-r="37">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da fliegt eine Sternschnuppe!" display="none"><line x1="432" y1="47" x2="396" y2="68" stroke="white" stroke-width="3" opacity="0.7" stroke-linecap="round"/><polygon points="438.0,31.0 440.9,38.0 448.5,38.6 442.8,43.5 444.5,50.9 438.0,47.0 431.5,50.9 433.2,43.5 427.5,38.6 435.1,38.0" fill="#FFD93D"/></g>
+  </g>
+  <g data-diff="crescent" data-cx="556" data-cy="220" data-r="28">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da ist ein kleiner Mond!" display="none"><circle cx="554" cy="220" r="19" fill="#FFD93D"/><circle cx="563" cy="214" r="16" fill="#0B1D3A"/></g>
+  </g>
+  <g data-diff="alien" data-cx="60" data-cy="282" data-r="36">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da ist ein grünes Männchen!" display="none"><path d="M52,272 L48,258 M68,272 L72,258" stroke="#6BCB77" stroke-width="3"/><circle cx="48" cy="257" r="4" fill="#FFD93D"/><circle cx="72" cy="257" r="4" fill="#FFD93D"/><ellipse cx="60" cy="290" rx="18" ry="20" fill="#6BCB77"/><circle cx="53" cy="285" r="5" fill="white"/><circle cx="67" cy="285" r="5" fill="white"/><circle cx="53" cy="286" r="2.5" fill="#222"/><circle cx="67" cy="286" r="2.5" fill="#222"/><path d="M53,298 Q60,304 67,298" stroke="#222" stroke-width="2" fill="none"/></g>
+  </g>
+  <g data-diff="smallrocket" data-cx="760" data-cy="140" data-r="30">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da fliegt eine kleine Rakete!" display="none"><g transform="rotate(35 760 140)"><polygon points="754,150 748,162 754,158" fill="#FF6B6B"/><polygon points="766,150 772,162 766,158" fill="#FF6B6B"/><rect x="754" y="128" width="12" height="30" rx="3" fill="#F5F5F5"/><polygon points="754,130 760,116 766,130" fill="#FF6B6B"/><circle cx="760" cy="138" r="3" fill="#4D96FF"/></g></g>
+  </g>
+  <g data-diff="earth" data-cx="620" data-cy="555" data-r="30">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da ist die Erde!" display="none"><circle cx="620" cy="555" r="24" fill="#4D96FF"/><path d="M604,545 q8,-10 16,-4 q4,10 -6,14 q-8,2 -10,-10 Z M624,560 q10,-4 14,4 q-4,10 -14,8 Z" fill="#6BCB77"/></g>
+  </g>
+  <g data-diff="teddy" data-cx="55" data-cy="547" data-r="34">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da schwebt ein Teddybär!" display="none"><circle cx="45" cy="524" r="6" fill="#A0522D"/><circle cx="65" cy="524" r="6" fill="#A0522D"/><ellipse cx="55" cy="560" rx="15" ry="17" fill="#A0522D"/><circle cx="55" cy="536" r="13" fill="#A0522D"/><ellipse cx="55" cy="541" rx="6" ry="4" fill="#DEB887"/><circle cx="50" cy="533" r="2" fill="#222"/><circle cx="60" cy="533" r="2" fill="#222"/></g>
+  </g>
   <circle cx="650" cy="120" r="55" fill="#E0E0E0"/>
   <circle cx="660" cy="92" r="6" fill="#BDBDBD"/>
   <g data-diff="crater2" data-cx="628" data-cy="104" data-r="20">
@@ -41,6 +73,10 @@
   <polygon points="375,350 352,392 375,380" fill="#FF6B6B"/><polygon points="425,350 448,392 425,380" fill="#FF6B6B"/>
   <rect x="375" y="258" width="50" height="124" rx="6" fill="#F5F5F5"/>
   <polygon points="375,262 400,212 425,262" fill="#FF6B6B"/>
+  <g data-diff="rocketstar" data-cx="400" data-cy="243" data-r="20">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Auf der Rakete ist ein Stern!" display="none"><polygon points="400.0,235.0 402.4,241.8 409.5,241.9 403.8,246.2 405.9,253.1 400.0,249.0 394.1,253.1 396.2,246.2 390.5,241.9 397.6,241.8" fill="#FFD93D"/></g>
+  </g>
   <g data-diff="window" data-cx="400" data-cy="300" data-r="28">
     <g data-variant="orig"><circle cx="400" cy="300" r="13" fill="#4D96FF" stroke="#9E9E9E" stroke-width="4"/></g>
     <g data-variant="v1" data-label="Das Fenster ist gelb!" display="none"><circle cx="400" cy="300" r="13" fill="#FFD93D" stroke="#9E9E9E" stroke-width="4"/></g>
@@ -66,7 +102,10 @@
     <g data-variant="orig"><polygon points="270,510 290,490 320,495 335,520 320,548 285,550 268,532" fill="#8D8D8D"/><circle cx="295" cy="515" r="7" fill="#6D6D6D"/><circle cx="315" cy="532" r="5" fill="#6D6D6D"/></g>
     <g data-variant="v1" data-label="Der Stein fehlt!" display="none"></g>
   </g>
-  <rect x="110" y="436" width="18" height="40" rx="6" fill="#BDBDBD"/>
+  <g data-diff="backpack" data-cx="119" data-cy="456" data-r="25">
+    <g data-variant="orig"><rect x="110" y="436" width="18" height="40" rx="6" fill="#BDBDBD"/></g>
+    <g data-variant="v1" data-label="Der Rucksack ist rot!" display="none"><rect x="110" y="436" width="18" height="40" rx="6" fill="#E74C3C"/></g>
+  </g>
   <rect x="128" y="428" width="44" height="62" rx="10" fill="white"/>
   <rect x="112" y="438" width="16" height="12" rx="6" fill="white"/><rect x="172" y="438" width="22" height="12" rx="6" fill="white"/>
   <rect x="132" y="488" width="14" height="28" rx="5" fill="white"/><rect x="154" y="488" width="14" height="28" rx="5" fill="white"/>
@@ -75,5 +114,13 @@
     <g data-variant="orig"><ellipse cx="155" cy="400" rx="18" ry="13" fill="#FFD93D"/></g>
     <g data-variant="v1" data-label="Das Visier ist rosa!" display="none"><ellipse cx="155" cy="400" rx="18" ry="13" fill="#FF8FC8"/></g>
     <g data-variant="v2" data-label="Das Visier ist blau!" display="none"><ellipse cx="155" cy="400" rx="18" ry="13" fill="#4D96FF"/></g>
+  </g>
+  <g data-diff="boots" data-cx="150" data-cy="512" data-r="26">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Der Astronaut hat rote Stiefel!" display="none"><rect x="130" y="504" width="18" height="14" rx="4" fill="#E74C3C"/><rect x="152" y="504" width="18" height="14" rx="4" fill="#E74C3C"/></g>
+  </g>
+  <g data-diff="flag" data-cx="215" data-cy="425" data-r="33">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Der Astronaut hat eine Fahne!" display="none"><line x1="200" y1="452" x2="200" y2="398" stroke="#BDBDBD" stroke-width="3"/><rect x="201" y="398" width="28" height="18" fill="#E74C3C"/></g>
   </g>
 </svg>

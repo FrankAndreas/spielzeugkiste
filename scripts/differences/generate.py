@@ -50,6 +50,12 @@ def flower(x, y, petal):
             + f'<circle cx="{x}" cy="{y}" r="8" fill="#FFD93D"/>')
 
 
+def balloon(x, y, c):
+    return (f'<path d="M{x},{y + 20} q-5,12 0,24" stroke="#555" stroke-width="2" fill="none"/>'
+            f'<ellipse cx="{x}" cy="{y}" rx="16" ry="20" fill="{c}"/>'
+            f'<polygon points="{x - 4},{y + 23} {x + 4},{y + 23} {x},{y + 18}" fill="{c}"/>')
+
+
 # ── Bauernhof ───────────────────────────────────────────────────────────
 def cow(c):
     return (f'<rect x="380" y="450" width="80" height="50" fill="{c}"/>'
@@ -103,7 +109,29 @@ def house_window(x, fill):
             f'<path d="M{x},273 V303 M{x - 15},288 H{x + 15}" stroke="white" stroke-width="2"/>')
 
 
+def sheep(c):
+    return (''.join(f'<rect x="{x}" y="460" width="5" height="14" fill="#333"/>' for x in (628, 655))
+            + f'<ellipse cx="642" cy="450" rx="27" ry="17" fill="{c}"/>'
+            '<circle cx="668" cy="441" r="10" fill="#333"/><circle cx="671" cy="439" r="1.8" fill="white"/>')
+
+
 APPLES = ''.join(f'<circle cx="{x}" cy="{y}" r="7" fill="#E74C3C"/>' for x, y in ((702, 330), (735, 345), (722, 318)))
+HAY = ('<rect x="32" y="437" width="56" height="38" rx="8" fill="#E8C35A"/>'
+       '<path d="M46,437 V475 M74,437 V475" stroke="#C9A13B" stroke-width="3"/>')
+CAT = ('<path d="M34,566 q-12,-4 -10,-18" stroke="#FF9A3C" stroke-width="4" fill="none" stroke-linecap="round"/>'
+       '<ellipse cx="48" cy="566" rx="17" ry="11" fill="#FF9A3C"/>'
+       '<circle cx="66" cy="550" r="10" fill="#FF9A3C"/>'
+       '<polygon points="58,544 60,532 66,541" fill="#FF9A3C"/><polygon points="66,541 72,532 74,544" fill="#FF9A3C"/>'
+       '<circle cx="63" cy="549" r="1.6" fill="#333"/><circle cx="70" cy="549" r="1.6" fill="#333"/>')
+BUNNY = ('<ellipse cx="480" cy="570" rx="16" ry="12" fill="white"/><circle cx="465" cy="567" r="5" fill="white"/>'
+         '<circle cx="494" cy="557" r="9" fill="white"/>'
+         '<ellipse cx="490" cy="541" rx="3" ry="10" fill="white"/><ellipse cx="499" cy="542" rx="3" ry="10" fill="white"/>'
+         '<circle cx="497" cy="555" r="1.6" fill="#333"/>')
+MUSHROOM = ('<rect x="760" y="572" width="10" height="16" fill="white"/>'
+            '<path d="M751,574 A14,14 0 0 1 779,574 Z" fill="#E74C3C"/>'
+            '<circle cx="760" cy="567" r="2.5" fill="white"/><circle cx="770" cy="566" r="2" fill="white"/>')
+CARROT = ('<polygon points="306,570 336,575 306,581" fill="#FF9A3C"/>'
+          '<path d="M306,575 l-8,-6 M306,575 l-9,0 M306,575 l-8,6" stroke="#2E7D32" stroke-width="3"/>')
 
 BAUERNHOF = [
     '<rect width="800" height="600" fill="#87CEEB"/>',
@@ -117,6 +145,8 @@ BAUERNHOF = [
     D('bird', 560, 140, 28, '<path d="M545,142 Q552,130 560,140 Q568,130 575,142" stroke="#333" stroke-width="3" fill="none"/>',
       ('<path d="M545,142 Q552,130 560,140 Q568,130 575,142" stroke="#E74C3C" stroke-width="3" fill="none"/>', 'Der Vogel ist rot!'),
       ('', 'Der Vogel ist weggeflogen!')),
+    D('bird2', 80, 172, 26, '', ('<path d="M65,177 Q72,165 80,175 Q88,165 95,177" stroke="#333" stroke-width="3" fill="none"/>', 'Da fliegt noch ein Vogel!')),
+    D('balloon', 530, 47, 38, '', (balloon(530, 35, '#E74C3C'), 'Da fliegt ein Luftballon!')),
     # Barn
     '<rect x="150" y="200" width="200" height="200" fill="#FF6B6B"/>',
     '<polygon points="150,200 250,100 350,200" fill="#CC3333"/>',
@@ -128,13 +158,20 @@ BAUERNHOF = [
     D('barndoor', 250, 360, 58, barn_door('#8B4513'),
       (barn_door('#2E8B57'), 'Das Scheunentor ist grün!'),
       (barn_door('#4D96FF'), 'Das Scheunentor ist blau!')),
+    D('barnflag', 258, 80, 25, '',
+      ('<line x1="250" y1="101" x2="250" y2="62" stroke="#555" stroke-width="3"/><polygon points="251,62 272,70 251,78" fill="#4D96FF"/>', 'Auf der Scheune weht eine Fahne!')),
+    D('horseshoe', 180, 252, 24, '',
+      ('<path d="M170,262 v-12 a10,10 0 0 1 20,0 v12" stroke="#777" stroke-width="5" fill="none"/>', 'An der Scheune hängt ein Hufeisen!')),
     # House
     D('chimney', 598, 205, 30, '<rect x="588" y="183" width="20" height="43" fill="#8B4513"/>',
       ('<rect x="588" y="183" width="20" height="43" fill="#E74C3C"/>', 'Der Kamin ist rot!'),
       ('', 'Der Kamin fehlt!')),
     '<rect x="450" y="250" width="180" height="150" fill="#FFD93D"/>',
     '<polygon points="450,250 540,170 630,250" fill="#FFA500"/>',
-    house_window(600, '#A8E6FF'),
+    D('roofwin', 540, 215, 24, '',
+      ('<circle cx="540" cy="215" r="12" fill="#A8E6FF" stroke="white" stroke-width="3"/>', 'Das Dach hat ein Fenster!')),
+    D('housewinR', 600, 288, 28, house_window(600, '#A8E6FF'),
+      (house_window(600, '#6BCB77'), 'Das Fenster ist grün!')),
     D('housewin', 480, 288, 28, house_window(480, '#A8E6FF'),
       (house_window(480, '#FF8FC8'), 'Das Fenster ist rosa!'),
       ('', 'Ein Fenster fehlt!')),
@@ -170,6 +207,14 @@ BAUERNHOF = [
     D('hen', 708, 522, 32, hen('white'),
       ('', 'Das Huhn fehlt!'),
       (hen('#A0522D'), 'Das Huhn ist braun!')),
+    D('sheep', 648, 450, 38, sheep('white'),
+      (sheep('#555'), 'Das Schaf ist schwarz!'),
+      ('', 'Das Schaf fehlt!')),
+    D('hay', 60, 456, 37, HAY, ('', 'Der Heuballen fehlt!')),
+    D('cat', 52, 556, 33, '', (CAT, 'Da sitzt eine Katze!')),
+    D('carrot', 318, 575, 24, '', (CARROT, 'Da liegt eine Karotte!')),
+    D('bunny', 483, 558, 33, '', (BUNNY, 'Da hüpft ein Hase!')),
+    D('mushroom', 765, 577, 22, '', (MUSHROOM, 'Da wächst ein Pilz!')),
 ]
 
 
@@ -181,10 +226,10 @@ def fish_big(color):
             '<circle cx="280" cy="192" r="7" fill="white"/><circle cx="282" cy="192" r="3.5" fill="#222"/>')
 
 
-def fish_little(color):
-    return (f'<polygon points="128,320 145,308 145,332" fill="{color}"/>'
-            f'<ellipse cx="108" cy="320" rx="24" ry="14" fill="{color}"/>'
-            '<circle cx="96" cy="316" r="3" fill="#222"/>')
+def fish_little(color, x=108, y=320):
+    return (f'<polygon points="{x + 20},{y} {x + 37},{y - 12} {x + 37},{y + 12}" fill="{color}"/>'
+            f'<ellipse cx="{x}" cy="{y}" rx="24" ry="14" fill="{color}"/>'
+            f'<circle cx="{x - 12}" cy="{y - 4}" r="3" fill="#222"/>')
 
 
 def jelly(color):
@@ -203,10 +248,10 @@ def turtle(shell):
             '<path d="M400,312 L420,331 L440,312 M400,350 L420,331 L440,350" stroke="#1E5E35" stroke-width="3" fill="none"/>')
 
 
-def seaweed(x, y0=505, h=100):
+def seaweed(x, y0=505, h=100, c='#2E8B57'):
     q = h / 4
     return (f'<path d="M{x},{y0} Q{x - 20},{y0 - q} {x},{y0 - 2 * q} Q{x + 20},{y0 - 3 * q} {x},{y0 - h}" '
-            'stroke="#2E8B57" stroke-width="14" fill="none" stroke-linecap="round"/>')
+            f'stroke="{c}" stroke-width="14" fill="none" stroke-linecap="round"/>')
 
 
 def sail(c):
@@ -220,6 +265,26 @@ def shell(c, line):
 
 COINS = ''.join(f'<circle cx="{x}" cy="{y}" r="9" fill="#FFD93D" stroke="#E0A800" stroke-width="2"/>'
                 for x, y in ((745, 545), (763, 548), (754, 533)))
+OCTOPUS = (''.join(f'<path d="M{x},172 q{d},14 0,28" stroke="#9B59B6" stroke-width="6" fill="none" stroke-linecap="round"/>'
+                   for x, d in ((456, -7), (466, 7), (476, -7), (486, 7)))
+           + '<ellipse cx="471" cy="160" rx="22" ry="19" fill="#9B59B6"/>'
+           '<circle cx="463" cy="158" r="4" fill="white"/><circle cx="479" cy="158" r="4" fill="white"/>'
+           '<circle cx="463" cy="159" r="2" fill="#222"/><circle cx="479" cy="159" r="2" fill="#222"/>')
+PUFFER = (''.join(f'<line x1="{720 + 18 * math.cos(a):.1f}" y1="{390 + 18 * math.sin(a):.1f}" '
+                  f'x2="{720 + 25 * math.cos(a):.1f}" y2="{390 + 25 * math.sin(a):.1f}" stroke="#E0A800" stroke-width="2"/>'
+                  for a in (i * math.pi / 5 for i in range(10)))
+          + '<polygon points="742,390 752,380 752,400" fill="#FFB347"/>'
+          '<circle cx="720" cy="390" r="19" fill="#FFB347"/>'
+          '<circle cx="711" cy="385" r="4" fill="white"/><circle cx="710" cy="385" r="2" fill="#222"/>')
+SMALL_JELLY = (''.join(f'<path d="M{x},168 q-4,10 0,18 q4,8 0,14" stroke="#4D96FF" stroke-width="3" fill="none" stroke-linecap="round"/>'
+                       for x in (52, 60, 68))
+               + '<path d="M44,169 A16,16 0 0 1 76,169 Z" fill="#4D96FF"/>')
+SNAIL = ('<ellipse cx="316" cy="584" rx="17" ry="5" fill="#C9A0DC"/><circle cx="331" cy="578" r="3" fill="#C9A0DC"/>'
+         '<circle cx="314" cy="574" r="10" fill="#FFC0CB"/>'
+         '<path d="M314,574 m-4,0 a4,4 0 1 1 4,4 a7,7 0 1 1 6,-7" stroke="#E89AAE" stroke-width="2" fill="none"/>')
+CORAL = '<path d="M765,497 V460 M765,480 L751,463 M765,470 L779,454" stroke="#FF6B6B" stroke-width="6" fill="none" stroke-linecap="round"/>'
+BOTTLE = ('<g transform="rotate(-60 45 562)"><rect x="35" y="548" width="20" height="30" rx="5" fill="#6BCB77" opacity="0.85"/>'
+          '<rect x="40" y="538" width="10" height="12" fill="#6BCB77" opacity="0.85"/><rect x="39" y="534" width="12" height="5" fill="#8B5A2B"/></g>')
 ANCHOR = ('<path d="M255,525 V575 M240,535 H270 M232,560 Q255,585 278,560" stroke="#555" stroke-width="6" fill="none" stroke-linecap="round"/>'
           '<circle cx="255" cy="522" r="6" fill="none" stroke="#555" stroke-width="4"/>')
 
@@ -229,7 +294,10 @@ MEER = [
     '<rect width="800" height="62" fill="#CDEFFF"/>',
     '<path d="M0,62 Q25,52 50,62 T100,62 T150,62 T200,62 T250,62 T300,62 T350,62 T400,62 T450,62 T500,62 T550,62 T600,62 T650,62 T700,62 T750,62 T800,62 V70 H0 Z" fill="#7FD3F7"/>',
     '<path d="M0,505 Q100,480 200,500 T400,498 T600,502 T800,495 V600 H0 Z" fill="#F4D58D"/>',
-    seaweed(80), seaweed(300, 510, 120),
+    D('seaweedL', 80, 455, 60, seaweed(80), ('', 'Eine Pflanze fehlt!')),
+    D('seaweedM', 300, 450, 70, seaweed(300, 510, 120), (seaweed(300, 510, 120, '#9B59B6'), 'Die Pflanze ist lila!')),
+    D('gull', 150, 28, 24, '', ('<path d="M135,32 Q142,22 150,30 Q158,22 165,32" stroke="#555" stroke-width="3" fill="none"/>', 'Da fliegt eine Möwe!')),
+    D('sun', 762, 28, 30, '', ('<circle cx="762" cy="27" r="22" fill="#FFD93D"/>', 'Da scheint die Sonne!')),
     '<rect x="598" y="6" width="5" height="46" fill="#5D4037"/>',
     D('sail', 625, 30, 40, sail('white'),
       (sail('#FF6B6B'), 'Das Segel ist rot!'),
@@ -280,6 +348,14 @@ MEER = [
       ('<rect x="673" y="497" width="14" height="16" fill="#E74C3C"/>', 'Das Schloss ist rot!'),
       ('', 'Das Schloss fehlt!')),
     D('coins', 754, 542, 32, '', (COINS, 'Da liegen Goldmünzen!')),
+    D('octopus', 471, 172, 40, '', (OCTOPUS, 'Da schwimmt ein Tintenfisch!')),
+    D('puffer', 727, 390, 34, '', (PUFFER, 'Da schwimmt ein Kugelfisch!')),
+    D('redfish', 182, 440, 35, '', (fish_little('#E74C3C', 175, 440), 'Da schwimmt ein roter Fisch!')),
+    D('smalljelly', 60, 178, 30, '', (SMALL_JELLY, 'Da ist eine kleine Qualle!')),
+    D('snail', 318, 578, 22, '', (SNAIL, 'Da kriecht eine Schnecke!')),
+    D('rock', 482, 578, 22, '', ('<ellipse cx="482" cy="580" rx="15" ry="9" fill="#8D8D8D"/>', 'Da liegt ein Stein!')),
+    D('coral', 765, 475, 31, '', (CORAL, 'Da wächst eine Koralle!')),
+    D('bottle', 45, 560, 33, '', (BOTTLE, 'Da liegt eine Flasche!')),
 ]
 
 
@@ -317,6 +393,24 @@ def visor(c):
 ASTEROID = ('<polygon points="270,510 290,490 320,495 335,520 320,548 285,550 268,532" fill="#8D8D8D"/>'
             '<circle cx="295" cy="515" r="7" fill="#6D6D6D"/><circle cx="315" cy="532" r="5" fill="#6D6D6D"/>')
 
+ALIEN = ('<path d="M52,272 L48,258 M68,272 L72,258" stroke="#6BCB77" stroke-width="3"/>'
+         '<circle cx="48" cy="257" r="4" fill="#FFD93D"/><circle cx="72" cy="257" r="4" fill="#FFD93D"/>'
+         '<ellipse cx="60" cy="290" rx="18" ry="20" fill="#6BCB77"/>'
+         '<circle cx="53" cy="285" r="5" fill="white"/><circle cx="67" cy="285" r="5" fill="white"/>'
+         '<circle cx="53" cy="286" r="2.5" fill="#222"/><circle cx="67" cy="286" r="2.5" fill="#222"/>'
+         '<path d="M53,298 Q60,304 67,298" stroke="#222" stroke-width="2" fill="none"/>')
+TEDDY = ('<circle cx="45" cy="524" r="6" fill="#A0522D"/><circle cx="65" cy="524" r="6" fill="#A0522D"/>'
+         '<ellipse cx="55" cy="560" rx="15" ry="17" fill="#A0522D"/>'
+         '<circle cx="55" cy="536" r="13" fill="#A0522D"/><ellipse cx="55" cy="541" rx="6" ry="4" fill="#DEB887"/>'
+         '<circle cx="50" cy="533" r="2" fill="#222"/><circle cx="60" cy="533" r="2" fill="#222"/>')
+EARTH = ('<circle cx="620" cy="555" r="24" fill="#4D96FF"/>'
+         '<path d="M604,545 q8,-10 16,-4 q4,10 -6,14 q-8,2 -10,-10 Z M624,560 q10,-4 14,4 q-4,10 -14,8 Z" fill="#6BCB77"/>')
+SMALL_ROCKET = ('<g transform="rotate(35 760 140)"><polygon points="754,150 748,162 754,158" fill="#FF6B6B"/><polygon points="766,150 772,162 766,158" fill="#FF6B6B"/>'
+                '<rect x="754" y="128" width="12" height="30" rx="3" fill="#F5F5F5"/>'
+                '<polygon points="754,130 760,116 766,130" fill="#FF6B6B"/><circle cx="760" cy="138" r="3" fill="#4D96FF"/></g>')
+SHOOTING_STAR = ('<line x1="432" y1="47" x2="396" y2="68" stroke="white" stroke-width="3" opacity="0.7" stroke-linecap="round"/>'
+                 + star(438, 42, 11, 5, '#FFD93D'))
+
 rnd = random.Random(7)
 STARS = ''.join(f'<circle cx="{rnd.randint(5, 795)}" cy="{rnd.randint(5, 595)}" r="{rnd.choice((1.2, 1.6, 2.2))}" fill="white" opacity="0.8"/>'
                 for _ in range(90))
@@ -336,6 +430,17 @@ WELTRAUM = [
       ('', 'Ein Stern fehlt!'),
       (star(500, 120, 20, 8, '#FF6B6B'), 'Ein Stern ist rot!')),
     D('newstar', 720, 470, 30, '', (star(720, 470, 20, 8, '#FFD93D'), 'Da ist ein neuer Stern!')),
+    D('blueplanet', 60, 60, 30, '',
+      ('<circle cx="60" cy="60" r="22" fill="#4D96FF"/><path d="M40,54 Q60,48 80,54" stroke="#2A6FCC" stroke-width="5" fill="none"/>', 'Da ist ein blauer Planet!')),
+    D('purpleplanet', 260, 300, 30, '',
+      ('<circle cx="260" cy="300" r="22" fill="#9B59B6"/><circle cx="252" cy="293" r="5" fill="#7D3C98"/><circle cx="268" cy="308" r="4" fill="#7D3C98"/>', 'Da ist ein lila Planet!')),
+    D('shooting', 418, 54, 37, '', (SHOOTING_STAR, 'Da fliegt eine Sternschnuppe!')),
+    D('crescent', 556, 220, 28, '',
+      ('<circle cx="554" cy="220" r="19" fill="#FFD93D"/><circle cx="563" cy="214" r="16" fill="#0B1D3A"/>', 'Da ist ein kleiner Mond!')),
+    D('alien', 60, 282, 36, '', (ALIEN, 'Da ist ein grünes Männchen!')),
+    D('smallrocket', 760, 140, 30, '', (SMALL_ROCKET, 'Da fliegt eine kleine Rakete!')),
+    D('earth', 620, 555, 30, '', (EARTH, 'Da ist die Erde!')),
+    D('teddy', 55, 547, 34, '', (TEDDY, 'Da schwebt ein Teddybär!')),
     '<circle cx="650" cy="120" r="55" fill="#E0E0E0"/>',
     '<circle cx="660" cy="92" r="6" fill="#BDBDBD"/>',
     D('crater2', 628, 104, 20, '<circle cx="628" cy="104" r="10" fill="#BDBDBD"/>', ('', 'Ein kleiner Krater fehlt!')),
@@ -348,6 +453,7 @@ WELTRAUM = [
     '<polygon points="375,350 352,392 375,380" fill="#FF6B6B"/><polygon points="425,350 448,392 425,380" fill="#FF6B6B"/>',
     '<rect x="375" y="258" width="50" height="124" rx="6" fill="#F5F5F5"/>',
     '<polygon points="375,262 400,212 425,262" fill="#FF6B6B"/>',
+    D('rocketstar', 400, 243, 20, '', (star(400, 245, 10, 4, '#FFD93D'), 'Auf der Rakete ist ein Stern!')),
     D('window', 400, 300, 28, rocket_window('#4D96FF'),
       (rocket_window('#FFD93D'), 'Das Fenster ist gelb!'),
       (rocket_window('#FF6B6B'), 'Das Fenster ist rot!')),
@@ -365,7 +471,8 @@ WELTRAUM = [
     '<circle cx="556" cy="502" r="12" fill="white"/>',
     D('asteroid', 302, 520, 38, ASTEROID, ('', 'Der Stein fehlt!')),
     # Astronaut
-    '<rect x="110" y="436" width="18" height="40" rx="6" fill="#BDBDBD"/>',
+    D('backpack', 119, 456, 25, '<rect x="110" y="436" width="18" height="40" rx="6" fill="#BDBDBD"/>',
+      ('<rect x="110" y="436" width="18" height="40" rx="6" fill="#E74C3C"/>', 'Der Rucksack ist rot!')),
     '<rect x="128" y="428" width="44" height="62" rx="10" fill="white"/>',
     '<rect x="112" y="438" width="16" height="12" rx="6" fill="white"/><rect x="172" y="438" width="22" height="12" rx="6" fill="white"/>',
     '<rect x="132" y="488" width="14" height="28" rx="5" fill="white"/><rect x="154" y="488" width="14" height="28" rx="5" fill="white"/>',
@@ -373,6 +480,10 @@ WELTRAUM = [
     D('visor', 155, 400, 28, visor('#FFD93D'),
       (visor('#FF8FC8'), 'Das Visier ist rosa!'),
       (visor('#4D96FF'), 'Das Visier ist blau!')),
+    D('boots', 150, 512, 26, '',
+      ('<rect x="130" y="504" width="18" height="14" rx="4" fill="#E74C3C"/><rect x="152" y="504" width="18" height="14" rx="4" fill="#E74C3C"/>', 'Der Astronaut hat rote Stiefel!')),
+    D('flag', 215, 425, 33, '',
+      ('<line x1="200" y1="452" x2="200" y2="398" stroke="#BDBDBD" stroke-width="3"/><rect x="201" y="398" width="28" height="18" fill="#E74C3C"/>', 'Der Astronaut hat eine Fahne!')),
 ]
 
 
@@ -415,13 +526,49 @@ BUTTERFLY = ('<ellipse cx="80" cy="192" rx="11" ry="14" fill="#FF8FC8"/><ellipse
 CASTLE = ('<rect x="232" y="495" width="40" height="25" fill="#E0B060"/><rect x="232" y="485" width="10" height="10" fill="#E0B060"/>'
           '<rect x="247" y="485" width="10" height="10" fill="#E0B060"/><rect x="262" y="485" width="10" height="10" fill="#E0B060"/>')
 
+DOG = ('<path d="M308,474 q-10,-8 -6,-18" stroke="#A0522D" stroke-width="4" fill="none" stroke-linecap="round"/>'
+       + ''.join(f'<rect x="{x}" y="484" width="6" height="16" fill="#A0522D"/>' for x in (314, 340))
+       + '<ellipse cx="328" cy="478" rx="24" ry="13" fill="#A0522D"/>'
+       '<circle cx="353" cy="463" r="11" fill="#A0522D"/><ellipse cx="347" cy="466" rx="4" ry="8" fill="#6B3A1E"/>'
+       '<circle cx="357" cy="460" r="2" fill="#222"/><circle cx="364" cy="465" r="2.5" fill="#222"/>')
+PLANE = ('<polygon points="434,55 422,36 430,36 448,55" fill="#4D96FF"/><polygon points="416,55 410,44 416,44 424,55" fill="#4D96FF"/>'
+         '<ellipse cx="440" cy="57" rx="27" ry="7" fill="white"/>'
+         '<polygon points="434,59 424,74 432,74 448,59" fill="#4D96FF"/>'
+         + ''.join(f'<circle cx="{x}" cy="56" r="1.8" fill="#4D96FF"/>' for x in (446, 453, 460)))
+BEE = ('<ellipse cx="676" cy="162" rx="7" ry="5" fill="white" opacity="0.9"/><ellipse cx="686" cy="162" rx="7" ry="5" fill="white" opacity="0.9"/>'
+       '<ellipse cx="680" cy="171" rx="11" ry="8" fill="#FFD93D"/>'
+       '<path d="M677,164 V178 M684,164 V178" stroke="#222" stroke-width="3"/><circle cx="690" cy="169" r="1.5" fill="#222"/>')
+FROG = ('<ellipse cx="40" cy="562" rx="17" ry="11" fill="#2E8B57"/>'
+        '<circle cx="32" cy="550" r="6" fill="#2E8B57"/><circle cx="48" cy="550" r="6" fill="#2E8B57"/>'
+        '<circle cx="32" cy="549" r="3" fill="white"/><circle cx="48" cy="549" r="3" fill="white"/>'
+        '<circle cx="32" cy="549" r="1.5" fill="#222"/><circle cx="48" cy="549" r="1.5" fill="#222"/>'
+        '<path d="M33,565 Q40,570 47,565" stroke="#1B5E20" stroke-width="2" fill="none"/>')
+BIRDHOUSE = ('<rect x="730" y="330" width="20" height="20" fill="#E74C3C"/><polygon points="726,331 740,318 754,331" fill="#6B3A1E"/>'
+             '<circle cx="740" cy="340" r="4" fill="#333"/>')
+SKATEBOARD = ('<rect x="490" y="548" width="50" height="8" rx="4" fill="#9B59B6"/>'
+              '<circle cx="499" cy="560" r="4" fill="#333"/><circle cx="531" cy="560" r="4" fill="#333"/>')
+
+
+def cloud_left(c):
+    return f'<ellipse cx="300" cy="75" rx="55" ry="25" fill="{c}"/><ellipse cx="335" cy="62" rx="38" ry="22" fill="{c}"/>'
+
+
+def slide(c):
+    return f'<polygon points="232,224 338,392 362,392 254,224" fill="{c}"/>'
+
+
 SPIELPLATZ = [
     '<rect width="800" height="600" fill="#A8E6FF"/>',
     '<rect y="380" width="800" height="220" fill="#7ED957"/>',
     D('sun', 80, 75, 50, '<circle cx="80" cy="75" r="40" fill="#FFD93D"/>',
       ('', 'Die Sonne fehlt!'),
       ('<circle cx="80" cy="75" r="40" fill="#FF9A3C"/>', 'Die Sonne ist orange!')),
-    '<ellipse cx="300" cy="75" rx="55" ry="25" fill="white"/><ellipse cx="335" cy="62" rx="38" ry="22" fill="white"/>',
+    D('cloudL', 305, 70, 72, cloud_left('white'),
+      ('', 'Eine Wolke fehlt!'),
+      (cloud_left('#9E9E9E'), 'Die Wolke ist grau!')),
+    D('plane', 435, 55, 34, '', (PLANE, 'Da fliegt ein Flugzeug!')),
+    D('balloon', 40, 292, 34, '', (balloon(40, 280, '#FF6B6B'), 'Da fliegt ein Luftballon!')),
+    D('bee', 682, 168, 22, '', (BEE, 'Da fliegt eine Biene!')),
     D('cloud', 685, 72, 55, '',
       ('<ellipse cx="680" cy="77" rx="45" ry="22" fill="white"/><ellipse cx="705" cy="64" rx="30" ry="18" fill="white"/>', 'Da ist eine neue Wolke!')),
     D('butterfly', 90, 200, 28, '', (BUTTERFLY, 'Da fliegt ein Schmetterling!')),
@@ -435,10 +582,14 @@ SPIELPLATZ = [
       ('<polygon points="190,152 190,182 220,167" fill="#9B59B6"/>', 'Die Fahne ist lila!'),
       ('', 'Die Fahne fehlt!')),
     '<rect x="146" y="225" width="8" height="175" fill="#C68B59"/><rect x="176" y="225" width="8" height="175" fill="#C68B59"/>',
-    *[f'<rect x="150" y="{y}" width="30" height="6" fill="#C68B59"/>' for y in (250, 280, 310, 370)],
+    D('rung2', 165, 253, 26, '<rect x="150" y="250" width="30" height="6" fill="#C68B59"/>',
+      ('<rect x="150" y="250" width="30" height="6" fill="#E74C3C"/>', 'Eine Sprosse ist rot!')),
+    *[f'<rect x="150" y="{y}" width="30" height="6" fill="#C68B59"/>' for y in (280, 310, 370)],
     D('rung', 165, 343, 28, '<rect x="150" y="340" width="30" height="6" fill="#C68B59"/>', ('', 'Eine Sprosse fehlt!')),
     '<rect x="140" y="218" width="105" height="12" fill="#FF9A3C"/>',
-    '<polygon points="232,224 338,392 362,392 254,224" fill="#4D96FF"/>',
+    D('slide', 297, 308, 108, slide('#4D96FF'),
+      (slide('#FF6B6B'), 'Die Rutsche ist rot!'),
+      (slide('#FFD93D'), 'Die Rutsche ist gelb!')),
     # Swings
     '<rect x="400" y="195" width="240" height="10" rx="4" fill="#8B4513"/>',
     '<rect x="405" y="200" width="10" height="200" fill="#8B4513"/><rect x="625" y="200" width="10" height="200" fill="#8B4513"/>',
@@ -454,6 +605,7 @@ SPIELPLATZ = [
     # Tree
     '<rect x="728" y="290" width="24" height="110" fill="#8B4513"/>',
     '<circle cx="740" cy="262" r="55" fill="#2E8B57"/>',
+    D('birdhouse', 740, 335, 24, '', (BIRDHOUSE, 'Am Baum hängt ein Vogelhaus!')),
     D('apples', 740, 252, 43, '',
       (''.join(f'<circle cx="{x}" cy="{y}" r="8" fill="#E74C3C"/>' for x, y in ((718, 250), (760, 276), (748, 230))), 'Am Baum hängen Äpfel!')),
     # Sandbox
@@ -471,8 +623,14 @@ SPIELPLATZ = [
     D('flower', 520, 450, 26, small_flower(520, 450, 'white'),
       (small_flower(520, 450, '#E74C3C'), 'Die Blume ist rot!'),
       ('', 'Eine Blume fehlt!')),
-    *[small_flower(x, y, c) for x, y, c in ((60, 430, '#FF8FC8'), (95, 560, 'white'), (330, 575, '#FF8FC8'),
-                                          (560, 580, '#9B59B6'), (760, 560, '#FF8FC8'), (340, 430, '#9B59B6'))],
+    *[small_flower(x, y, c) for x, y, c in ((95, 560, 'white'), (330, 575, '#FF8FC8'), (560, 580, '#9B59B6'), (340, 430, '#9B59B6'))],
+    D('flowerL', 60, 430, 20, small_flower(60, 430, '#FF8FC8'),
+      (small_flower(60, 430, '#4D96FF'), 'Die Blume ist blau!')),
+    D('flowerR', 760, 560, 20, small_flower(760, 560, '#FF8FC8'),
+      (small_flower(760, 560, '#FFD93D'), 'Die Blume ist gelb!')),
+    D('dog', 335, 472, 40, '', (DOG, 'Da spielt ein Hund!')),
+    D('skateboard', 515, 555, 30, '', (SKATEBOARD, 'Da liegt ein Skateboard!')),
+    D('frog', 40, 556, 26, '', (FROG, 'Da sitzt ein Frosch!')),
 ]
 
 SCENES = {
@@ -484,7 +642,7 @@ SCENES = {
 
 for tid, (name, items) in SCENES.items():
     diffs = [it for it in items if isinstance(it, D)]
-    assert len(diffs) >= 12, (tid, len(diffs))
+    assert len(diffs) >= 25, (tid, len(diffs))
     for i, a in enumerate(diffs):
         for b in diffs[i + 1:]:
             d = math.hypot(a.cx - b.cx, a.cy - b.cy)

@@ -16,6 +16,14 @@
     <g data-variant="v1" data-label="Der Vogel ist rot!" display="none"><path d="M545,142 Q552,130 560,140 Q568,130 575,142" stroke="#E74C3C" stroke-width="3" fill="none"/></g>
     <g data-variant="v2" data-label="Der Vogel ist weggeflogen!" display="none"></g>
   </g>
+  <g data-diff="bird2" data-cx="80" data-cy="172" data-r="26">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da fliegt noch ein Vogel!" display="none"><path d="M65,177 Q72,165 80,175 Q88,165 95,177" stroke="#333" stroke-width="3" fill="none"/></g>
+  </g>
+  <g data-diff="balloon" data-cx="530" data-cy="47" data-r="38">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da fliegt ein Luftballon!" display="none"><path d="M530,55 q-5,12 0,24" stroke="#555" stroke-width="2" fill="none"/><ellipse cx="530" cy="35" rx="16" ry="20" fill="#E74C3C"/><polygon points="526,58 534,58 530,53" fill="#E74C3C"/></g>
+  </g>
   <rect x="150" y="200" width="200" height="200" fill="#FF6B6B"/>
   <polygon points="150,200 250,100 350,200" fill="#CC3333"/>
   <g data-diff="gable" data-cx="250" data-cy="160" data-r="28">
@@ -32,6 +40,14 @@
     <g data-variant="v1" data-label="Das Scheunentor ist grün!" display="none"><rect x="210" y="320" width="80" height="80" fill="#2E8B57"/><path d="M210,320 L290,400 M290,320 L210,400" stroke="#F5DEB3" stroke-width="4"/></g>
     <g data-variant="v2" data-label="Das Scheunentor ist blau!" display="none"><rect x="210" y="320" width="80" height="80" fill="#4D96FF"/><path d="M210,320 L290,400 M290,320 L210,400" stroke="#F5DEB3" stroke-width="4"/></g>
   </g>
+  <g data-diff="barnflag" data-cx="258" data-cy="80" data-r="25">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Auf der Scheune weht eine Fahne!" display="none"><line x1="250" y1="101" x2="250" y2="62" stroke="#555" stroke-width="3"/><polygon points="251,62 272,70 251,78" fill="#4D96FF"/></g>
+  </g>
+  <g data-diff="horseshoe" data-cx="180" data-cy="252" data-r="24">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="An der Scheune hängt ein Hufeisen!" display="none"><path d="M170,262 v-12 a10,10 0 0 1 20,0 v12" stroke="#777" stroke-width="5" fill="none"/></g>
+  </g>
   <g data-diff="chimney" data-cx="598" data-cy="205" data-r="30">
     <g data-variant="orig"><rect x="588" y="183" width="20" height="43" fill="#8B4513"/></g>
     <g data-variant="v1" data-label="Der Kamin ist rot!" display="none"><rect x="588" y="183" width="20" height="43" fill="#E74C3C"/></g>
@@ -39,7 +55,14 @@
   </g>
   <rect x="450" y="250" width="180" height="150" fill="#FFD93D"/>
   <polygon points="450,250 540,170 630,250" fill="#FFA500"/>
-  <rect x="585" y="273" width="30" height="30" fill="#A8E6FF" stroke="white" stroke-width="3"/><path d="M600,273 V303 M585,288 H615" stroke="white" stroke-width="2"/>
+  <g data-diff="roofwin" data-cx="540" data-cy="215" data-r="24">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Das Dach hat ein Fenster!" display="none"><circle cx="540" cy="215" r="12" fill="#A8E6FF" stroke="white" stroke-width="3"/></g>
+  </g>
+  <g data-diff="housewinR" data-cx="600" data-cy="288" data-r="28">
+    <g data-variant="orig"><rect x="585" y="273" width="30" height="30" fill="#A8E6FF" stroke="white" stroke-width="3"/><path d="M600,273 V303 M585,288 H615" stroke="white" stroke-width="2"/></g>
+    <g data-variant="v1" data-label="Das Fenster ist grün!" display="none"><rect x="585" y="273" width="30" height="30" fill="#6BCB77" stroke="white" stroke-width="3"/><path d="M600,273 V303 M585,288 H615" stroke="white" stroke-width="2"/></g>
+  </g>
   <g data-diff="housewin" data-cx="480" data-cy="288" data-r="28">
     <g data-variant="orig"><rect x="465" y="273" width="30" height="30" fill="#A8E6FF" stroke="white" stroke-width="3"/><path d="M480,273 V303 M465,288 H495" stroke="white" stroke-width="2"/></g>
     <g data-variant="v1" data-label="Das Fenster ist rosa!" display="none"><rect x="465" y="273" width="30" height="30" fill="#FF8FC8" stroke="white" stroke-width="3"/><path d="M480,273 V303 M465,288 H495" stroke="white" stroke-width="2"/></g>
@@ -97,5 +120,30 @@
     <g data-variant="orig"><line x1="700" y1="536" x2="698" y2="548" stroke="#E0A800" stroke-width="3"/><line x1="710" y1="536" x2="712" y2="548" stroke="#E0A800" stroke-width="3"/><ellipse cx="705" cy="525" rx="18" ry="14" fill="white"/><circle cx="718" cy="510" r="8" fill="white"/><path d="M713,503 q2,-8 5,-2 q3,-8 5,2 Z" fill="#E74C3C"/><polygon points="725,509 732,512 725,514" fill="#FF9A3C"/><circle cx="720" cy="508" r="1.6" fill="#333"/></g>
     <g data-variant="v1" data-label="Das Huhn fehlt!" display="none"></g>
     <g data-variant="v2" data-label="Das Huhn ist braun!" display="none"><line x1="700" y1="536" x2="698" y2="548" stroke="#E0A800" stroke-width="3"/><line x1="710" y1="536" x2="712" y2="548" stroke="#E0A800" stroke-width="3"/><ellipse cx="705" cy="525" rx="18" ry="14" fill="#A0522D"/><circle cx="718" cy="510" r="8" fill="#A0522D"/><path d="M713,503 q2,-8 5,-2 q3,-8 5,2 Z" fill="#E74C3C"/><polygon points="725,509 732,512 725,514" fill="#FF9A3C"/><circle cx="720" cy="508" r="1.6" fill="#333"/></g>
+  </g>
+  <g data-diff="sheep" data-cx="648" data-cy="450" data-r="38">
+    <g data-variant="orig"><rect x="628" y="460" width="5" height="14" fill="#333"/><rect x="655" y="460" width="5" height="14" fill="#333"/><ellipse cx="642" cy="450" rx="27" ry="17" fill="white"/><circle cx="668" cy="441" r="10" fill="#333"/><circle cx="671" cy="439" r="1.8" fill="white"/></g>
+    <g data-variant="v1" data-label="Das Schaf ist schwarz!" display="none"><rect x="628" y="460" width="5" height="14" fill="#333"/><rect x="655" y="460" width="5" height="14" fill="#333"/><ellipse cx="642" cy="450" rx="27" ry="17" fill="#555"/><circle cx="668" cy="441" r="10" fill="#333"/><circle cx="671" cy="439" r="1.8" fill="white"/></g>
+    <g data-variant="v2" data-label="Das Schaf fehlt!" display="none"></g>
+  </g>
+  <g data-diff="hay" data-cx="60" data-cy="456" data-r="37">
+    <g data-variant="orig"><rect x="32" y="437" width="56" height="38" rx="8" fill="#E8C35A"/><path d="M46,437 V475 M74,437 V475" stroke="#C9A13B" stroke-width="3"/></g>
+    <g data-variant="v1" data-label="Der Heuballen fehlt!" display="none"></g>
+  </g>
+  <g data-diff="cat" data-cx="52" data-cy="556" data-r="33">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da sitzt eine Katze!" display="none"><path d="M34,566 q-12,-4 -10,-18" stroke="#FF9A3C" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="48" cy="566" rx="17" ry="11" fill="#FF9A3C"/><circle cx="66" cy="550" r="10" fill="#FF9A3C"/><polygon points="58,544 60,532 66,541" fill="#FF9A3C"/><polygon points="66,541 72,532 74,544" fill="#FF9A3C"/><circle cx="63" cy="549" r="1.6" fill="#333"/><circle cx="70" cy="549" r="1.6" fill="#333"/></g>
+  </g>
+  <g data-diff="carrot" data-cx="318" data-cy="575" data-r="24">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da liegt eine Karotte!" display="none"><polygon points="306,570 336,575 306,581" fill="#FF9A3C"/><path d="M306,575 l-8,-6 M306,575 l-9,0 M306,575 l-8,6" stroke="#2E7D32" stroke-width="3"/></g>
+  </g>
+  <g data-diff="bunny" data-cx="483" data-cy="558" data-r="33">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da hüpft ein Hase!" display="none"><ellipse cx="480" cy="570" rx="16" ry="12" fill="white"/><circle cx="465" cy="567" r="5" fill="white"/><circle cx="494" cy="557" r="9" fill="white"/><ellipse cx="490" cy="541" rx="3" ry="10" fill="white"/><ellipse cx="499" cy="542" rx="3" ry="10" fill="white"/><circle cx="497" cy="555" r="1.6" fill="#333"/></g>
+  </g>
+  <g data-diff="mushroom" data-cx="765" data-cy="577" data-r="22">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da wächst ein Pilz!" display="none"><rect x="760" y="572" width="10" height="16" fill="white"/><path d="M751,574 A14,14 0 0 1 779,574 Z" fill="#E74C3C"/><circle cx="760" cy="567" r="2.5" fill="white"/><circle cx="770" cy="566" r="2" fill="white"/></g>
   </g>
 </svg>

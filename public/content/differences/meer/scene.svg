@@ -4,8 +4,22 @@
   <rect width="800" height="62" fill="#CDEFFF"/>
   <path d="M0,62 Q25,52 50,62 T100,62 T150,62 T200,62 T250,62 T300,62 T350,62 T400,62 T450,62 T500,62 T550,62 T600,62 T650,62 T700,62 T750,62 T800,62 V70 H0 Z" fill="#7FD3F7"/>
   <path d="M0,505 Q100,480 200,500 T400,498 T600,502 T800,495 V600 H0 Z" fill="#F4D58D"/>
-  <path d="M80,505 Q60,480.0 80,455.0 Q100,430.0 80,405" stroke="#2E8B57" stroke-width="14" fill="none" stroke-linecap="round"/>
-  <path d="M300,510 Q280,480.0 300,450.0 Q320,420.0 300,390" stroke="#2E8B57" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <g data-diff="seaweedL" data-cx="80" data-cy="455" data-r="60">
+    <g data-variant="orig"><path d="M80,505 Q60,480.0 80,455.0 Q100,430.0 80,405" stroke="#2E8B57" stroke-width="14" fill="none" stroke-linecap="round"/></g>
+    <g data-variant="v1" data-label="Eine Pflanze fehlt!" display="none"></g>
+  </g>
+  <g data-diff="seaweedM" data-cx="300" data-cy="450" data-r="70">
+    <g data-variant="orig"><path d="M300,510 Q280,480.0 300,450.0 Q320,420.0 300,390" stroke="#2E8B57" stroke-width="14" fill="none" stroke-linecap="round"/></g>
+    <g data-variant="v1" data-label="Die Pflanze ist lila!" display="none"><path d="M300,510 Q280,480.0 300,450.0 Q320,420.0 300,390" stroke="#9B59B6" stroke-width="14" fill="none" stroke-linecap="round"/></g>
+  </g>
+  <g data-diff="gull" data-cx="150" data-cy="28" data-r="24">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da fliegt eine Möwe!" display="none"><path d="M135,32 Q142,22 150,30 Q158,22 165,32" stroke="#555" stroke-width="3" fill="none"/></g>
+  </g>
+  <g data-diff="sun" data-cx="762" data-cy="28" data-r="30">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da scheint die Sonne!" display="none"><circle cx="762" cy="27" r="22" fill="#FFD93D"/></g>
+  </g>
   <rect x="598" y="6" width="5" height="46" fill="#5D4037"/>
   <g data-diff="sail" data-cx="625" data-cy="30" data-r="40">
     <g data-variant="orig"><polygon points="606,10 606,46 650,46" fill="white"/></g>
@@ -84,5 +98,37 @@
   <g data-diff="coins" data-cx="754" data-cy="542" data-r="32">
     <g data-variant="orig"></g>
     <g data-variant="v1" data-label="Da liegen Goldmünzen!" display="none"><circle cx="745" cy="545" r="9" fill="#FFD93D" stroke="#E0A800" stroke-width="2"/><circle cx="763" cy="548" r="9" fill="#FFD93D" stroke="#E0A800" stroke-width="2"/><circle cx="754" cy="533" r="9" fill="#FFD93D" stroke="#E0A800" stroke-width="2"/></g>
+  </g>
+  <g data-diff="octopus" data-cx="471" data-cy="172" data-r="40">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da schwimmt ein Tintenfisch!" display="none"><path d="M456,172 q-7,14 0,28" stroke="#9B59B6" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M466,172 q7,14 0,28" stroke="#9B59B6" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M476,172 q-7,14 0,28" stroke="#9B59B6" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M486,172 q7,14 0,28" stroke="#9B59B6" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="471" cy="160" rx="22" ry="19" fill="#9B59B6"/><circle cx="463" cy="158" r="4" fill="white"/><circle cx="479" cy="158" r="4" fill="white"/><circle cx="463" cy="159" r="2" fill="#222"/><circle cx="479" cy="159" r="2" fill="#222"/></g>
+  </g>
+  <g data-diff="puffer" data-cx="727" data-cy="390" data-r="34">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da schwimmt ein Kugelfisch!" display="none"><line x1="738.0" y1="390.0" x2="745.0" y2="390.0" stroke="#E0A800" stroke-width="2"/><line x1="734.6" y1="400.6" x2="740.2" y2="404.7" stroke="#E0A800" stroke-width="2"/><line x1="725.6" y1="407.1" x2="727.7" y2="413.8" stroke="#E0A800" stroke-width="2"/><line x1="714.4" y1="407.1" x2="712.3" y2="413.8" stroke="#E0A800" stroke-width="2"/><line x1="705.4" y1="400.6" x2="699.8" y2="404.7" stroke="#E0A800" stroke-width="2"/><line x1="702.0" y1="390.0" x2="695.0" y2="390.0" stroke="#E0A800" stroke-width="2"/><line x1="705.4" y1="379.4" x2="699.8" y2="375.3" stroke="#E0A800" stroke-width="2"/><line x1="714.4" y1="372.9" x2="712.3" y2="366.2" stroke="#E0A800" stroke-width="2"/><line x1="725.6" y1="372.9" x2="727.7" y2="366.2" stroke="#E0A800" stroke-width="2"/><line x1="734.6" y1="379.4" x2="740.2" y2="375.3" stroke="#E0A800" stroke-width="2"/><polygon points="742,390 752,380 752,400" fill="#FFB347"/><circle cx="720" cy="390" r="19" fill="#FFB347"/><circle cx="711" cy="385" r="4" fill="white"/><circle cx="710" cy="385" r="2" fill="#222"/></g>
+  </g>
+  <g data-diff="redfish" data-cx="182" data-cy="440" data-r="35">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da schwimmt ein roter Fisch!" display="none"><polygon points="195,440 212,428 212,452" fill="#E74C3C"/><ellipse cx="175" cy="440" rx="24" ry="14" fill="#E74C3C"/><circle cx="163" cy="436" r="3" fill="#222"/></g>
+  </g>
+  <g data-diff="smalljelly" data-cx="60" data-cy="178" data-r="30">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da ist eine kleine Qualle!" display="none"><path d="M52,168 q-4,10 0,18 q4,8 0,14" stroke="#4D96FF" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M60,168 q-4,10 0,18 q4,8 0,14" stroke="#4D96FF" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M68,168 q-4,10 0,18 q4,8 0,14" stroke="#4D96FF" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M44,169 A16,16 0 0 1 76,169 Z" fill="#4D96FF"/></g>
+  </g>
+  <g data-diff="snail" data-cx="318" data-cy="578" data-r="22">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da kriecht eine Schnecke!" display="none"><ellipse cx="316" cy="584" rx="17" ry="5" fill="#C9A0DC"/><circle cx="331" cy="578" r="3" fill="#C9A0DC"/><circle cx="314" cy="574" r="10" fill="#FFC0CB"/><path d="M314,574 m-4,0 a4,4 0 1 1 4,4 a7,7 0 1 1 6,-7" stroke="#E89AAE" stroke-width="2" fill="none"/></g>
+  </g>
+  <g data-diff="rock" data-cx="482" data-cy="578" data-r="22">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da liegt ein Stein!" display="none"><ellipse cx="482" cy="580" rx="15" ry="9" fill="#8D8D8D"/></g>
+  </g>
+  <g data-diff="coral" data-cx="765" data-cy="475" data-r="31">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da wächst eine Koralle!" display="none"><path d="M765,497 V460 M765,480 L751,463 M765,470 L779,454" stroke="#FF6B6B" stroke-width="6" fill="none" stroke-linecap="round"/></g>
+  </g>
+  <g data-diff="bottle" data-cx="45" data-cy="560" data-r="33">
+    <g data-variant="orig"></g>
+    <g data-variant="v1" data-label="Da liegt eine Flasche!" display="none"><g transform="rotate(-60 45 562)"><rect x="35" y="548" width="20" height="30" rx="5" fill="#6BCB77" opacity="0.85"/><rect x="40" y="538" width="10" height="12" fill="#6BCB77" opacity="0.85"/><rect x="39" y="534" width="12" height="5" fill="#8B5A2B"/></g></g>
   </g>
 </svg>
