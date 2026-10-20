@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useContentStore } from '../../stores/content.js'
 import { speak } from '../../services/tts.js'
@@ -77,6 +77,7 @@ const theme   = computed(() => store.currentTheme)
 
 const MIN_CARD = 48
 const MAX_CARD = 160
+const WIN_PAUSE_MS = 800   // after the last pair is announced, before celebrating
 
 const deck     = ref([])
 const flipped  = ref(new Set())   // card keys currently face-up (max 2)
@@ -84,6 +85,7 @@ const matched  = ref(new Set())   // card ids that have been matched
 const locked   = ref(false)
 const won      = ref(false)
 const cardSize = ref(88)
+let left = false
 
 function fitCardSize() {
   const { cols, rows } = grid.value
@@ -104,6 +106,8 @@ onMounted(async () => {
   await store.loadTheme('memory', themeId.value)
   restart()
 })
+
+onUnmounted(() => { left = true })
 
 function restart() {
   const pairs = theme.value?.pairs ?? []
@@ -136,12 +140,15 @@ function onCardClick(card) {
     m.add(cardA.id)
     matched.value = m
     flipped.value = new Set()
-    speak(cardA.tts)
+    const announced = speak(cardA.tts)
     if (m.size === totalPairs.value) {
-      setTimeout(() => {
+      // Let the last pair be heard, unless the game was restarted or left meanwhile
+      const current = deck.value
+      announced.then(() => setTimeout(() => {
+        if (left || deck.value !== current) return
         won.value = true
         speak('Toll gemacht! Alle Paare gefunden!')
-      }, 500)
+      }, WIN_PAUSE_MS))
     }
   } else {
     // No match — flip back after 1s

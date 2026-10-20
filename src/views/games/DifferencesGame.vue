@@ -93,6 +93,8 @@ const hintId = ref(null)
 const won    = ref(false)
 let hintTimer = null
 let sceneSvg  = ''
+let left      = false
+const WIN_PAUSE_MS = 800   // after the last difference is announced, before celebrating
 
 onMounted(async () => {
   await store.loadTheme('differences', themeId.value)
@@ -101,7 +103,7 @@ onMounted(async () => {
   restart()
 })
 
-onUnmounted(() => clearTimeout(hintTimer))
+onUnmounted(() => { left = true; clearTimeout(hintTimer) })
 
 function svgUrl(svg) {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`
@@ -131,9 +133,15 @@ function onTap(e) {
       const next = new Set(found.value)
       next.add(h.id)
       found.value = next
-      speak(h.label ?? `Unterschied ${h.id}`)
+      const announced = speak(h.label ?? `Unterschied ${h.id}`)
       if (next.size === round.value.hotspots.length) {
-        setTimeout(() => { won.value = true; speak('Super! Alle Unterschiede gefunden!') }, 500)
+        // Let the last difference be heard, unless the game was restarted or left meanwhile
+        const current = round.value
+        announced.then(() => setTimeout(() => {
+          if (left || round.value !== current) return
+          won.value = true
+          speak('Super! Alle Unterschiede gefunden!')
+        }, WIN_PAUSE_MS))
       }
       return
     }
