@@ -78,11 +78,12 @@ describe('SchreibenGame', () => {
   it('ignores a resting hand and records it', async () => {
     wrapper = await play('?debug')
     await fire(wrapper, 'pointerdown', { pointerId: 9, pointerType: 'touch', width: 80, height: 70, ...px({ x: 90, y: 130 }) })
-    expect(wrapper.find('.debug').text()).toContain('too-big')
+    // Before any pen touch there is no size to compare with: its place gives it away
+    expect(wrapper.find('.debug').text()).toContain('far-from-start')
     await write(wrapper, 1)
     expect(said()).toContain('Super! Ein S!')
     const body = JSON.parse(await posts()[0].text())
-    expect(body.events[0]).toMatchObject({ kind: 'down', id: 9, w: 80, h: 70, reason: 'too-big' })
+    expect(body.events[0]).toMatchObject({ kind: 'down', id: 9, w: 80, h: 70, reason: 'far-from-start' })
   })
 
   it('encourages after lifting halfway and posts that try', async () => {
@@ -109,7 +110,7 @@ describe('SchreibenGame', () => {
     await fire(wrapper, 'pointerup', touch)
     const body = JSON.parse(await posts()[0].text())
     expect(body.result).toBe('no-pen')
-    expect(body.events.map(e => [e.kind, e.reason])).toEqual([['down', 'too-big'], ['up', undefined]])
+    expect(body.events.map(e => [e.kind, e.reason])).toEqual([['down', 'far-from-start'], ['up', undefined]])
   })
 
   it('posts what it has when the iPad hides the page', async () => {

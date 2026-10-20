@@ -60,9 +60,24 @@ describe('tracer', () => {
     expect(penDown(tr, 1, { x: first.x + 15, y: first.y + 10 }, 10)).toEqual({ accepted: true })
   })
 
-  it('ignores a big contact like a resting hand', () => {
+  it('ignores a contact much bigger than the pen, like a resting hand', () => {
     const tr = createTracer(S)
-    expect(penDown(tr, 1, first, 60)).toEqual({ accepted: false, reason: 'too-big' })
+    penDown(tr, 1, first, 10)
+    penUp(tr, 1)
+    expect(penDown(tr, 2, first, 60)).toEqual({ accepted: false, reason: 'too-big' })
+  })
+
+  it('takes the iPad pen, which always reports 41.6 px', () => {
+    const tr = createTracer(S)
+    expect(penDown(tr, 1, first, 41.6)).toEqual({ accepted: true })
+  })
+
+  it('remembers the pen size across letters', () => {
+    const tr = createTracer(S)
+    penDown(tr, 1, first, 41.6)
+    const next = createTracer(S, tr.smallest)
+    expect(penDown(next, 2, first, 125)).toEqual({ accepted: false, reason: 'too-big' })
+    expect(penDown(next, 3, first, 62.4)).toEqual({ accepted: true })
   })
 
   it('accepts a touch whose size the browser does not report', () => {

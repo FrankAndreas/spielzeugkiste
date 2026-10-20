@@ -3,13 +3,16 @@ const START_RADIUS = 22   // how close to the start dot the pen must touch down
 const TOLERANCE    = 16   // how far from the guide still counts as on it
 const WINDOW       = 12   // guide points the pen may move ahead per sample (≈ 24 units)
 const END_SLACK    = 3    // guide points short of the end that still finish a stroke
-const MAX_CONTACT  = 40   // CSS px; a bigger touch is a resting hand
+const HAND_FACTOR  = 2    // a touch this many times the smallest one seen is a resting hand
 
 const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y)
 
-/** A tracer for one letter: which stroke is next and how far along it the pen got. */
-export function createTracer(letter) {
-  return { letter, stroke: 0, progress: 0, pen: null, done: false }
+/**
+ * A tracer for one letter: which stroke is next and how far along it the pen got.
+ * `smallest` is the smallest contact size seen so far (pass it on to the next letter).
+ */
+export function createTracer(letter, smallest = Infinity) {
+  return { letter, stroke: 0, progress: 0, pen: null, done: false, smallest }
 }
 
 const guide = tr => tr.letter.strokes[tr.stroke]
@@ -17,11 +20,16 @@ const guide = tr => tr.letter.strokes[tr.stroke]
 /**
  * A finger, pen or hand touches down. Only one pen is followed: the first touch
  * that is small enough and starts near the start of the next stroke.
+ *
+ * Browsers report contact sizes very differently (Firefox 1 px, the iPad
+ * 41.6 px in coarse steps, 0 when unknown), so a hand is told apart from the
+ * pen by comparing with the smallest contact seen, not by a fixed size.
  */
 export function penDown(tr, id, p, contactPx) {
+  if (contactPx > 0) tr.smallest = Math.min(tr.smallest, contactPx)
   if (tr.done)                         return { accepted: false, reason: 'done' }
   if (tr.pen !== null)                 return { accepted: false, reason: 'pen-busy' }
-  if (contactPx > MAX_CONTACT)         return { accepted: false, reason: 'too-big' }
+  if (contactPx > HAND_FACTOR * tr.smallest) return { accepted: false, reason: 'too-big' }
   if (dist(p, guide(tr)[0]) > START_RADIUS) return { accepted: false, reason: 'far-from-start' }
   tr.pen      = id
   tr.progress = 0

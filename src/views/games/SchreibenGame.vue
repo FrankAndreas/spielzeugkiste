@@ -97,7 +97,7 @@ function sync() {
 }
 
 function startRound() {
-  tracer = createTracer(letter)
+  tracer = createTracer(letter, tracer.smallest)
   sync()
   ink = []
   others = new Map()
