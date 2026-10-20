@@ -197,6 +197,8 @@ function onMove(e) {
 }
 
 function onUp(e) {
+  // Neither the pen nor a known other touch: the pen lifting after a finished letter
+  if (e.pointerId !== tracer.pen && !others.has(e.pointerId)) return
   others.delete(e.pointerId)
   const p        = toLetter(e)
   const progress = tracer.progress

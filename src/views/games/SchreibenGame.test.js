@@ -75,6 +75,13 @@ describe('SchreibenGame', () => {
     expect(body.events.some(e => e.kind === 'move')).toBe(true)
   })
 
+  it('does not post the pen lifting after a finished letter on its own', async () => {
+    wrapper = await play()
+    await write(wrapper)
+    const results = await Promise.all(posts().map(async b => JSON.parse(await b.text()).result))
+    expect(results).toEqual(['letter-done'])
+  })
+
   it('ignores a resting hand and records it', async () => {
     wrapper = await play('?debug')
     await fire(wrapper, 'pointerdown', { pointerId: 9, pointerType: 'touch', width: 80, height: 70, ...px({ x: 90, y: 130 }) })
