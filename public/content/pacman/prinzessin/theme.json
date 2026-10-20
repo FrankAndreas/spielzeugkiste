@@ -1,0 +1,9 @@
+{
+  "name": "Prinzessin",
+  "tts": "Prinzessin-Jagd! Sammle alle Edelsteine.",
+  "colors": { "bg": "#4a1942", "wall": "#FF69B4", "dot": "#B9F2FF" },
+  "player": "👸",
+  "monsters": ["🐺", "🧙", "🕷️", "🐍"],
+  "scared": "😵",
+  "power": "👑"
+}

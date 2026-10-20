@@ -1,0 +1,9 @@
+{
+  "name": "Einhorn",
+  "tts": "Einhorn-Jagd! Sammle alle Bonbons.",
+  "colors": { "bg": "#1e1b4b", "wall": "#a855f7", "dot": "#FF8FC8" },
+  "player": "🦄",
+  "monsters": ["🐉", "🦖", "🦈", "🐙"],
+  "scared": "🥶",
+  "power": "🍩"
+}

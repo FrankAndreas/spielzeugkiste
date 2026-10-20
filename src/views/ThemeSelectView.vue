@@ -34,6 +34,21 @@
         </button>
       </div>
     </div>
+
+    <!-- Pac-Man-only: speed selector -->
+    <div v-if="gameId === 'pacman'" class="difficulty">
+      <p class="diff-label">Tempo</p>
+      <div class="diff-row">
+        <button
+          v-for="opt in speedOptions"
+          :key="opt.value"
+          :class="['diff-btn', { active: speed === opt.value }]"
+          @click="speed = opt.value"
+        >
+          {{ opt.label }}
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -52,6 +67,13 @@ const gameId   = computed(() => route.params.game)
 const game     = computed(() => store.findGame(gameId.value))
 const difficulty = ref('4x4')
 
+const speed = ref('langsam')
+const speedOptions = [
+  { label: 'Langsam 🐢', value: 'langsam' },
+  { label: 'Mittel 🦄',  value: 'mittel'  },
+  { label: 'Schnell ⚡', value: 'schnell' },
+]
+
 const difficultyOptions = [
   { label: 'Leicht (3×4)',  value: '3x4'  },
   { label: 'Mittel (4×4)',  value: '4x4'  },
@@ -66,7 +88,9 @@ onMounted(async () => {
 })
 
 function onThemeSelect(theme) {
-  const query = gameId.value === 'memory' ? { grid: difficulty.value } : {}
+  const query = gameId.value === 'memory' ? { grid: difficulty.value }
+              : gameId.value === 'pacman' ? { speed: speed.value }
+              : {}
   router.push({ path: `/${gameId.value}/${theme}/play`, query })
 }
 </script>

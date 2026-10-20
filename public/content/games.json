@@ -49,6 +49,16 @@
       "shadow": "#6f3d87",
       "tts": "Willkommen bei der Schlange! Wähle ein Thema.",
       "themes": ["einhorn", "prinzessin"]
+    },
+    {
+      "id": "pacman",
+      "name": "Pac-Man",
+      "emoji": "🍬",
+      "description": "Sammeln und flitzen",
+      "color": "#FF69B4",
+      "shadow": "#c94a8c",
+      "tts": "Willkommen bei Pac-Man! Wähle ein Thema und wie schnell es geht.",
+      "themes": ["einhorn", "prinzessin"]
     }
   ]
 }
