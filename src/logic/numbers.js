@@ -7,6 +7,17 @@ const LOOSE_COLS = 4
 const LOOSE_ROWS = 3
 const JITTER     = 0.15   // of a cell, so neighbours never overlap
 
+/** Deterministic random numbers in [0, 1) for a seed (mulberry32). */
+export function seededRandom(seed) {
+  let a = seed + 1
+  return () => {
+    a = (a + 0x6D2B79F5) | 0
+    let t = Math.imul(a ^ (a >>> 15), 1 | a)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
 /** The German word for 0–20, as said when counting ("eins", not "ein"). */
 export function numberWord(n) {
   return WORDS[n]

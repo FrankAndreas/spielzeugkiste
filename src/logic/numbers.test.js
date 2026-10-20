@@ -1,16 +1,7 @@
 import { describe, it, expect } from 'vitest'
-import { numberWord, answerChoices, looseLayout, tenFrameLayout, dicePips, parseLevel, buildSession, questionText, cheerText } from './numbers.js'
+import { numberWord, answerChoices, looseLayout, tenFrameLayout, dicePips, parseLevel, buildSession, questionText, cheerText, seededRandom } from './numbers.js'
 
-// Deterministic random numbers in [0, 1) (mulberry32)
-function seeded(seed) {
-  let a = seed + 1
-  return () => {
-    a = (a + 0x6D2B79F5) | 0
-    let t = Math.imul(a ^ (a >>> 15), 1 | a)
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-  }
-}
+const seeded = seededRandom
 
 describe('numberWord', () => {
   it('names 0 to 20 in German', () => {
@@ -157,5 +148,15 @@ describe('questionText and cheerText', () => {
 
   it('cheers with the number', () => {
     expect(cheerText(5)).toBe('Super! Fünf!')
+  })
+})
+
+describe('seededRandom', () => {
+  it('repeats the same numbers in [0, 1) for the same seed', () => {
+    const a = seededRandom(1), b = seededRandom(1)
+    const first = Array.from({ length: 5 }, a)
+    expect(Array.from({ length: 5 }, b)).toEqual(first)
+    first.forEach(n => { expect(n).toBeGreaterThanOrEqual(0); expect(n).toBeLessThan(1) })
+    expect(seededRandom(2)()).not.toBe(first[0])
   })
 })
