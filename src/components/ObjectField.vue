@@ -50,7 +50,7 @@ function onTap(i) {
 
 <style scoped>
 .loose { position: relative; width: 100%; height: 100%; min-height: 240px; }
-.loose .obj { position: absolute; transform: translate(-50%, -50%); }
+.loose .obj { position: absolute; transform: translate(-50%, -50%); width: 84px; height: 84px; font-size: 3.6rem; }
 .frames { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; align-content: center; height: 100%; }
 .frame {
   display: grid; grid-template-columns: repeat(5, 60px); grid-auto-rows: 60px; gap: 4px;

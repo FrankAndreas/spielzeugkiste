@@ -26,7 +26,7 @@ const emit = defineEmits(['pick'])
 <style scoped>
 .choices { display: flex; justify-content: center; gap: 16px; padding: 10px; flex-shrink: 0; }
 .choice {
-  min-width: 96px; min-height: 96px; padding: 8px 12px;
+  min-width: 112px; min-height: 112px; padding: 8px 12px;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
   background: white; border: 3px solid var(--accent, #00B8A9); border-radius: 20px;
   box-shadow: 0 4px 0 #ccc;

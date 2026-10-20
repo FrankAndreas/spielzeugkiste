@@ -112,6 +112,14 @@ describe('buildSession', () => {
     }
   })
 
+  it('offers 0 as a choice only when counting objects', () => {
+    for (let s = 0; s < 200; s++) {
+      for (const x of buildSession(9, 3, seeded(s))) {
+        if (x.type !== 'count' && x.choices) x.choices.forEach(n => expect(n).toBeGreaterThanOrEqual(1))
+      }
+    }
+  })
+
   it('sometimes asks for zero in Bis 9, but never in task 1', () => {
     const zeros = []
     for (let s = 0; s < 300; s++) {

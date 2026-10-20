@@ -32,9 +32,9 @@ function shuffle(list, random) {
   return a
 }
 
-/** The answer plus two near numbers (±1, ±2) within 0..max, shuffled. */
-export function answerChoices(answer, max, random = Math.random) {
-  const near = [answer - 2, answer - 1, answer + 1, answer + 2].filter(n => n >= 0 && n <= max)
+/** The answer plus two near numbers (±1, ±2) within min..max, shuffled. */
+export function answerChoices(answer, max, random = Math.random, min = 0) {
+  const near = [answer - 2, answer - 1, answer + 1, answer + 2].filter(n => n >= min && n <= max)
   return shuffle([answer, ...shuffle(near, random).slice(0, 2)], random)
 }
 
@@ -119,7 +119,10 @@ export function buildSession(level, kindCount, random = Math.random) {
   const first = { type: 'count', kind: kind(), amount: int(1, 5, random) }
   first.answer = first.amount
   const tasks = [first, ...shuffle(TYPES, random).map(type => makeTask(type, level, kind(), random))]
-  for (const t of tasks) if (t.type !== 'build') t.choices = answerChoices(t.answer, level, random)
+  // Only counting objects can come to "keine", so only there is 0 a choice
+  for (const t of tasks) {
+    if (t.type !== 'build') t.choices = answerChoices(t.answer, level, random, t.type === 'count' ? 0 : 1)
+  }
   return tasks
 }
 

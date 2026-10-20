@@ -30,9 +30,9 @@ function onTap(i) {
 
 <style scoped>
 .die {
-  display: grid; grid-template: repeat(3, 60px) / repeat(3, 60px); gap: 4px; padding: 10px;
+  display: grid; grid-template: repeat(3, 64px) / repeat(3, 64px); gap: 4px; padding: 10px;
   background: white; border-radius: 22px; border: 3px solid #333; box-shadow: 0 5px 0 #999;
 }
-.pip { width: 48px; height: 48px; margin: auto; border-radius: 50%; border: none; background: #333; padding: 0; }
+.pip { width: 56px; height: 56px; margin: auto; border-radius: 50%; border: none; background: #333; padding: 0; }
 .pip.marked { background: #FFB800; box-shadow: 0 0 12px 4px rgba(255, 200, 0, 0.8); }
 </style>
