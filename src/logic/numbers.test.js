@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { numberWord, answerChoices, looseLayout, tenFrameLayout, dicePips } from './numbers.js'
+import { numberWord, answerChoices, looseLayout, tenFrameLayout, dicePips, parseLevel, buildSession, questionText, cheerText } from './numbers.js'
 
 // Deterministic random numbers in [0, 1) (mulberry32)
 function seeded(seed) {
@@ -81,5 +81,81 @@ describe('dicePips', () => {
     expect(dicePips(1)).toEqual([{ x: 1, y: 1 }])
     expect(dicePips(5)).toContainEqual({ x: 1, y: 1 })
     expect(dicePips(6)).not.toContainEqual({ x: 1, y: 1 })
+  })
+})
+
+describe('buildSession', () => {
+  it('has 6 tasks: a small count first, then each type once', () => {
+    for (const level of [9, 20]) for (let s = 0; s < 30; s++) {
+      const t = buildSession(level, 3, seeded(s))
+      expect(t).toHaveLength(6)
+      expect(t[0].type).toBe('count')
+      expect(t[0].amount).toBeGreaterThanOrEqual(1)
+      expect(t[0].amount).toBeLessThanOrEqual(5)
+      expect(t.slice(1).map(x => x.type).sort()).toEqual(['build', 'count', 'dice', 'listen', 'plus'])
+      t.forEach(x => {
+        expect(x.kind).toBeGreaterThanOrEqual(0)
+        expect(x.kind).toBeLessThan(3)
+      })
+    }
+  })
+
+  it('keeps every answer in the level range', () => {
+    for (let s = 0; s < 200; s++) {
+      for (const x of buildSession(9, 3, seeded(s))) {
+        expect(x.answer).toBeLessThanOrEqual(9)
+        if (x.type === 'count')  expect(x.answer).toBe(x.amount)
+        if (x.type === 'dice')   { expect(x.dice).toHaveLength(1); expect(x.answer).toBe(x.dice[0]) }
+        if (x.type === 'plus')   { expect(x.a).toBeGreaterThanOrEqual(1); expect(x.b).toBeGreaterThanOrEqual(1); expect(x.answer).toBe(x.a + x.b) }
+        if (x.type === 'build')  { expect(x.answer).toBeGreaterThanOrEqual(1); expect(x.supply).toBe(x.answer + 3) }
+        if (x.type === 'listen') expect(x.answer).toBeGreaterThanOrEqual(1)
+        if (x.type !== 'build')  expect(x.choices).toContain(x.answer)
+      }
+      for (const x of buildSession(20, 3, seeded(s))) {
+        expect(x.answer).toBeLessThanOrEqual(20)
+        if (x.type === 'count')  expect(x.answer).toBeGreaterThanOrEqual(1)
+        if (x.type === 'dice')   { expect(x.dice).toHaveLength(2); expect(x.answer).toBe(x.dice[0] + x.dice[1]) }
+        if (x.type === 'listen') expect(x.answer).toBeLessThanOrEqual(10)
+        if (x.type !== 'build')  x.choices.forEach(n => expect(n).toBeLessThanOrEqual(20))
+      }
+    }
+  })
+
+  it('sometimes asks for zero in Bis 9, but never in task 1', () => {
+    const zeros = []
+    for (let s = 0; s < 300; s++) {
+      buildSession(9, 3, seeded(s)).forEach((x, i) => { if (x.answer === 0) zeros.push([i, x.type]) })
+    }
+    expect(zeros.length).toBeGreaterThan(0)
+    zeros.forEach(([i, type]) => {
+      expect(i).toBeGreaterThan(0)
+      expect(type).toBe('count')
+    })
+  })
+})
+
+describe('parseLevel', () => {
+  it('accepts 20 and falls back to 9', () => {
+    expect(parseLevel('20')).toBe(20)
+    expect(parseLevel('9')).toBe(9)
+    expect(parseLevel(undefined)).toBe(9)
+    expect(parseLevel('toString')).toBe(9)
+  })
+})
+
+describe('questionText and cheerText', () => {
+  const obj = { one: 'ein Einhorn', many: 'Einhörner' }
+
+  it('asks in German with number words', () => {
+    expect(questionText({ type: 'count' }, obj)).toBe('Wie viele Einhörner?')
+    expect(questionText({ type: 'build', answer: 5 }, obj)).toBe('Leg fünf Einhörner in den Korb.')
+    expect(questionText({ type: 'build', answer: 1 }, obj)).toBe('Leg ein Einhorn in den Korb.')
+    expect(questionText({ type: 'plus', a: 3, b: 1 }, obj)).toBe('drei Einhörner und ein Einhorn. Wie viele zusammen?')
+    expect(questionText({ type: 'dice' }, obj)).toBe('Wie viele Punkte?')
+    expect(questionText({ type: 'listen' }, obj)).toBe('Hör gut zu! Wie oft?')
+  })
+
+  it('cheers with the number', () => {
+    expect(cheerText(5)).toBe('Super! Fünf!')
   })
 })

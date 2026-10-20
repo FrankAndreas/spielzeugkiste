@@ -60,3 +60,72 @@ const PIPS = {
 export function dicePips(value) {
   return PIPS[value].map(([x, y]) => ({ x, y }))
 }
+
+const TYPES       = ['count', 'dice', 'build', 'plus', 'listen']
+const ZERO_CHANCE = 0.1   // how often a Bis-9 count asks for "keine"
+const MAX_BEATS   = { 9: 9, 20: 10 }
+
+/** The level from the query: 20, otherwise 9. */
+export function parseLevel(value) {
+  return value === '20' || value === 20 ? 20 : 9
+}
+
+const int = (lo, hi, random) => lo + Math.floor(random() * (hi - lo + 1))
+
+function makeTask(type, level, kind, random) {
+  switch (type) {
+    case 'count': {
+      const zero   = level === 9 && random() < ZERO_CHANCE
+      const amount = zero ? 0 : int(1, level, random)
+      return { type, kind, amount, answer: amount }
+    }
+    case 'dice': {
+      const dice = Array.from({ length: level === 9 ? 1 : 2 }, () => int(1, 6, random))
+      return { type, kind, dice, answer: dice.reduce((s, d) => s + d, 0) }
+    }
+    case 'build': {
+      const amount = int(1, level, random)
+      return { type, kind, amount, supply: amount + 3, answer: amount }
+    }
+    case 'plus': {
+      const a = int(1, level - 1, random)
+      const b = int(1, level - a, random)
+      return { type, kind, a, b, answer: a + b }
+    }
+    case 'listen': {
+      const amount = int(1, MAX_BEATS[level], random)
+      return { type, kind, amount, answer: amount }
+    }
+  }
+}
+
+/**
+ * Six tasks: a small count to start, then each round type once in random order.
+ * `kind` indexes the theme's objects; every task but build has answer choices.
+ */
+export function buildSession(level, kindCount, random = Math.random) {
+  const kind  = () => Math.floor(random() * kindCount)
+  const first = { type: 'count', kind: kind(), amount: int(1, 5, random) }
+  first.answer = first.amount
+  const tasks = [first, ...shuffle(TYPES, random).map(type => makeTask(type, level, kind(), random))]
+  for (const t of tasks) if (t.type !== 'build') t.choices = answerChoices(t.answer, level, random)
+  return tasks
+}
+
+const group = (n, obj) => n === 1 ? obj.one : `${numberWord(n)} ${obj.many}`
+
+/** The spoken question; `obj` is the theme object ({ one: 'ein Einhorn', many: 'Einhörner' }). */
+export function questionText(task, obj) {
+  switch (task.type) {
+    case 'count':  return `Wie viele ${obj.many}?`
+    case 'dice':   return 'Wie viele Punkte?'
+    case 'build':  return `Leg ${group(task.answer, obj)} in den Korb.`
+    case 'plus':   return `${group(task.a, obj)} und ${group(task.b, obj)}. Wie viele zusammen?`
+    case 'listen': return 'Hör gut zu! Wie oft?'
+  }
+}
+
+export function cheerText(answer) {
+  const word = numberWord(answer)
+  return `Super! ${word[0].toUpperCase()}${word.slice(1)}!`
+}
