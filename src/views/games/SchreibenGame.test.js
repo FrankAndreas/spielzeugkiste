@@ -101,4 +101,22 @@ describe('SchreibenGame', () => {
     await flushPromises()
     expect(wrapper.find('.win').text()).toContain('Super geschrieben!')
   })
+
+  it('posts touches that were all ignored, so the reason reaches the file', async () => {
+    wrapper = await play()
+    const touch = { pointerId: 5, pointerType: 'touch', width: 80, height: 80, ...px({ x: 50, y: 70 }) }
+    await fire(wrapper, 'pointerdown', touch)
+    await fire(wrapper, 'pointerup', touch)
+    const body = JSON.parse(await posts()[0].text())
+    expect(body.result).toBe('no-pen')
+    expect(body.events.map(e => [e.kind, e.reason])).toEqual([['down', 'too-big'], ['up', undefined]])
+  })
+
+  it('posts what it has when the iPad hides the page', async () => {
+    wrapper = await play()
+    await fire(wrapper, 'pointerdown', { pointerId: 1, pointerType: 'touch', width: 10, height: 10, ...px(guide[0]) })
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('hidden')
+    document.dispatchEvent(new Event('visibilitychange'))
+    expect(JSON.parse(await posts()[0].text()).result).toBe('hidden')
+  })
 })

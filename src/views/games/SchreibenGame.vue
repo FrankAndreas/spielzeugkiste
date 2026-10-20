@@ -77,6 +77,7 @@ let lastHint = 0
 onMounted(() => {
   resize()
   window.addEventListener('resize', resize)
+  document.addEventListener('visibilitychange', onHidden)
   startRound()
   speak(intro)
 })
@@ -84,6 +85,7 @@ onMounted(() => {
 onUnmounted(() => {
   left = true
   window.removeEventListener('resize', resize)
+  document.removeEventListener('visibilitychange', onHidden)
   sendTraces(log, { result: 'left' })
   stopSpeaking()
 })
@@ -205,8 +207,16 @@ function onUp(e) {
     sync()
     sendTraces(log, { result: 'too-short', progress })
     if (progress >= SMALL_TRY) speak('Fast! Fang nochmal beim grünen Punkt an.')
+  } else if (tracer.pen === null && !others.size) {
+    // All fingers off and no pen taken: send them anyway, so ignored touches show up too
+    sendTraces(log, { result: 'no-pen' })
   }
   draw()
+}
+
+// The iPad may switch apps or lock without leaving the game
+function onHidden() {
+  if (document.visibilityState === 'hidden') sendTraces(log, { result: 'hidden' })
 }
 
 function finishStroke(result, e, p) {
