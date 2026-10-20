@@ -55,33 +55,45 @@ function shuffle(items, random) {
  * alternatives `<g data-variant="…" data-label="…" display="none">`. The scene
  * file as-is renders as the original image.
  *
+ * Passing the previous round's hotspots keeps consecutive rounds apart:
+ * differences that weren't in it are picked first, and a difference that has
+ * to repeat gets another variant if it has one.
+ *
  * @param {string} svgText - scene SVG source
  * @param {number} count - number of differences to pick
  * @param {() => number} [random] - RNG returning [0, 1)
+ * @param {{ key: string, variant: string }[]} [previous] - hotspots of the previous round
  * @returns {{ original: string, modified: string,
- *             hotspots: { id: number, key: string, x: number, y: number, r: number, label: string }[] }}
+ *             hotspots: { id: number, key: string, variant: string,
+ *                         x: number, y: number, r: number, label: string }[] }}
  */
-export function buildRound(svgText, count, random = Math.random) {
+export function buildRound(svgText, count, random = Math.random, previous = []) {
   const doc = new DOMParser().parseFromString(svgText, 'image/svg+xml')
   const svg = doc.documentElement
   const [, , vbW, vbH] = svg.getAttribute('viewBox').split(/[\s,]+/).map(Number)
   const original = new XMLSerializer().serializeToString(doc)
 
-  const candidates = [...svg.querySelectorAll('[data-diff]')]
-  const picked = shuffle(candidates, random).slice(0, count)
+  const lastVariant = new Map(previous.map(h => [h.key, h.variant]))
+  const candidates  = shuffle([...svg.querySelectorAll('[data-diff]')], random)
+  const isFresh     = g => !lastVariant.has(g.getAttribute('data-diff'))
+  const picked = [...candidates.filter(isFresh), ...candidates.filter(g => !isFresh(g))]
+    .slice(0, count)
 
   const hotspots = picked.map((g, i) => {
-    const variants = [...g.children].filter(v => v.getAttribute('data-variant') !== 'orig')
+    const all      = [...g.children].filter(v => v.getAttribute('data-variant') !== 'orig')
+    const others   = all.filter(v => v.getAttribute('data-variant') !== lastVariant.get(g.getAttribute('data-diff')))
+    const variants = others.length ? others : all
     const variant  = variants[Math.floor(random() * variants.length)]
     g.querySelector('[data-variant="orig"]').setAttribute('display', 'none')
     variant.removeAttribute('display')
     return {
-      id:    i + 1,
-      key:   g.getAttribute('data-diff'),
-      x:     +g.getAttribute('data-cx') / vbW,
-      y:     +g.getAttribute('data-cy') / vbH,
-      r:     +g.getAttribute('data-r') * REF_WIDTH / vbW,
-      label: variant.getAttribute('data-label'),
+      id:      i + 1,
+      key:     g.getAttribute('data-diff'),
+      variant: variant.getAttribute('data-variant'),
+      x:       +g.getAttribute('data-cx') / vbW,
+      y:       +g.getAttribute('data-cy') / vbH,
+      r:       +g.getAttribute('data-r') * REF_WIDTH / vbW,
+      label:   variant.getAttribute('data-label'),
     }
   })
 

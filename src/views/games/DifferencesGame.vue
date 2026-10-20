@@ -64,6 +64,12 @@
   </div>
 </template>
 
+<script>
+// The last round per theme, kept while the app is open, so the next round —
+// "Nochmal" or after coming back to the theme — avoids repeating it
+const lastRounds = new Map()
+</script>
+
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
@@ -103,7 +109,9 @@ function svgUrl(svg) {
 
 // Every round picks a fresh random set of differences from the scene's pool
 function restart() {
-  round.value  = buildRound(sceneSvg, theme.value.count ?? 10)
+  const previous = lastRounds.get(themeId.value) ?? []
+  round.value  = buildRound(sceneSvg, theme.value.count ?? 10, Math.random, previous)
+  lastRounds.set(themeId.value, round.value.hotspots)
   found.value  = new Set()
   hintId.value = null
   won.value    = false

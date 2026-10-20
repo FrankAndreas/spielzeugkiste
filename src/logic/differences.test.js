@@ -136,6 +136,35 @@ describe('buildRound', () => {
     }
   })
 
+  it('reports the picked variant', () => {
+    const round = buildRound(SCENE, 3, seq(0))
+    expect(round.hotspots.find(h => h.key === 'sun').variant).toBe('red')
+  })
+
+  it('prefers differences that were not in the previous round', () => {
+    for (let i = 0; i < 20; i++) {
+      const previous = buildRound(SCENE, 2).hotspots
+      const fresh = ['sun', 'tree', 'cat'].find(k => !previous.some(h => h.key === k))
+      const round = buildRound(SCENE, 2, Math.random, previous)
+      expect(round.hotspots.map(h => h.key)).toContain(fresh)
+    }
+  })
+
+  it('picks another variant for a difference that repeats', () => {
+    for (let i = 0; i < 20; i++) {
+      const previous = buildRound(SCENE, 3).hotspots
+      const round = buildRound(SCENE, 3, Math.random, previous)
+      const before = previous.find(h => h.key === 'sun').variant
+      expect(round.hotspots.find(h => h.key === 'sun').variant).not.toBe(before)
+    }
+  })
+
+  it('repeats a variant when a difference has no other', () => {
+    const previous = buildRound(SCENE, 3).hotspots
+    const round = buildRound(SCENE, 3, Math.random, previous)
+    expect(round.hotspots.find(h => h.key === 'tree').variant).toBe('gone')
+  })
+
   it('varies between rounds', () => {
     const picks = new Set()
     for (let i = 0; i < 30; i++) {
