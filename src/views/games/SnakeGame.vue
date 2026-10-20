@@ -41,6 +41,7 @@ import { useRoute } from 'vue-router'
 import { useContentStore } from '../../stores/content.js'
 import { speak } from '../../services/tts.js'
 import { loadBest, saveBest } from '../../services/bestScore.js'
+import { fillRoundRect } from '../../services/roundRect.js'
 import { keyToDirection, swipeDirection } from '../../logic/direction.js'
 import { SIZE, createSnake, turn, step, tickMs } from '../../logic/snake.js'
 import { useGameLoop } from '../../composables/useGameLoop.js'
@@ -185,25 +186,22 @@ function draw() {
   const snake = state.value.snake
   for (let i = snake.length - 1; i > 0; i--) {
     ctx.fillStyle = colors.body[(i - 1) % colors.body.length]
-    roundRect(ctx, snake[i].x * cell + 1, snake[i].y * cell + 1, cell - 2, cell - 2, cell * 0.3)
+    fillRoundRect(ctx, snake[i].x * cell + 1, snake[i].y * cell + 1, cell - 2, cell - 2, cell * 0.3)
   }
   if (snake.length) {
     ctx.fillStyle = colors.head
-    roundRect(ctx, snake[0].x * cell, snake[0].y * cell, cell, cell, cell * 0.35)
+    fillRoundRect(ctx, snake[0].x * cell, snake[0].y * cell, cell, cell, cell * 0.35)
     ctx.font = `${Math.floor(cell * 0.85)}px system-ui, sans-serif`
     ctx.fillText(face, (snake[0].x + 0.5) * cell, (snake[0].y + 0.55) * cell)
   }
 }
-
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath()
-  ctx.roundRect(x, y, w, h, r)
-  ctx.fill()
-}
 </script>
 
 <style scoped>
-.layout { height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+.layout {
+  height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden;
+  touch-action: manipulation;   /* no double-tap zoom when a child taps quickly */
+}
 
 .score-bar {
   display: flex; justify-content: space-between; align-items: center;

@@ -37,6 +37,19 @@ describe('content store', () => {
     expect(store.currentTheme.pairs).toHaveLength(1)
   })
 
+  it('loadTheme drops the previous theme while the next one loads', async () => {
+    fetch.mockResolvedValue({ json: () => Promise.resolve(MOCK_THEME) })
+    const store = useContentStore()
+    await store.loadTheme('memory', 'tiere')
+    let resolve
+    fetch.mockReturnValue(new Promise(r => { resolve = r }))
+    const loading = store.loadTheme('snake', 'einhorn')
+    expect(store.currentTheme).toBeNull()
+    resolve({ json: () => Promise.resolve({ name: 'Einhorn' }) })
+    await loading
+    expect(store.currentTheme.name).toBe('Einhorn')
+  })
+
   it('findGame returns game by id', async () => {
     fetch.mockResolvedValue({ json: () => Promise.resolve(MOCK_GAMES) })
     const store = useContentStore()

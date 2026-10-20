@@ -126,6 +126,18 @@ describe('monsters', () => {
     expect(game.monsters[0].scared).toBe(false)
   })
 
+  it('does not take a life right after being caught next to the player', () => {
+    // The monster's start is one tile ahead of where the player catches it
+    const game = createGame(['WWWWWWWW', 'WP G...W', 'WWWWWWWW', 'W......W', 'WWWWWWWW'], 'langsam', first)
+    game.scaredMs = SCARED_MS
+    game.monsters[0].scared = true
+    setDirection(game, 'right')
+    const events = run(game, 1500)
+    expect(events).toContain('caught')
+    expect(events).not.toContain('life-lost')
+    expect(game.lives).toBe(LIVES)
+  })
+
   it('stays scared for SCARED_MS after a power-up', () => {
     const game = createGame(['WWWWWWWWW', 'WP*     W', 'WWWWWWWWW', 'W.......W', 'WWWWWWWWW'], 'langsam', first)
     setDirection(game, 'right')

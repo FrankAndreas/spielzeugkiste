@@ -12,6 +12,8 @@ export const useContentStore = defineStore('content', () => {
   }
 
   async function loadTheme(game, theme) {
+    // A view must never render with another game's theme while this one loads
+    currentTheme.value = null
     const res = await fetch(`/content/${game}/${theme}/theme.json`)
     currentTheme.value = await res.json()
   }

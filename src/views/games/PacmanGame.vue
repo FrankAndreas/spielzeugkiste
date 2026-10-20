@@ -50,6 +50,7 @@ import { useRoute } from 'vue-router'
 import { useContentStore } from '../../stores/content.js'
 import { speak } from '../../services/tts.js'
 import { loadBest, saveBest } from '../../services/bestScore.js'
+import { fillRoundRect } from '../../services/roundRect.js'
 import { keyToDirection, swipeDirection } from '../../logic/direction.js'
 import { MAZE, SPEEDS, createGame, setDirection, position, update } from '../../logic/pacman.js'
 import { useGameLoop } from '../../composables/useGameLoop.js'
@@ -219,9 +220,7 @@ function draw() {
   ctx.fillStyle = colors.wall
   for (const k of game.walls) {
     const [x, y] = k.split(',').map(Number)
-    ctx.beginPath()
-    ctx.roundRect(x * tile + 1, y * tile + 1, tile - 2, tile - 2, tile * 0.25)
-    ctx.fill()
+    fillRoundRect(ctx, x * tile + 1, y * tile + 1, tile - 2, tile - 2, tile * 0.25)
   }
 
   ctx.fillStyle = colors.dot
@@ -243,8 +242,10 @@ function draw() {
   }
   game.monsters.forEach((m, i) => {
     const p = position(m)
+    ctx.globalAlpha = m.safeMs ? 0.4 : 1   // just caught: harmless for a moment
     sprite(m.scared ? theme.value.scared : theme.value.monsters[i % theme.value.monsters.length], p.x, p.y)
   })
+  ctx.globalAlpha = 1
   const p = position(game.player)
   ctx.font = `${Math.floor(tile * 0.95)}px system-ui, sans-serif`
   sprite(theme.value.player, p.x, p.y)
@@ -252,7 +253,10 @@ function draw() {
 </script>
 
 <style scoped>
-.layout { height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+.layout {
+  height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden;
+  touch-action: manipulation;   /* no double-tap zoom when a child taps quickly */
+}
 
 .score-bar {
   display: flex; justify-content: space-between; align-items: center; gap: 8px;

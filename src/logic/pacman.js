@@ -35,6 +35,7 @@ export const SPEEDS = {
 export const SCORES    = { dot: 10, power: 50, monster: 200 }
 export const LIVES     = 5
 export const SCARED_MS = 6000
+export const SAFE_MS   = 2000   // a caught monster can't hurt anyone this long after respawning
 
 const MONSTERS = 4          // one per theme sprite
 const HIT      = 0.6        // tiles between centres that count as touching
@@ -45,7 +46,7 @@ const ORDER = ['up', 'down', 'left', 'right']
 const key   = (x, y) => `${x},${y}`
 
 function actor(x, y, speed) {
-  return { x, y, dir: 'up', progress: 0, start: { x, y }, speed, scared: false }
+  return { x, y, dir: 'up', progress: 0, start: { x, y }, speed, scared: false, safeMs: 0 }
 }
 
 /** A new game on the given maze rows at a speed from SPEEDS. */
@@ -110,7 +111,10 @@ export function update(game, dtMs, random = Math.random) {
     const slice = Math.min(SLICE, left)
     left -= slice
     game.scaredMs = Math.max(0, game.scaredMs - slice)
-    if (!game.scaredMs) game.monsters.forEach(m => { m.scared = false })
+    game.monsters.forEach(m => {
+      if (!game.scaredMs) m.scared = false
+      m.safeMs = Math.max(0, m.safeMs - slice)
+    })
 
     movePlayer(game, slice / 1000, events)
     if (game.cleared) break
@@ -194,6 +198,7 @@ function reset(a) {
   a.dir = 'up'
   a.progress = 0
   a.scared = false
+  a.safeMs = 0
 }
 
 // Returns true when the player lost a life (the round restarts)
@@ -201,10 +206,11 @@ function touch(game, events) {
   const p = position(game.player)
   for (const m of game.monsters) {
     const q = position(m)
-    if (Math.hypot(p.x - q.x, p.y - q.y) >= HIT) continue
+    if (m.safeMs || Math.hypot(p.x - q.x, p.y - q.y) >= HIT) continue
     if (m.scared) {
       game.score += SCORES.monster
       reset(m)
+      m.safeMs = SAFE_MS
       events.push('caught')
       continue
     }
