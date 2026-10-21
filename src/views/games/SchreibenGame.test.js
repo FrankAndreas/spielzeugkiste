@@ -178,6 +178,8 @@ describe('SchreibenGame', () => {
   })
 
   it('says which way round when the pen starts at the wrong end', async () => {
+    // Right after the page loaded, as on a fresh iPad tab
+    vi.spyOn(performance, 'now').mockReturnValue(100)
     wrapper = await play()
     await fire(wrapper, 'pointerdown', { pointerId: 7, pointerType: 'touch', width: 10, height: 10, ...px(guide.at(-1)) })
     expect(said().at(-1)).toBe('Andersherum! Fang beim grünen Punkt an.')

@@ -95,7 +95,7 @@ let others   = new Map()    // other touches (debug): id -> { p, size, reason }
 let fit      = { scale: 1, ox: 0, oy: 0 }
 let log      = null
 let left     = false
-let lastHint = 0
+let lastHint = -Infinity   // no hint yet: the first one is never held back
 
 onMounted(() => {
   if (!tasks.length) {
