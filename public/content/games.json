@@ -79,6 +79,16 @@
       "shadow": "#b35f12",
       "tts": "Schreiben! Nimm deinen Stift.",
       "themes": []
+    },
+    {
+      "id": "malen",
+      "name": "Malen",
+      "emoji": "🖌️",
+      "description": "Frei malen",
+      "color": "#26A69A",
+      "shadow": "#1b7a71",
+      "tts": "Malen! Mach ein neues Bild oder mal weiter.",
+      "themes": []
     }
   ]
 }

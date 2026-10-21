@@ -13,6 +13,8 @@ const ZahlenGame      = () => import('../views/games/ZahlenGame.vue')
 const SchreibenGame   = () => import('../views/games/SchreibenGame.vue')
 const SchreibenMenu   = () => import('../views/games/SchreibenMenu.vue')
 const SchreibenWords  = () => import('../views/games/SchreibenWords.vue')
+const MalenGallery    = () => import('../views/games/MalenGallery.vue')
+const MalenCanvas     = () => import('../views/games/MalenCanvas.vue')
 
 export default createRouter({
   history: createWebHashHistory(),
@@ -28,6 +30,8 @@ export default createRouter({
     { path: '/zahlen/:theme/play',       component: ZahlenGame },
     { path: '/schreiben/play',           component: SchreibenMenu },
     { path: '/schreiben/words',          component: SchreibenWords },
+    { path: '/malen/play',               component: MalenGallery },
+    { path: '/malen/draw/:id?',          component: MalenCanvas },
     { path: '/schreiben/name/:name',     component: SchreibenGame },
     { path: '/schreiben/letter/:letter', component: SchreibenGame },
   ],
