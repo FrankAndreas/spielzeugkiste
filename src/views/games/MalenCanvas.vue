@@ -37,6 +37,9 @@
         @pointercancel="onUp"
       />
       <canvas ref="overlay" class="overlay" />
+      <div v-if="debug" class="debug">
+        <div v-for="(l, i) in debugLines" :key="i">{{ l }}</div>
+      </div>
     </div>
 
     <div class="colors">
@@ -79,6 +82,8 @@ const tool    = ref('brush')
 const size    = ref('M')
 const color   = ref(COLORS[2])
 const strokes = ref([])
+const debug   = 'debug' in route.query   // ?debug: list touches, for finding input problems
+const debugLines = ref([])
 
 let paintingId = route.params.id || undefined
 let background = null    // a saved painting being continued
@@ -164,8 +169,17 @@ function point(e) {
 
 const contact = e => Math.max(e.width || 0, e.height || 0)
 
+function log(kind, e, note = '') {
+  if (!debug) return
+  const line = `${kind} #${e.pointerId} ${e.pointerType} ${Math.round(e.width || 0)}×${Math.round(e.height || 0)} ${note}`
+  debugLines.value = [line.trim(), ...debugLines.value].slice(0, 10)
+}
+
 function onDown(e) {
-  if (!penStart(filter, e.pointerId, contact(e))) return
+  const busy = filter.pen !== null
+  const ok   = penStart(filter, e.pointerId, contact(e))
+  log('down', e, ok ? 'pen' : busy ? 'busy' : 'too-big')
+  if (!ok) return
   paper.value.setPointerCapture?.(e.pointerId)
   current = { tool: tool.value, size: size.value, color: color.value, points: [point(e)] }
   drawCurrent()
@@ -179,6 +193,7 @@ function onMove(e) {
 }
 
 function onUp(e) {
+  log(e.type === 'pointercancel' ? 'cancel' : 'up', e, `${current?.points.length ?? 0} points`)
   if (!penEnd(filter, e.pointerId) || !current) return
   strokes.value = [...strokes.value, current]
   const ctx = context(paper.value)
@@ -252,6 +267,10 @@ async function done() {
 .paper, .overlay { position: absolute; inset: 0; display: block; }
 .paper { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 .overlay { pointer-events: none; }
+.debug {
+  position: absolute; left: 8px; bottom: 8px; padding: 6px 8px; pointer-events: none;
+  font: 11px/1.4 monospace; color: #333; background: rgba(255, 255, 255, 0.85); border-radius: 8px;
+}
 .colors { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 8px 12px 12px; flex-shrink: 0; }
 .color { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #ddd; }
 .color.active { border-color: #333; transform: scale(1.12); }

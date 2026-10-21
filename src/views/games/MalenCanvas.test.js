@@ -121,4 +121,20 @@ describe('MalenCanvas', () => {
     await flushPromises()
     expect(savePainting.mock.calls[0][0].id).toBe('old')
   })
+
+  it('lists every touch and why it was ignored with ?debug', async () => {
+    ;({ wrapper } = await open('/malen/draw?debug'))
+    const pen  = { pointerId: 1, pointerType: 'touch', width: 1, height: 1 }
+    const hand = { pointerId: 2, pointerType: 'touch', width: 1, height: 1 }
+    await fire(wrapper, 'pointerdown', { ...pen, clientX: 10, clientY: 10 })
+    await fire(wrapper, 'pointerdown', { ...hand, clientX: 50, clientY: 50 })
+    const text = wrapper.find('.debug').text()
+    expect(text).toContain('down #1 touch 1×1 pen')
+    expect(text).toContain('down #2 touch 1×1 busy')
+  })
+
+  it('shows no debug panel normally', async () => {
+    ;({ wrapper } = await open())
+    expect(wrapper.find('.debug').exists()).toBe(false)
+  })
 })
