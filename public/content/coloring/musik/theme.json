@@ -1,0 +1,24 @@
+{
+  "name": "Musik",
+  "tts": "Male die Musik-Bilder an!",
+  "pages": [
+    {
+      "id": "gitarre",
+      "svg": "svgs/gitarre.svg",
+      "label": "Gitarre",
+      "tts": "Die Gitarre"
+    },
+    {
+      "id": "trommel",
+      "svg": "svgs/trommel.svg",
+      "label": "Trommel",
+      "tts": "Die Trommel"
+    },
+    {
+      "id": "klavier",
+      "svg": "svgs/klavier.svg",
+      "label": "Klavier",
+      "tts": "Das Klavier"
+    }
+  ]
+}

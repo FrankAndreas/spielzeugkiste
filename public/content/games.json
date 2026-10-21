@@ -28,7 +28,7 @@
       "color": "#4D96FF",
       "shadow": "#2a6fcc",
       "tts": "Willkommen beim Ausmalen! Wähle ein Thema.",
-      "themes": ["tiere"]
+      "themes": ["tiere", "einhorn", "prinzessin", "eisprinzessin", "feuerwehr", "ballett", "musik"]
     },
     {
       "id": "cheese",

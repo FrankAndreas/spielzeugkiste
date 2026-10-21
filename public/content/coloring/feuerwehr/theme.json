@@ -1,0 +1,24 @@
+{
+  "name": "Feuerwehr",
+  "tts": "Male die Feuerwehr an! Tatü tata!",
+  "pages": [
+    {
+      "id": "feuerwehrauto",
+      "svg": "svgs/feuerwehrauto.svg",
+      "label": "Feuerwehrauto",
+      "tts": "Das Feuerwehrauto"
+    },
+    {
+      "id": "helm",
+      "svg": "svgs/helm.svg",
+      "label": "Helm",
+      "tts": "Der Feuerwehrhelm"
+    },
+    {
+      "id": "hydrant",
+      "svg": "svgs/hydrant.svg",
+      "label": "Hydrant",
+      "tts": "Der Hydrant"
+    }
+  ]
+}

@@ -40,3 +40,34 @@ describe('Schreiben content', () => {
     for (const name of names) for (const l of name) expect(GLYPHS[l], `${name}: ${l}`).toBeTruthy()
   })
 })
+
+describe('Ausmalen content', () => {
+  const COLORING = ['tiere', 'einhorn', 'prinzessin', 'eisprinzessin', 'feuerwehr', 'ballett', 'musik']
+  const BLANK = '#f5f0e8'   // ColoringGame's "not coloured yet"
+
+  it('lists the themes in games.json', () => {
+    expect(read('games.json').games.find(g => g.id === 'coloring').themes).toEqual(COLORING)
+  })
+
+  it.each(COLORING.filter(t => t !== 'tiere'))('%s has three pictures with areas to colour', id => {
+    const theme = read(`coloring/${id}/theme.json`)
+    expect(theme.name).toBeTruthy()
+    expect(theme.tts).toBeTruthy()
+    expect(theme.pages).toHaveLength(3)
+    for (const page of theme.pages) {
+      expect(page.label).toBeTruthy()
+      expect(page.tts).toBeTruthy()
+      const svg = new DOMParser().parseFromString(
+        readFileSync(resolve('public/content/coloring', id, page.svg), 'utf8'), 'image/svg+xml')
+      expect(svg.querySelector('parsererror'), page.svg).toBeNull()
+      expect(svg.documentElement.getAttribute('viewBox')).toBeTruthy()
+      const regions = [...svg.querySelectorAll('[data-region]')]
+      expect(regions.length, page.svg).toBeGreaterThanOrEqual(8)
+      expect(new Set(regions.map(r => r.dataset.region)).size, `${page.svg}: region names repeat`).toBe(regions.length)
+      for (const r of regions) {
+        expect(r.getAttribute('fill'), `${page.svg} ${r.dataset.region}`).toBe(BLANK)
+        expect(r.getAttribute('stroke'), `${page.svg} ${r.dataset.region}`).toBeTruthy()
+      }
+    }
+  })
+})

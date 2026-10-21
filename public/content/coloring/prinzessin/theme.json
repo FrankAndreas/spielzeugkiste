@@ -1,0 +1,24 @@
+{
+  "name": "Prinzessin",
+  "tts": "Male das Prinzessinnen-Reich an!",
+  "pages": [
+    {
+      "id": "prinzessin",
+      "svg": "svgs/prinzessin.svg",
+      "label": "Prinzessin",
+      "tts": "Die Prinzessin"
+    },
+    {
+      "id": "schloss",
+      "svg": "svgs/schloss.svg",
+      "label": "Schloss",
+      "tts": "Das Schloss"
+    },
+    {
+      "id": "krone",
+      "svg": "svgs/krone.svg",
+      "label": "Krone",
+      "tts": "Die Krone"
+    }
+  ]
+}

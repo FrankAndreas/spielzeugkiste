@@ -1,0 +1,22 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Ausmalen preview</title>
+<!-- Every Ausmalen page. Copy to public/ while `npm run dev` runs and open /preview.html -->
+<style>
+  body { font: 14px sans-serif; margin: 12px; background: #fff; }
+  .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  figure { margin: 0; border: 1px solid #ddd; }
+  figure img { width: 100%; display: block; }
+  figcaption { text-align: center; padding: 2px; }
+</style>
+<div class="grid" id="grid"></div>
+<script type="module">
+  const themes = ['einhorn', 'prinzessin', 'eisprinzessin', 'feuerwehr', 'ballett', 'musik']
+  for (const t of themes) {
+    const theme = await (await fetch(`/content/coloring/${t}/theme.json`)).json()
+    for (const p of theme.pages) {
+      document.getElementById('grid').insertAdjacentHTML('beforeend',
+        `<figure><img src="/content/coloring/${t}/${p.svg}"><figcaption>${t}: ${p.label}</figcaption></figure>`)
+    }
+  }
+</script>

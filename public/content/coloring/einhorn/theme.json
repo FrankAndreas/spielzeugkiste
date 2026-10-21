@@ -1,0 +1,24 @@
+{
+  "name": "Einhorn",
+  "tts": "Male das Einhorn-Land an! Wähle eine Farbe und tippe auf das Bild.",
+  "pages": [
+    {
+      "id": "einhorn",
+      "svg": "svgs/einhorn.svg",
+      "label": "Einhorn",
+      "tts": "Das Einhorn"
+    },
+    {
+      "id": "regenbogen",
+      "svg": "svgs/regenbogen.svg",
+      "label": "Regenbogen",
+      "tts": "Der Regenbogen"
+    },
+    {
+      "id": "cupcake",
+      "svg": "svgs/cupcake.svg",
+      "label": "Cupcake",
+      "tts": "Der Cupcake"
+    }
+  ]
+}

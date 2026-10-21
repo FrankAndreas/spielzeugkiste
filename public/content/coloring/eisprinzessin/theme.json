@@ -1,0 +1,24 @@
+{
+  "name": "Eisprinzessin",
+  "tts": "Male die Winterwelt an!",
+  "pages": [
+    {
+      "id": "schneemann",
+      "svg": "svgs/schneemann.svg",
+      "label": "Schneemann",
+      "tts": "Der Schneemann"
+    },
+    {
+      "id": "schneeflocke",
+      "svg": "svgs/schneeflocke.svg",
+      "label": "Schneeflocke",
+      "tts": "Die Schneeflocke"
+    },
+    {
+      "id": "schlitten",
+      "svg": "svgs/schlitten.svg",
+      "label": "Schlitten",
+      "tts": "Der Schlitten"
+    }
+  ]
+}

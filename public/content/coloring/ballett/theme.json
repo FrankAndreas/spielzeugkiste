@@ -1,0 +1,24 @@
+{
+  "name": "Ballett",
+  "tts": "Male die Ballett-Bilder an!",
+  "pages": [
+    {
+      "id": "ballerina",
+      "svg": "svgs/ballerina.svg",
+      "label": "Ballerina",
+      "tts": "Die Ballerina"
+    },
+    {
+      "id": "ballettschuhe",
+      "svg": "svgs/ballettschuhe.svg",
+      "label": "Ballettschuhe",
+      "tts": "Die Ballettschuhe"
+    },
+    {
+      "id": "blume",
+      "svg": "svgs/blume.svg",
+      "label": "Blume",
+      "tts": "Die Blume"
+    }
+  ]
+}
