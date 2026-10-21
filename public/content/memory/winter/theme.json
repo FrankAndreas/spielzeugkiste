@@ -1,0 +1,169 @@
+{
+  "name": "Winterwelt",
+  "tts": "Winter-Memory! Finde alle Paare.",
+  "gridSize": "4x4",
+  "pairs": [
+    {
+      "id": "schneemann",
+      "image": "images/schneemann.svg",
+      "label": "Schneemann",
+      "tts": "Schneemann"
+    },
+    {
+      "id": "schneeflocke",
+      "image": "images/schneeflocke.svg",
+      "label": "Schneeflocke",
+      "tts": "Schneeflocke"
+    },
+    {
+      "id": "handschuhe",
+      "image": "images/handschuhe.svg",
+      "label": "Handschuhe",
+      "tts": "Handschuhe"
+    },
+    {
+      "id": "schal",
+      "image": "images/schal.svg",
+      "label": "Schal",
+      "tts": "Schal"
+    },
+    {
+      "id": "ski",
+      "image": "images/ski.svg",
+      "label": "Ski",
+      "tts": "Ski"
+    },
+    {
+      "id": "schlittschuh",
+      "image": "images/schlittschuh.svg",
+      "label": "Schlittschuh",
+      "tts": "Schlittschuh"
+    },
+    {
+      "id": "schlitten",
+      "image": "images/schlitten.svg",
+      "label": "Schlitten",
+      "tts": "Schlitten"
+    },
+    {
+      "id": "berg",
+      "image": "images/berg.svg",
+      "label": "Berg",
+      "tts": "Berg"
+    },
+    {
+      "id": "eis",
+      "image": "images/eis.svg",
+      "label": "Eiswürfel",
+      "tts": "Eiswürfel"
+    },
+    {
+      "id": "hirsch",
+      "image": "images/hirsch.svg",
+      "label": "Hirsch",
+      "tts": "Hirsch"
+    },
+    {
+      "id": "pinguin",
+      "image": "images/pinguin.svg",
+      "label": "Pinguin",
+      "tts": "Pinguin"
+    },
+    {
+      "id": "eisbaer",
+      "image": "images/eisbaer.svg",
+      "label": "Eisbär",
+      "tts": "Eisbär"
+    },
+    {
+      "id": "tannenbaum",
+      "image": "images/tannenbaum.svg",
+      "label": "Tannenbaum",
+      "tts": "Tannenbaum"
+    },
+    {
+      "id": "geschenk",
+      "image": "images/geschenk.svg",
+      "label": "Geschenk",
+      "tts": "Geschenk"
+    },
+    {
+      "id": "stern",
+      "image": "images/stern.svg",
+      "label": "Stern",
+      "tts": "Stern"
+    },
+    {
+      "id": "glocke",
+      "image": "images/glocke.svg",
+      "label": "Glocke",
+      "tts": "Glocke"
+    },
+    {
+      "id": "kerze",
+      "image": "images/kerze.svg",
+      "label": "Kerze",
+      "tts": "Kerze"
+    },
+    {
+      "id": "tasse",
+      "image": "images/tasse.svg",
+      "label": "Tasse",
+      "tts": "Tasse"
+    },
+    {
+      "id": "keks",
+      "image": "images/keks.svg",
+      "label": "Keks",
+      "tts": "Keks"
+    },
+    {
+      "id": "socken",
+      "image": "images/socken.svg",
+      "label": "Socken",
+      "tts": "Socken"
+    },
+    {
+      "id": "snowboard",
+      "image": "images/snowboard.svg",
+      "label": "Snowboard",
+      "tts": "Snowboard"
+    },
+    {
+      "id": "samichlaus",
+      "image": "images/samichlaus.svg",
+      "label": "Samichlaus",
+      "tts": "Samichlaus"
+    },
+    {
+      "id": "eule",
+      "image": "images/eule.svg",
+      "label": "Eule",
+      "tts": "Eule"
+    },
+    {
+      "id": "eichhoernchen",
+      "image": "images/eichhoernchen.svg",
+      "label": "Eichhörnchen",
+      "tts": "Eichhörnchen"
+    },
+    {
+      "id": "kastanie",
+      "image": "images/kastanie.svg",
+      "label": "Kastanie",
+      "tts": "Kastanie"
+    },
+    {
+      "id": "mandarine",
+      "image": "images/mandarine.svg",
+      "label": "Mandarine",
+      "tts": "Mandarine"
+    },
+    {
+      "id": "teddy",
+      "image": "images/teddy.svg",
+      "label": "Teddybär",
+      "tts": "Teddybär"
+    }
+  ]
+}

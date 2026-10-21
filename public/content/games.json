@@ -8,7 +8,7 @@
       "color": "#FFD93D",
       "shadow": "#c9a800",
       "tts": "Willkommen beim Memory! Wähle ein Thema.",
-      "themes": ["tiere", "einhorn"]
+      "themes": ["tiere", "einhorn", "winter", "fahrzeuge", "musik", "essen", "meer", "bauernhof"]
     },
     {
       "id": "differences",

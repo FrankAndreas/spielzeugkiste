@@ -1,0 +1,163 @@
+{
+  "name": "Meer",
+  "tts": "Meer-Memory! Finde alle Paare.",
+  "gridSize": "4x4",
+  "pairs": [
+    {
+      "id": "tropenfisch",
+      "image": "images/tropenfisch.svg",
+      "label": "Tropenfisch",
+      "tts": "Tropenfisch"
+    },
+    {
+      "id": "fisch",
+      "image": "images/fisch.svg",
+      "label": "Fisch",
+      "tts": "Fisch"
+    },
+    {
+      "id": "kugelfisch",
+      "image": "images/kugelfisch.svg",
+      "label": "Kugelfisch",
+      "tts": "Kugelfisch"
+    },
+    {
+      "id": "hai",
+      "image": "images/hai.svg",
+      "label": "Hai",
+      "tts": "Hai"
+    },
+    {
+      "id": "krake",
+      "image": "images/krake.svg",
+      "label": "Krake",
+      "tts": "Krake"
+    },
+    {
+      "id": "tintenfisch",
+      "image": "images/tintenfisch.svg",
+      "label": "Tintenfisch",
+      "tts": "Tintenfisch"
+    },
+    {
+      "id": "krabbe",
+      "image": "images/krabbe.svg",
+      "label": "Krabbe",
+      "tts": "Krabbe"
+    },
+    {
+      "id": "hummer",
+      "image": "images/hummer.svg",
+      "label": "Hummer",
+      "tts": "Hummer"
+    },
+    {
+      "id": "garnele",
+      "image": "images/garnele.svg",
+      "label": "Garnele",
+      "tts": "Garnele"
+    },
+    {
+      "id": "delfin",
+      "image": "images/delfin.svg",
+      "label": "Delfin",
+      "tts": "Delfin"
+    },
+    {
+      "id": "wal",
+      "image": "images/wal.svg",
+      "label": "Wal",
+      "tts": "Wal"
+    },
+    {
+      "id": "robbe",
+      "image": "images/robbe.svg",
+      "label": "Robbe",
+      "tts": "Robbe"
+    },
+    {
+      "id": "schildkroete",
+      "image": "images/schildkroete.svg",
+      "label": "Schildkröte",
+      "tts": "Schildkröte"
+    },
+    {
+      "id": "muschel",
+      "image": "images/muschel.svg",
+      "label": "Muschel",
+      "tts": "Muschel"
+    },
+    {
+      "id": "segelboot",
+      "image": "images/segelboot.svg",
+      "label": "Segelboot",
+      "tts": "Segelboot"
+    },
+    {
+      "id": "insel",
+      "image": "images/insel.svg",
+      "label": "Insel",
+      "tts": "Insel"
+    },
+    {
+      "id": "welle",
+      "image": "images/welle.svg",
+      "label": "Welle",
+      "tts": "Welle"
+    },
+    {
+      "id": "anker",
+      "image": "images/anker.svg",
+      "label": "Anker",
+      "tts": "Anker"
+    },
+    {
+      "id": "flamingo",
+      "image": "images/flamingo.svg",
+      "label": "Flamingo",
+      "tts": "Flamingo"
+    },
+    {
+      "id": "pinguin",
+      "image": "images/pinguin.svg",
+      "label": "Pinguin",
+      "tts": "Pinguin"
+    },
+    {
+      "id": "otter",
+      "image": "images/otter.svg",
+      "label": "Otter",
+      "tts": "Otter"
+    },
+    {
+      "id": "strand",
+      "image": "images/strand.svg",
+      "label": "Strand",
+      "tts": "Strand"
+    },
+    {
+      "id": "meerjungfrau",
+      "image": "images/meerjungfrau.svg",
+      "label": "Meerjungfrau",
+      "tts": "Meerjungfrau"
+    },
+    {
+      "id": "krokodil",
+      "image": "images/krokodil.svg",
+      "label": "Krokodil",
+      "tts": "Krokodil"
+    },
+    {
+      "id": "eimer",
+      "image": "images/eimer.svg",
+      "label": "Eimer",
+      "tts": "Eimer"
+    },
+    {
+      "id": "sonnenuntergang",
+      "image": "images/sonnenuntergang.svg",
+      "label": "Sonnenuntergang",
+      "tts": "Sonnenuntergang"
+    }
+  ]
+}

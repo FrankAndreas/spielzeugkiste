@@ -76,3 +76,25 @@ describe('Ausmalen content', () => {
     }
   })
 })
+
+describe('Memory content', () => {
+  const MEMORY = ['tiere', 'einhorn', 'winter', 'fahrzeuge', 'musik', 'essen', 'meer', 'bauernhof']
+
+  it('lists the themes in games.json', () => {
+    expect(read('games.json').games.find(g => g.id === 'memory').themes).toEqual(MEMORY)
+  })
+
+  it.each(MEMORY)('%s has at least 24 different pairs with a picture and a spoken name', id => {
+    const theme = read(`memory/${id}/theme.json`)
+    expect(theme.name).toBeTruthy()
+    expect(theme.tts).toBeTruthy()
+    expect(theme.pairs.length).toBeGreaterThanOrEqual(24)
+    expect(new Set(theme.pairs.map(p => p.id)).size).toBe(theme.pairs.length)
+    for (const p of theme.pairs) {
+      expect(p.label, p.id).toBeTruthy()
+      expect(p.tts, p.id).toBeTruthy()
+      const svg = new DOMParser().parseFromString(readFileSync(resolve('public/content/memory', id, p.image), 'utf8'), 'image/svg+xml')
+      expect(svg.querySelector('parsererror'), p.image).toBeNull()
+    }
+  })
+})

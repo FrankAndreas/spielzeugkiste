@@ -11,4 +11,7 @@ export const THEME_ICONS = {
   meer:          '🐠',
   weltraum:      '🚀',
   spielplatz:    '🛝',
+  winter:        '⛄',
+  fahrzeuge:     '🚗',
+  essen:         '🍓',
 }

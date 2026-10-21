@@ -1,0 +1,163 @@
+{
+  "name": "Fahrzeuge",
+  "tts": "Fahrzeug-Memory! Finde alle Paare.",
+  "gridSize": "4x4",
+  "pairs": [
+    {
+      "id": "feuerwehrauto",
+      "image": "images/feuerwehrauto.svg",
+      "label": "Feuerwehrauto",
+      "tts": "Feuerwehrauto"
+    },
+    {
+      "id": "krankenwagen",
+      "image": "images/krankenwagen.svg",
+      "label": "Krankenwagen",
+      "tts": "Krankenwagen"
+    },
+    {
+      "id": "polizei",
+      "image": "images/polizei.svg",
+      "label": "Polizeiauto",
+      "tts": "Polizeiauto"
+    },
+    {
+      "id": "taxi",
+      "image": "images/taxi.svg",
+      "label": "Taxi",
+      "tts": "Taxi"
+    },
+    {
+      "id": "bus",
+      "image": "images/bus.svg",
+      "label": "Bus",
+      "tts": "Bus"
+    },
+    {
+      "id": "traktor",
+      "image": "images/traktor.svg",
+      "label": "Traktor",
+      "tts": "Traktor"
+    },
+    {
+      "id": "lokomotive",
+      "image": "images/lokomotive.svg",
+      "label": "Lokomotive",
+      "tts": "Lokomotive"
+    },
+    {
+      "id": "flugzeug",
+      "image": "images/flugzeug.svg",
+      "label": "Flugzeug",
+      "tts": "Flugzeug"
+    },
+    {
+      "id": "helikopter",
+      "image": "images/helikopter.svg",
+      "label": "Helikopter",
+      "tts": "Helikopter"
+    },
+    {
+      "id": "rakete",
+      "image": "images/rakete.svg",
+      "label": "Rakete",
+      "tts": "Rakete"
+    },
+    {
+      "id": "segelboot",
+      "image": "images/segelboot.svg",
+      "label": "Segelboot",
+      "tts": "Segelboot"
+    },
+    {
+      "id": "velo",
+      "image": "images/velo.svg",
+      "label": "Velo",
+      "tts": "Velo"
+    },
+    {
+      "id": "trottinett",
+      "image": "images/trottinett.svg",
+      "label": "Trottinett",
+      "tts": "Trottinett"
+    },
+    {
+      "id": "motorrad",
+      "image": "images/motorrad.svg",
+      "label": "Motorrad",
+      "tts": "Motorrad"
+    },
+    {
+      "id": "auto",
+      "image": "images/auto.svg",
+      "label": "Auto",
+      "tts": "Auto"
+    },
+    {
+      "id": "lastwagen",
+      "image": "images/lastwagen.svg",
+      "label": "Lastwagen",
+      "tts": "Lastwagen"
+    },
+    {
+      "id": "rennauto",
+      "image": "images/rennauto.svg",
+      "label": "Rennauto",
+      "tts": "Rennauto"
+    },
+    {
+      "id": "motorboot",
+      "image": "images/motorboot.svg",
+      "label": "Motorboot",
+      "tts": "Motorboot"
+    },
+    {
+      "id": "schiff",
+      "image": "images/schiff.svg",
+      "label": "Schiff",
+      "tts": "Schiff"
+    },
+    {
+      "id": "seilbahn",
+      "image": "images/seilbahn.svg",
+      "label": "Seilbahn",
+      "tts": "Seilbahn"
+    },
+    {
+      "id": "tram",
+      "image": "images/tram.svg",
+      "label": "Tram",
+      "tts": "Tram"
+    },
+    {
+      "id": "ufo",
+      "image": "images/ufo.svg",
+      "label": "Ufo",
+      "tts": "Ufo"
+    },
+    {
+      "id": "kleinbus",
+      "image": "images/kleinbus.svg",
+      "label": "Kleinbus",
+      "tts": "Kleinbus"
+    },
+    {
+      "id": "roller",
+      "image": "images/roller.svg",
+      "label": "Roller",
+      "tts": "Roller"
+    },
+    {
+      "id": "kanu",
+      "image": "images/kanu.svg",
+      "label": "Kanu",
+      "tts": "Kanu"
+    },
+    {
+      "id": "fallschirm",
+      "image": "images/fallschirm.svg",
+      "label": "Fallschirm",
+      "tts": "Fallschirm"
+    }
+  ]
+}

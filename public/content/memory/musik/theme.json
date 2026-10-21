@@ -1,0 +1,157 @@
+{
+  "name": "Musik & Tanz",
+  "tts": "Musik-Memory! Finde alle Paare.",
+  "gridSize": "4x4",
+  "pairs": [
+    {
+      "id": "note",
+      "image": "images/note.svg",
+      "label": "Note",
+      "tts": "Note"
+    },
+    {
+      "id": "noten",
+      "image": "images/noten.svg",
+      "label": "Noten",
+      "tts": "Noten"
+    },
+    {
+      "id": "mikrofon",
+      "image": "images/mikrofon.svg",
+      "label": "Mikrofon",
+      "tts": "Mikrofon"
+    },
+    {
+      "id": "kopfhoerer",
+      "image": "images/kopfhoerer.svg",
+      "label": "Kopfhörer",
+      "tts": "Kopfhörer"
+    },
+    {
+      "id": "gitarre",
+      "image": "images/gitarre.svg",
+      "label": "Gitarre",
+      "tts": "Gitarre"
+    },
+    {
+      "id": "klavier",
+      "image": "images/klavier.svg",
+      "label": "Klavier",
+      "tts": "Klavier"
+    },
+    {
+      "id": "trompete",
+      "image": "images/trompete.svg",
+      "label": "Trompete",
+      "tts": "Trompete"
+    },
+    {
+      "id": "saxofon",
+      "image": "images/saxofon.svg",
+      "label": "Saxofon",
+      "tts": "Saxofon"
+    },
+    {
+      "id": "trommel",
+      "image": "images/trommel.svg",
+      "label": "Trommel",
+      "tts": "Trommel"
+    },
+    {
+      "id": "banjo",
+      "image": "images/banjo.svg",
+      "label": "Banjo",
+      "tts": "Banjo"
+    },
+    {
+      "id": "geige",
+      "image": "images/geige.svg",
+      "label": "Geige",
+      "tts": "Geige"
+    },
+    {
+      "id": "handorgel",
+      "image": "images/handorgel.svg",
+      "label": "Handorgel",
+      "tts": "Handorgel"
+    },
+    {
+      "id": "ballettschuhe",
+      "image": "images/ballettschuhe.svg",
+      "label": "Ballettschuhe",
+      "tts": "Ballettschuhe"
+    },
+    {
+      "id": "taenzerin",
+      "image": "images/taenzerin.svg",
+      "label": "Tänzerin",
+      "tts": "Tänzerin"
+    },
+    {
+      "id": "taenzer",
+      "image": "images/taenzer.svg",
+      "label": "Tänzer",
+      "tts": "Tänzer"
+    },
+    {
+      "id": "theater",
+      "image": "images/theater.svg",
+      "label": "Theater",
+      "tts": "Theater"
+    },
+    {
+      "id": "zirkus",
+      "image": "images/zirkus.svg",
+      "label": "Zirkus",
+      "tts": "Zirkus"
+    },
+    {
+      "id": "radio",
+      "image": "images/radio.svg",
+      "label": "Radio",
+      "tts": "Radio"
+    },
+    {
+      "id": "glocke",
+      "image": "images/glocke.svg",
+      "label": "Glocke",
+      "tts": "Glocke"
+    },
+    {
+      "id": "notenblatt",
+      "image": "images/notenblatt.svg",
+      "label": "Notenblatt",
+      "tts": "Notenblatt"
+    },
+    {
+      "id": "schleife",
+      "image": "images/schleife.svg",
+      "label": "Schleife",
+      "tts": "Schleife"
+    },
+    {
+      "id": "party",
+      "image": "images/party.svg",
+      "label": "Party",
+      "tts": "Party"
+    },
+    {
+      "id": "konfetti",
+      "image": "images/konfetti.svg",
+      "label": "Konfetti",
+      "tts": "Konfetti"
+    },
+    {
+      "id": "vogel",
+      "image": "images/vogel.svg",
+      "label": "Vogel",
+      "tts": "Vogel"
+    },
+    {
+      "id": "karussell",
+      "image": "images/karussell.svg",
+      "label": "Karussell",
+      "tts": "Karussell"
+    }
+  ]
+}

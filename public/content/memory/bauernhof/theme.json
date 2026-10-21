@@ -1,0 +1,181 @@
+{
+  "name": "Bauernhof",
+  "tts": "Bauernhof-Memory! Finde alle Paare.",
+  "gridSize": "4x4",
+  "pairs": [
+    {
+      "id": "kuh",
+      "image": "images/kuh.svg",
+      "label": "Kuh",
+      "tts": "Kuh"
+    },
+    {
+      "id": "schwein",
+      "image": "images/schwein.svg",
+      "label": "Schwein",
+      "tts": "Schwein"
+    },
+    {
+      "id": "schaf",
+      "image": "images/schaf.svg",
+      "label": "Schaf",
+      "tts": "Schaf"
+    },
+    {
+      "id": "ziege",
+      "image": "images/ziege.svg",
+      "label": "Ziege",
+      "tts": "Ziege"
+    },
+    {
+      "id": "hahn",
+      "image": "images/hahn.svg",
+      "label": "Hahn",
+      "tts": "Hahn"
+    },
+    {
+      "id": "huhn",
+      "image": "images/huhn.svg",
+      "label": "Huhn",
+      "tts": "Huhn"
+    },
+    {
+      "id": "kueken",
+      "image": "images/kueken.svg",
+      "label": "Küken",
+      "tts": "Küken"
+    },
+    {
+      "id": "ente",
+      "image": "images/ente.svg",
+      "label": "Ente",
+      "tts": "Ente"
+    },
+    {
+      "id": "pferd",
+      "image": "images/pferd.svg",
+      "label": "Pferd",
+      "tts": "Pferd"
+    },
+    {
+      "id": "hase",
+      "image": "images/hase.svg",
+      "label": "Hase",
+      "tts": "Hase"
+    },
+    {
+      "id": "katze",
+      "image": "images/katze.svg",
+      "label": "Katze",
+      "tts": "Katze"
+    },
+    {
+      "id": "hund",
+      "image": "images/hund.svg",
+      "label": "Hund",
+      "tts": "Hund"
+    },
+    {
+      "id": "maus",
+      "image": "images/maus.svg",
+      "label": "Maus",
+      "tts": "Maus"
+    },
+    {
+      "id": "truthahn",
+      "image": "images/truthahn.svg",
+      "label": "Truthahn",
+      "tts": "Truthahn"
+    },
+    {
+      "id": "biene",
+      "image": "images/biene.svg",
+      "label": "Biene",
+      "tts": "Biene"
+    },
+    {
+      "id": "weizen",
+      "image": "images/weizen.svg",
+      "label": "Weizen",
+      "tts": "Weizen"
+    },
+    {
+      "id": "sonnenblume",
+      "image": "images/sonnenblume.svg",
+      "label": "Sonnenblume",
+      "tts": "Sonnenblume"
+    },
+    {
+      "id": "traktor",
+      "image": "images/traktor.svg",
+      "label": "Traktor",
+      "tts": "Traktor"
+    },
+    {
+      "id": "ei",
+      "image": "images/ei.svg",
+      "label": "Ei",
+      "tts": "Ei"
+    },
+    {
+      "id": "milch",
+      "image": "images/milch.svg",
+      "label": "Milch",
+      "tts": "Milch"
+    },
+    {
+      "id": "kaese",
+      "image": "images/kaese.svg",
+      "label": "Käse",
+      "tts": "Käse"
+    },
+    {
+      "id": "apfel",
+      "image": "images/apfel.svg",
+      "label": "Apfel",
+      "tts": "Apfel"
+    },
+    {
+      "id": "rueebli",
+      "image": "images/rueebli.svg",
+      "label": "Rüebli",
+      "tts": "Rüebli"
+    },
+    {
+      "id": "haus",
+      "image": "images/haus.svg",
+      "label": "Bauernhaus",
+      "tts": "Bauernhaus"
+    },
+    {
+      "id": "marienkaefer",
+      "image": "images/marienkaefer.svg",
+      "label": "Marienkäfer",
+      "tts": "Marienkäfer"
+    },
+    {
+      "id": "eule",
+      "image": "images/eule.svg",
+      "label": "Eule",
+      "tts": "Eule"
+    },
+    {
+      "id": "schnecke",
+      "image": "images/schnecke.svg",
+      "label": "Schnecke",
+      "tts": "Schnecke"
+    },
+    {
+      "id": "frosch",
+      "image": "images/frosch.svg",
+      "label": "Frosch",
+      "tts": "Frosch"
+    },
+    {
+      "id": "igel",
+      "image": "images/igel.svg",
+      "label": "Igel",
+      "tts": "Igel"
+    }
+  ]
+}
