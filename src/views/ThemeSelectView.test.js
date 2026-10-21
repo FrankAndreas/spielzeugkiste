@@ -11,11 +11,14 @@ vi.mock('../services/tts.js', () => ({ speak: vi.fn(() => Promise.resolve()), st
 
 const GAMES = JSON.parse(readFileSync(resolve('public/content/games.json'), 'utf8'))
 
+let lastRouter = null
+
 async function open(game) {
   const router = createRouter({
     history: createMemoryHistory(),
     routes: [{ path: '/:game', component: ThemeSelectView }, { path: '/:game/:theme/play', component: { template: '<div />' } }],
   })
+  lastRouter = router
   await router.push(`/${game}`)
   await router.isReady()
   const wrapper = mount(ThemeSelectView, { global: { plugins: [router, createPinia()] } })
@@ -39,5 +42,21 @@ describe('ThemeSelectView', () => {
     const buttons = wrapper.findAll('.theme-btn')
     expect(buttons.map(b => b.find('.theme-icon').text())).toEqual(GAMES.games.find(g => g.id === 'coloring').themes.map(t => THEME_ICONS[t]))
     expect(buttons[1].find('.theme-name').text()).toBe('Einhorn')
+  })
+
+  it('lets 1 to 4 players play Memory', async () => {
+    const wrapper = await open('memory')
+    const options = wrapper.findAll('.player-btn')
+    expect(options.map(o => o.text())).toEqual(['🦄', '🦄🐻', '🦄🐻🐸', '🦄🐻🐸🐱'])
+    expect(options[0].classes()).toContain('active')
+    await options[2].trigger('click')
+    await wrapper.findAll('.theme-btn')[0].trigger('click')
+    await flushPromises()
+    expect(lastRouter.currentRoute.value.query).toMatchObject({ players: '3' })
+  })
+
+  it('asks for players only in Memory', async () => {
+    const wrapper = await open('coloring')
+    expect(wrapper.findAll('.player-btn')).toHaveLength(0)
   })
 })

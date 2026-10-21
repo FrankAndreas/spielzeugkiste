@@ -36,6 +36,20 @@
       </div>
     </div>
 
+    <!-- Memory-only: how many play, shown as the players' animals -->
+    <div v-if="gameId === 'memory'" class="difficulty">
+      <p class="diff-label">Spieler</p>
+      <div class="diff-row">
+        <button
+          v-for="n in PLAYERS.length"
+          :key="n"
+          :class="['diff-btn', 'player-btn', { active: players === n }]"
+          :aria-label="`${n} Spieler`"
+          @click="players = n"
+        >{{ PLAYERS.slice(0, n).map(p => p.emoji).join('') }}</button>
+      </div>
+    </div>
+
     <!-- Pac-Man-only: speed selector -->
     <div v-if="gameId === 'pacman'" class="difficulty">
       <p class="diff-label">Tempo</p>
@@ -75,6 +89,7 @@ import { useContentStore } from '../stores/content.js'
 import { speak } from '../services/tts.js'
 import AppHeader from '../components/AppHeader.vue'
 import { THEME_ICONS } from '../themeIcons.js'
+import { PLAYERS } from '../logic/memory.js'
 
 const route  = useRoute()
 const router = useRouter()
@@ -83,6 +98,7 @@ const store  = useContentStore()
 const gameId   = computed(() => route.params.game)
 const game     = computed(() => store.findGame(gameId.value))
 const difficulty = ref('4x4')
+const players    = ref(1)
 
 const speed = ref('langsam')
 const speedOptions = [
@@ -111,7 +127,7 @@ onMounted(async () => {
 })
 
 function onThemeSelect(theme) {
-  const query = gameId.value === 'memory' ? { grid: difficulty.value }
+  const query = gameId.value === 'memory' ? { grid: difficulty.value, players: String(players.value) }
               : gameId.value === 'pacman' ? { speed: speed.value }
               : gameId.value === 'zahlen' ? { level: level.value }
               : {}
@@ -147,6 +163,7 @@ function onThemeSelect(theme) {
 .difficulty { padding: 12px 14px; }
 .diff-label { font-size: 0.8rem; color: #888; text-align: center; margin-bottom: 8px; }
 .diff-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.diff-btn.player-btn { font-size: 1.3rem; padding: 6px 14px; }
 .diff-btn {
   background: white;
   border-radius: 20px;

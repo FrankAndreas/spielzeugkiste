@@ -6,6 +6,18 @@
       color="#FFD93D"
     />
 
+    <div v-if="players.length > 1" class="players">
+      <div
+        v-for="(p, i) in players"
+        :key="p.emoji"
+        :class="['player', { current: i === turn && !won }]"
+        :style="{ '--c': p.color }"
+      >
+        <span class="player-emoji">{{ p.emoji }}</span>
+        <span class="player-pairs">{{ p.pairs }}</span>
+      </div>
+    </div>
+
     <div class="progress-bar">
       <div
         v-for="(_, i) in totalPairs"
@@ -51,8 +63,16 @@
       <div v-if="won" class="win-overlay">
         <div class="win-content">
           <div class="win-emoji">🎉</div>
-          <div class="win-text">Toll gemacht!</div>
-          <div class="win-sub">Alle Paare gefunden!</div>
+          <template v-if="players.length > 1">
+            <div class="win-text">{{ winnerText }}</div>
+            <div class="ranking">
+              <span v-for="p in ranking" :key="p.emoji" class="rank">{{ p.emoji }} {{ p.pairs }}</span>
+            </div>
+          </template>
+          <template v-else>
+            <div class="win-text">Toll gemacht!</div>
+            <div class="win-sub">Alle Paare gefunden!</div>
+          </template>
           <button class="btn" style="background:#FF6B6B;color:white" @click="restart">Nochmal</button>
         </div>
       </div>
@@ -65,7 +85,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useContentStore } from '../../stores/content.js'
 import { speak } from '../../services/tts.js'
-import { buildDeck, parseGrid } from '../../logic/memory.js'
+import { buildDeck, parseGrid, pickPairs, createPlayers, parsePlayers, winners } from '../../logic/memory.js'
 import AppHeader from '../../components/AppHeader.vue'
 
 const route   = useRoute()
@@ -74,6 +94,16 @@ const themeId = computed(() => route.params.theme)
 const gridStr = computed(() => route.query.grid ?? theme.value?.gridSize ?? '4x4')
 const grid    = computed(() => parseGrid(gridStr.value))
 const theme   = computed(() => store.currentTheme)
+const capital = text => text[0].toUpperCase() + text.slice(1)
+
+// Several players take turns on one device; a pair found means another go
+const players = ref(createPlayers(parsePlayers(route.query.players)))
+const turn    = ref(0)
+const ranking = computed(() => [...players.value].sort((a, b) => b.pairs - a.pairs))
+const winnerText = computed(() => {
+  const best = winners(players.value)
+  return best.length > 1 ? 'Unentschieden!' : `${best[0].emoji} gewinnt!`
+})
 
 const MIN_CARD = 48
 const MAX_CARD = 160
@@ -113,13 +143,16 @@ function restart() {
   const pairs = theme.value?.pairs ?? []
   const { cols, rows } = grid.value
   const count = (cols * rows) / 2
-  deck.value    = buildDeck(pairs.slice(0, count))
+  deck.value    = buildDeck(pickPairs(pairs, count))
+  players.value = createPlayers(players.value.length)
+  turn.value    = 0
   flipped.value = new Set()
   matched.value = new Set()
   locked.value  = false
   won.value     = false
   fitCardSize()
-  speak(theme.value?.tts ?? '')
+  const intro = theme.value?.tts ?? ''
+  speak(players.value.length > 1 ? `${intro} ${capital(players.value[0].say)} fängt an.` : intro)
 }
 
 function onCardClick(card) {
@@ -140,14 +173,17 @@ function onCardClick(card) {
     m.add(cardA.id)
     matched.value = m
     flipped.value = new Set()
-    const announced = speak(cardA.tts)
-    if (m.size === totalPairs.value) {
+    const multi = players.value.length > 1
+    if (multi) players.value[turn.value].pairs++
+    const last = m.size === totalPairs.value
+    const announced = speak(multi && !last ? `${cardA.tts}. Nochmal!` : cardA.tts)
+    if (last) {
       // Let the last pair be heard, unless the game was restarted or left meanwhile
       const current = deck.value
       announced.then(() => setTimeout(() => {
         if (left || deck.value !== current) return
         won.value = true
-        speak('Toll gemacht! Alle Paare gefunden!')
+        speak(multi ? endText() : 'Toll gemacht! Alle Paare gefunden!')
       }, WIN_PAUSE_MS))
     }
   } else {
@@ -156,13 +192,33 @@ function onCardClick(card) {
     setTimeout(() => {
       flipped.value = new Set()
       locked.value  = false
+      if (players.value.length > 1 && !left) {
+        turn.value = (turn.value + 1) % players.value.length
+        speak(`Jetzt ist ${players.value[turn.value].say} dran.`)
+      }
     }, 1000)
   }
+}
+
+function endText() {
+  const best = winners(players.value)
+  if (best.length > 1) return 'Unentschieden! Toll gespielt!'
+  const n = best[0].pairs
+  return `${capital(best[0].say)} gewinnt mit ${n} ${n === 1 ? 'Paar' : 'Paaren'}!`
 }
 </script>
 
 <style scoped>
 .layout { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+.players { display: flex; justify-content: center; gap: 10px; padding: 8px 12px 0; flex-shrink: 0; }
+.player {
+  display: flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px;
+  background: white; border: 3px solid #eee; font-weight: bold; transition: transform 0.2s;
+}
+.player.current { border-color: var(--c); transform: scale(1.15); box-shadow: 0 0 10px var(--c); }
+.player-emoji { font-size: 1.6rem; }
+.player-pairs { font-size: 1.2rem; min-width: 1.2em; text-align: center; color: #333; }
+.ranking { display: flex; justify-content: center; gap: 14px; margin: 6px 0 16px; font-size: 1.5rem; }
 .progress-bar { display: flex; justify-content: center; gap: 6px; padding: 10px; flex-wrap: wrap; flex-shrink: 0; }
 .dot { width: 16px; height: 16px; border-radius: 50%; background: #ddd; transition: background 0.3s; }
 .dot.found { background: #6BCB77; }
