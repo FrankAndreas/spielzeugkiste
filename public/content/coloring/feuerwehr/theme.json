@@ -6,18 +6,21 @@
       "id": "feuerwehrauto",
       "svg": "svgs/feuerwehrauto.svg",
       "label": "Feuerwehrauto",
+      "icon": "🚒",
       "tts": "Das Feuerwehrauto"
     },
     {
       "id": "helm",
       "svg": "svgs/helm.svg",
       "label": "Helm",
+      "icon": "⛑️",
       "tts": "Der Feuerwehrhelm"
     },
     {
       "id": "hydrant",
       "svg": "svgs/hydrant.svg",
       "label": "Hydrant",
+      "icon": "🧯",
       "tts": "Der Hydrant"
     }
   ]

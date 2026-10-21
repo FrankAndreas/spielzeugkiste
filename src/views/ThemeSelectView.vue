@@ -16,7 +16,8 @@
         :style="{ '--c': game.color, '--s': game.shadow }"
         @click="onThemeSelect(theme)"
       >
-        {{ theme }}
+        <span class="theme-icon">{{ THEME_ICONS[theme] }}</span>
+        <span class="theme-name">{{ theme[0].toUpperCase() + theme.slice(1) }}</span>
       </button>
     </div>
 
@@ -73,6 +74,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useContentStore } from '../stores/content.js'
 import { speak } from '../services/tts.js'
 import AppHeader from '../components/AppHeader.vue'
+import { THEME_ICONS } from '../themeIcons.js'
 
 const route  = useRoute()
 const router = useRouter()
@@ -127,6 +129,10 @@ function onThemeSelect(theme) {
   padding: 8px 14px;
 }
 .theme-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
   background: white;
   border-radius: 16px;
   padding: 14px 8px;
@@ -135,8 +141,8 @@ function onThemeSelect(theme) {
   color: #333;
   box-shadow: 0 3px 0 var(--s);
   border: 2px solid var(--c);
-  text-transform: capitalize;
 }
+.theme-icon { font-size: 2.2rem; line-height: 1; }
 .theme-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--s); }
 .difficulty { padding: 12px 14px; }
 .diff-label { font-size: 0.8rem; color: #888; text-align: center; margin-bottom: 8px; }

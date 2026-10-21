@@ -6,18 +6,21 @@
       "id": "einhorn",
       "svg": "svgs/einhorn.svg",
       "label": "Einhorn",
+      "icon": "🦄",
       "tts": "Das Einhorn"
     },
     {
       "id": "regenbogen",
       "svg": "svgs/regenbogen.svg",
       "label": "Regenbogen",
+      "icon": "🌈",
       "tts": "Der Regenbogen"
     },
     {
       "id": "cupcake",
       "svg": "svgs/cupcake.svg",
       "label": "Cupcake",
+      "icon": "🧁",
       "tts": "Der Cupcake"
     }
   ]

@@ -49,6 +49,10 @@ describe('Ausmalen content', () => {
     expect(read('games.json').games.find(g => g.id === 'coloring').themes).toEqual(COLORING)
   })
 
+  it('gives every picture an icon, the animals too', () => {
+    for (const p of read('coloring/tiere/theme.json').pages) expect(p.icon, p.id).toBeTruthy()
+  })
+
   it.each(COLORING.filter(t => t !== 'tiere'))('%s has three pictures with areas to colour', id => {
     const theme = read(`coloring/${id}/theme.json`)
     expect(theme.name).toBeTruthy()
@@ -56,6 +60,7 @@ describe('Ausmalen content', () => {
     expect(theme.pages).toHaveLength(3)
     for (const page of theme.pages) {
       expect(page.label).toBeTruthy()
+      expect(page.icon, `${id}: ${page.id}`).toBeTruthy()
       expect(page.tts).toBeTruthy()
       const svg = new DOMParser().parseFromString(
         readFileSync(resolve('public/content/coloring', id, page.svg), 'utf8'), 'image/svg+xml')

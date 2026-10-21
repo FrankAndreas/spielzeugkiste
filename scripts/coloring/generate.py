@@ -463,34 +463,34 @@ def klavier():
 
 THEMES = {
     'einhorn': ('Einhorn', 'Male das Einhorn-Land an! Wähle eine Farbe und tippe auf das Bild.', [
-        ('einhorn', einhorn, 'Einhorn', 'Das Einhorn'),
-        ('regenbogen', regenbogen, 'Regenbogen', 'Der Regenbogen'),
-        ('cupcake', cupcake, 'Cupcake', 'Der Cupcake'),
+        ('einhorn', einhorn, 'Einhorn', 'Das Einhorn', '🦄'),
+        ('regenbogen', regenbogen, 'Regenbogen', 'Der Regenbogen', '🌈'),
+        ('cupcake', cupcake, 'Cupcake', 'Der Cupcake', '🧁'),
     ]),
     'prinzessin': ('Prinzessin', 'Male das Prinzessinnen-Reich an!', [
-        ('prinzessin', prinzessin, 'Prinzessin', 'Die Prinzessin'),
-        ('schloss', schloss, 'Schloss', 'Das Schloss'),
-        ('krone', krone, 'Krone', 'Die Krone'),
+        ('prinzessin', prinzessin, 'Prinzessin', 'Die Prinzessin', '👸'),
+        ('schloss', schloss, 'Schloss', 'Das Schloss', '🏰'),
+        ('krone', krone, 'Krone', 'Die Krone', '👑'),
     ]),
     'eisprinzessin': ('Eisprinzessin', 'Male die Winterwelt an!', [
-        ('schneemann', schneemann, 'Schneemann', 'Der Schneemann'),
-        ('schneeflocke', schneeflocke, 'Schneeflocke', 'Die Schneeflocke'),
-        ('schlitten', schlitten, 'Schlitten', 'Der Schlitten'),
+        ('schneemann', schneemann, 'Schneemann', 'Der Schneemann', '⛄'),
+        ('schneeflocke', schneeflocke, 'Schneeflocke', 'Die Schneeflocke', '❄️'),
+        ('schlitten', schlitten, 'Schlitten', 'Der Schlitten', '🛷'),
     ]),
     'feuerwehr': ('Feuerwehr', 'Male die Feuerwehr an! Tatü tata!', [
-        ('feuerwehrauto', feuerwehrauto, 'Feuerwehrauto', 'Das Feuerwehrauto'),
-        ('helm', helm, 'Helm', 'Der Feuerwehrhelm'),
-        ('hydrant', hydrant, 'Hydrant', 'Der Hydrant'),
+        ('feuerwehrauto', feuerwehrauto, 'Feuerwehrauto', 'Das Feuerwehrauto', '🚒'),
+        ('helm', helm, 'Helm', 'Der Feuerwehrhelm', '⛑️'),
+        ('hydrant', hydrant, 'Hydrant', 'Der Hydrant', '🧯'),
     ]),
     'ballett': ('Ballett', 'Male die Ballett-Bilder an!', [
-        ('ballerina', ballerina, 'Ballerina', 'Die Ballerina'),
-        ('ballettschuhe', ballettschuhe, 'Ballettschuhe', 'Die Ballettschuhe'),
-        ('blume', blume, 'Blume', 'Die Blume'),
+        ('ballerina', ballerina, 'Ballerina', 'Die Ballerina', '💃'),
+        ('ballettschuhe', ballettschuhe, 'Ballettschuhe', 'Die Ballettschuhe', '🩰'),
+        ('blume', blume, 'Blume', 'Die Blume', '🌸'),
     ]),
     'musik': ('Musik', 'Male die Musik-Bilder an!', [
-        ('gitarre', gitarre, 'Gitarre', 'Die Gitarre'),
-        ('trommel', trommel, 'Trommel', 'Die Trommel'),
-        ('klavier', klavier, 'Klavier', 'Das Klavier'),
+        ('gitarre', gitarre, 'Gitarre', 'Die Gitarre', '🎸'),
+        ('trommel', trommel, 'Trommel', 'Die Trommel', '🥁'),
+        ('klavier', klavier, 'Klavier', 'Das Klavier', '🎹'),
     ]),
 }
 
@@ -500,9 +500,9 @@ def main():
         folder = ROOT / theme_id
         (folder / 'svgs').mkdir(parents=True, exist_ok=True)
         entries = []
-        for page_id, draw, label, say in pages:
+        for page_id, draw, label, say, icon in pages:
             (folder / 'svgs' / f'{page_id}.svg').write_text(draw().svg())
-            entries.append({'id': page_id, 'svg': f'svgs/{page_id}.svg', 'label': label, 'tts': say})
+            entries.append({'id': page_id, 'svg': f'svgs/{page_id}.svg', 'label': label, 'icon': icon, 'tts': say})
         (folder / 'theme.json').write_text(json.dumps({'name': name, 'tts': tts, 'pages': entries},
                                                       ensure_ascii=False, indent=2) + '\n')
         print(f'{theme_id}: {len(pages)} pages')

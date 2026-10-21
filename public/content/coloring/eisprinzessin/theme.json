@@ -6,18 +6,21 @@
       "id": "schneemann",
       "svg": "svgs/schneemann.svg",
       "label": "Schneemann",
+      "icon": "⛄",
       "tts": "Der Schneemann"
     },
     {
       "id": "schneeflocke",
       "svg": "svgs/schneeflocke.svg",
       "label": "Schneeflocke",
+      "icon": "❄️",
       "tts": "Die Schneeflocke"
     },
     {
       "id": "schlitten",
       "svg": "svgs/schlitten.svg",
       "label": "Schlitten",
+      "icon": "🛷",
       "tts": "Der Schlitten"
     }
   ]

@@ -15,7 +15,7 @@
         :class="{ active: currentPage?.id === page.id }"
         @click="selectPage(page)"
       >
-        {{ page.label }}
+        <span class="page-icon">{{ page.icon }}</span> {{ page.label }}
       </button>
     </div>
 
@@ -191,6 +191,7 @@ function onTouchEnd() { lastTouchDist = null }
   font-size: 0.82rem; font-weight: bold; color: #333; white-space: nowrap; flex-shrink: 0;
 }
 .page-thumb.active { border-color: #4D96FF; }
+.page-icon { font-size: 1.3rem; vertical-align: middle; }
 
 .canvas-area {
   flex: 1; min-height: 0; position: relative; overflow: hidden;

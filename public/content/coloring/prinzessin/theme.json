@@ -6,18 +6,21 @@
       "id": "prinzessin",
       "svg": "svgs/prinzessin.svg",
       "label": "Prinzessin",
+      "icon": "👸",
       "tts": "Die Prinzessin"
     },
     {
       "id": "schloss",
       "svg": "svgs/schloss.svg",
       "label": "Schloss",
+      "icon": "🏰",
       "tts": "Das Schloss"
     },
     {
       "id": "krone",
       "svg": "svgs/krone.svg",
       "label": "Krone",
+      "icon": "👑",
       "tts": "Die Krone"
     }
   ]

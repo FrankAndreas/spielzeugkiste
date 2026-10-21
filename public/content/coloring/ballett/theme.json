@@ -6,18 +6,21 @@
       "id": "ballerina",
       "svg": "svgs/ballerina.svg",
       "label": "Ballerina",
+      "icon": "💃",
       "tts": "Die Ballerina"
     },
     {
       "id": "ballettschuhe",
       "svg": "svgs/ballettschuhe.svg",
       "label": "Ballettschuhe",
+      "icon": "🩰",
       "tts": "Die Ballettschuhe"
     },
     {
       "id": "blume",
       "svg": "svgs/blume.svg",
       "label": "Blume",
+      "icon": "🌸",
       "tts": "Die Blume"
     }
   ]

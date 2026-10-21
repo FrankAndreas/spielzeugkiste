@@ -6,18 +6,21 @@
       "id": "gitarre",
       "svg": "svgs/gitarre.svg",
       "label": "Gitarre",
+      "icon": "🎸",
       "tts": "Die Gitarre"
     },
     {
       "id": "trommel",
       "svg": "svgs/trommel.svg",
       "label": "Trommel",
+      "icon": "🥁",
       "tts": "Die Trommel"
     },
     {
       "id": "klavier",
       "svg": "svgs/klavier.svg",
       "label": "Klavier",
+      "icon": "🎹",
       "tts": "Das Klavier"
     }
   ]
