@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { TOOLS, SIZES, COLORS, strokeStyle, drawStroke } from './drawing.js'
+import { TOOLS, SHAPES, SIZES, COLORS, strokeStyle, drawStroke, isShape } from './drawing.js'
 
 // Records what a stroke does to a canvas
 function fakeCtx() {
@@ -68,5 +68,56 @@ describe('drawStroke', () => {
     const ctx = fakeCtx()
     expect(() => drawStroke(ctx, { tool: 'brush', size: 'S', color: '#000000', points: [] })).not.toThrow()
     expect(ctx.calls).toEqual([])
+  })
+})
+
+describe('shapes', () => {
+  const shape = (tool, a = { x: 10, y: 20 }, b = { x: 110, y: 80 }) => ({ tool, size: 'M', color: '#e53935', points: [a, b] })
+  const called = (ctx, name) => ctx.calls.filter(c => c[0] === name)
+
+  it('has a line, circle, rectangle, triangle, star and heart', () => {
+    expect(SHAPES).toEqual(['line', 'circle', 'rect', 'triangle', 'star', 'heart'])
+    for (const s of SHAPES) expect(isShape(s)).toBe(true)
+    for (const t of TOOLS) expect(isShape(t)).toBe(false)
+  })
+
+  it('draws shapes as outlines as wide as the brush', () => {
+    for (const s of SHAPES) {
+      expect(strokeStyle(s, 'L', '#e53935')).toEqual(strokeStyle('brush', 'L', '#e53935'))
+      const ctx = fakeCtx()
+      drawStroke(ctx, shape(s))
+      expect(called(ctx, 'stroke'), s).toHaveLength(1)
+      expect(called(ctx, 'fill'), s).toHaveLength(0)
+    }
+  })
+
+  it('draws a straight line from start to end', () => {
+    const ctx = fakeCtx()
+    drawStroke(ctx, shape('line'))
+    expect(called(ctx, 'moveTo')).toEqual([['moveTo', 10, 20]])
+    expect(called(ctx, 'lineTo')).toEqual([['lineTo', 110, 80]])
+  })
+
+  it('fits the circle into the dragged box, whichever way it was dragged', () => {
+    const ctx = fakeCtx()
+    drawStroke(ctx, shape('circle', { x: 110, y: 80 }, { x: 10, y: 20 }))
+    expect(called(ctx, 'ellipse')[0].slice(1, 5)).toEqual([60, 50, 50, 30])
+  })
+
+  it('draws the rectangle over the dragged box', () => {
+    const ctx = fakeCtx()
+    drawStroke(ctx, shape('rect', { x: 110, y: 80 }, { x: 10, y: 20 }))
+    expect(called(ctx, 'rect')).toEqual([['rect', 10, 20, 100, 60]])
+  })
+
+  it('closes the triangle and the star', () => {
+    for (const s of ['triangle', 'star']) {
+      const ctx = fakeCtx()
+      drawStroke(ctx, shape(s))
+      expect(called(ctx, 'closePath'), s).toHaveLength(1)
+    }
+    const star = fakeCtx()
+    drawStroke(star, shape('star'))
+    expect(called(star, 'lineTo')).toHaveLength(9)   // 10 corners
   })
 })

@@ -137,4 +137,17 @@ describe('MalenCanvas', () => {
     ;({ wrapper } = await open())
     expect(wrapper.find('.debug').exists()).toBe(false)
   })
+
+  it('draws a shape by dragging, but not by a mere tap', async () => {
+    ;({ wrapper } = await open())
+    expect(wrapper.findAll('.shape')).toHaveLength(6)
+    await wrapper.findAll('.shape')[1].trigger('click')
+    expect(wrapper.findAll('.shape')[1].classes()).toContain('active')
+    const t = { pointerId: 1, pointerType: 'touch', width: 10, height: 10 }
+    await fire(wrapper, 'pointerdown', { ...t, clientX: 20, clientY: 20 })
+    await fire(wrapper, 'pointerup',   { ...t, clientX: 21, clientY: 21 })
+    expect(wrapper.find('.undo').attributes('disabled')).toBeDefined()
+    await scribble(wrapper)
+    expect(wrapper.find('.undo').attributes('disabled')).toBeUndefined()
+  })
 })

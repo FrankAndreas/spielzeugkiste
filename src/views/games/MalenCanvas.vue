@@ -13,6 +13,15 @@
       </div>
       <div class="group">
         <button
+          v-for="sh in SHAPE_BUTTONS"
+          :key="sh.id"
+          :class="['shape', { active: tool === sh.id }]"
+          :aria-label="sh.label"
+          @click="tool = sh.id"
+        >{{ sh.icon }}</button>
+      </div>
+      <div class="group">
+        <button
           v-for="s in SIZES"
           :key="s"
           :class="['size', { active: size === s }]"
@@ -60,7 +69,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { speak } from '../../services/tts.js'
 import { savePainting, loadPainting } from '../../services/paintings.js'
-import { COLORS, SIZES, PAPER, drawStroke } from '../../logic/drawing.js'
+import { COLORS, SIZES, PAPER, drawStroke, isShape } from '../../logic/drawing.js'
 import { createPenFilter, penStart, penEnd } from '../../logic/penFilter.js'
 import AppHeader from '../../components/AppHeader.vue'
 
@@ -73,6 +82,15 @@ const TOOL_BUTTONS = [
   { id: 'pencil', icon: '✏️', label: 'Stift' },
   { id: 'eraser', icon: '🧽', label: 'Radierer' },
 ]
+const SHAPE_BUTTONS = [
+  { id: 'line',     icon: '➖', label: 'Linie' },
+  { id: 'circle',   icon: '⭕', label: 'Kreis' },
+  { id: 'rect',     icon: '⬜', label: 'Viereck' },
+  { id: 'triangle', icon: '🔺', label: 'Dreieck' },
+  { id: 'star',     icon: '⭐', label: 'Stern' },
+  { id: 'heart',    icon: '❤️', label: 'Herz' },
+]
+const MIN_SHAPE   = 6     // px; a shape dragged less than this was just a tap
 const THUMB_WIDTH = 320
 
 const area    = ref(null)
@@ -187,14 +205,27 @@ function onDown(e) {
 
 function onMove(e) {
   if (!current || e.pointerId !== filter.pen) return
-  const samples = e.getCoalescedEvents?.() ?? []
-  for (const s of samples.length ? samples : [e]) current.points.push(point(s))
+  if (isShape(current.tool)) {
+    current.points = [current.points[0], point(e)]   // from where the drag started to here
+  } else {
+    const samples = e.getCoalescedEvents?.() ?? []
+    for (const s of samples.length ? samples : [e]) current.points.push(point(s))
+  }
   drawCurrent()
 }
 
 function onUp(e) {
   log(e.type === 'pointercancel' ? 'cancel' : 'up', e, `${current?.points.length ?? 0} points`)
   if (!penEnd(filter, e.pointerId) || !current) return
+  if (isShape(current.tool)) {
+    const [a, b] = [current.points[0], point(e)]
+    current.points = [a, b]
+    if (Math.hypot(b.x - a.x, b.y - a.y) < MIN_SHAPE) {
+      current = null
+      drawCurrent()
+      return
+    }
+  }
   strokes.value = [...strokes.value, current]
   const ctx = context(paper.value)
   if (ctx) drawStroke(ctx, current)
@@ -260,7 +291,8 @@ async function done() {
 .icon { font-size: 1.5rem; }
 .size { width: 56px; padding: 0; display: flex; align-items: center; justify-content: center; }
 .dot { display: block; flex-shrink: 0; border-radius: 50%; border: 1px solid #ccc; }
-.tool.active, .size.active { border-color: #26A69A; }
+.shape { min-width: 48px; min-height: 48px; font-size: 1.4rem; border-radius: 14px; background: white; border: 3px solid transparent; }
+.tool.active, .size.active, .shape.active { border-color: #26A69A; }
 .act:disabled { opacity: 0.4; }
 .done { background: #26A69A; color: white; }
 .area { position: relative; flex: 1; min-height: 0; margin: 8px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); }
