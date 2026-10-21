@@ -1,14 +1,15 @@
 <template>
   <header class="app-header" :style="{ background: color }">
-    <button v-if="showBack" class="icon-btn" @click="router.back()">←</button>
+    <button v-if="showBack" class="icon-btn" aria-label="Zurück" @click="up">←</button>
     <div class="title">{{ title }}</div>
     <button class="icon-btn" @click="onSpeak" aria-label="Vorlesen">🔊</button>
   </header>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { speak } from '../services/tts.js'
+import { upPath } from '../navigation.js'
 
 const props = defineProps({
   title:    { type: String, required: true },
@@ -17,7 +18,14 @@ const props = defineProps({
   showBack: { type: Boolean, default: true },
 })
 
+const route  = useRoute()
 const router = useRouter()
+
+// One level up; ?debug stays on while within a game
+function up() {
+  const path = upPath(route.path)
+  router.push({ path, query: path === '/' ? {} : route.query })
+}
 function onSpeak() { speak(props.tts || props.title) }
 </script>
 
