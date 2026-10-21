@@ -111,7 +111,10 @@ the compose file on the NAS. The compose file belongs to your deployment and is 
 The handwriting game (Schreiben) posts every try with the pen to `/api/traces`:
 all touches with position, contact size and pressure, and whether they were
 taken as the pen. nginx appends each post as one JSON line inside the
-container, for tuning the pen and palm detection.
+container, for tuning the pen and palm detection. The file keeps itself to
+about 1 MB (some 100 tries): when it grows past that, nginx drops the older
+half (`nginx/traces.js`). `scripts/test-traces.sh` checks this in a real
+container.
 
 Copy them off the NAS:
 
