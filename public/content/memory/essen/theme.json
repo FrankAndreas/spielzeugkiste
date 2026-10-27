@@ -1,0 +1,199 @@
+{
+  "name": "Essen",
+  "tts": "Ess-Memory! Finde alle Paare.",
+  "gridSize": "4x4",
+  "pairs": [
+    {
+      "id": "apfel",
+      "image": "images/apfel.svg",
+      "label": "Apfel",
+      "tts": "Apfel"
+    },
+    {
+      "id": "banane",
+      "image": "images/banane.svg",
+      "label": "Banane",
+      "tts": "Banane"
+    },
+    {
+      "id": "trauben",
+      "image": "images/trauben.svg",
+      "label": "Trauben",
+      "tts": "Trauben"
+    },
+    {
+      "id": "erdbeere",
+      "image": "images/erdbeere.svg",
+      "label": "Erdbeere",
+      "tts": "Erdbeere"
+    },
+    {
+      "id": "melone",
+      "image": "images/melone.svg",
+      "label": "Melone",
+      "tts": "Melone"
+    },
+    {
+      "id": "kirschen",
+      "image": "images/kirschen.svg",
+      "label": "Kirschen",
+      "tts": "Kirschen"
+    },
+    {
+      "id": "pfirsich",
+      "image": "images/pfirsich.svg",
+      "label": "Pfirsich",
+      "tts": "Pfirsich"
+    },
+    {
+      "id": "ananas",
+      "image": "images/ananas.svg",
+      "label": "Ananas",
+      "tts": "Ananas"
+    },
+    {
+      "id": "kiwi",
+      "image": "images/kiwi.svg",
+      "label": "Kiwi",
+      "tts": "Kiwi"
+    },
+    {
+      "id": "rueebli",
+      "image": "images/rueebli.svg",
+      "label": "Rüebli",
+      "tts": "Rüebli"
+    },
+    {
+      "id": "mais",
+      "image": "images/mais.svg",
+      "label": "Mais",
+      "tts": "Mais"
+    },
+    {
+      "id": "brokkoli",
+      "image": "images/brokkoli.svg",
+      "label": "Brokkoli",
+      "tts": "Brokkoli"
+    },
+    {
+      "id": "tomate",
+      "image": "images/tomate.svg",
+      "label": "Tomate",
+      "tts": "Tomate"
+    },
+    {
+      "id": "gurke",
+      "image": "images/gurke.svg",
+      "label": "Gurke",
+      "tts": "Gurke"
+    },
+    {
+      "id": "pizza",
+      "image": "images/pizza.svg",
+      "label": "Pizza",
+      "tts": "Pizza"
+    },
+    {
+      "id": "hamburger",
+      "image": "images/hamburger.svg",
+      "label": "Hamburger",
+      "tts": "Hamburger"
+    },
+    {
+      "id": "pommes",
+      "image": "images/pommes.svg",
+      "label": "Pommes",
+      "tts": "Pommes"
+    },
+    {
+      "id": "hotdog",
+      "image": "images/hotdog.svg",
+      "label": "Hotdog",
+      "tts": "Hotdog"
+    },
+    {
+      "id": "brezel",
+      "image": "images/brezel.svg",
+      "label": "Brezel",
+      "tts": "Brezel"
+    },
+    {
+      "id": "kaese",
+      "image": "images/kaese.svg",
+      "label": "Käse",
+      "tts": "Käse"
+    },
+    {
+      "id": "ei",
+      "image": "images/ei.svg",
+      "label": "Ei",
+      "tts": "Ei"
+    },
+    {
+      "id": "glace",
+      "image": "images/glace.svg",
+      "label": "Glace",
+      "tts": "Glace"
+    },
+    {
+      "id": "donut",
+      "image": "images/donut.svg",
+      "label": "Donut",
+      "tts": "Donut"
+    },
+    {
+      "id": "keks",
+      "image": "images/keks.svg",
+      "label": "Keks",
+      "tts": "Keks"
+    },
+    {
+      "id": "torte",
+      "image": "images/torte.svg",
+      "label": "Torte",
+      "tts": "Torte"
+    },
+    {
+      "id": "schokolade",
+      "image": "images/schokolade.svg",
+      "label": "Schokolade",
+      "tts": "Schokolade"
+    },
+    {
+      "id": "honig",
+      "image": "images/honig.svg",
+      "label": "Honig",
+      "tts": "Honig"
+    },
+    {
+      "id": "milch",
+      "image": "images/milch.svg",
+      "label": "Milch",
+      "tts": "Milch"
+    },
+    {
+      "id": "brot",
+      "image": "images/brot.svg",
+      "label": "Brot",
+      "tts": "Brot"
+    },
+    {
+      "id": "gipfeli",
+      "image": "images/gipfeli.svg",
+      "label": "Gipfeli",
+      "tts": "Gipfeli"
+    },
+    {
+      "id": "birne",
+      "image": "images/birne.svg",
+      "label": "Birne",
+      "tts": "Birne"
+    },
+    {
+      "id": "zitrone",
+      "image": "images/zitrone.svg",
+      "label": "Zitrone",
+      "tts": "Zitrone"
+    }
+  ]
+}
