@@ -2,9 +2,9 @@ name: Build & Publish
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 env:
   REGISTRY: ghcr.io
@@ -32,7 +32,7 @@ jobs:
     name: Build & Push image
     needs: test
     runs-on: ubuntu-latest
-    # Only push on commits to master, not on PRs
+    # Only push on commits to main, not on PRs
     if: github.event_name == 'push'
     permissions:
       contents: read
