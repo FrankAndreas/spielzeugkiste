@@ -31,6 +31,9 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
+    # Wait a few days after a release before proposing it
+    cooldown:
+      default-days: 3
     labels:
       - "dependencies"
       - "ci/cd"
@@ -45,6 +48,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    # Wait a few days after a release before proposing it
+    cooldown:
+      default-days: 3
     labels:
       - "dependencies"
       - "docker"
