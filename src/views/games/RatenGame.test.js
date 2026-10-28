@@ -111,6 +111,13 @@ describe('RatenGame', () => {
     expect(offCount(wrapper)).toBe(0)
   })
 
+  it('disables Zurück while guessing, where it could not undo', async () => {
+    wrapper = await started()
+    await tile(wrapper, 'TierA').trigger('click')
+    await wrapper.find('.guess').trigger('click')
+    expect(wrapper.find('.undo').attributes('disabled')).toBeDefined()
+  })
+
   it('goes back to the board on Abbrechen', async () => {
     wrapper = await started()
     await wrapper.find('.guess').trigger('click')

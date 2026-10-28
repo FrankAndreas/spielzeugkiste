@@ -37,7 +37,7 @@
             </div>
           </div>
           <div class="count">Noch {{ left }} übrig</div>
-          <button class="btn undo" :disabled="!game.history.length" @click="game = undo(game)">↩ Zurück</button>
+          <button class="btn undo" :disabled="game.phase !== 'play' || !game.history.length" @click="game = undo(game)">↩ Zurück</button>
           <button
             class="btn guess"
             :class="{ active: game.phase === 'guess' }"
@@ -117,8 +117,8 @@ const hint = computed(() => ({
 const src = a => `/content/raten/${themeId.value}/${a.image}`
 
 function fitTileSize() {
-  const availW = window.innerWidth  - 24 - 12 - SIDE_W - (COLS - 1) * GAP   // padding, gap to the side column
-  const availH = window.innerHeight - 120 - (ROWS - 1) * GAP                // header + hint line
+  const availW = window.innerWidth  - 24 - 12 - 16 - SIDE_W - (COLS - 1) * GAP   // paddings, gap to the side column
+  const availH = window.innerHeight - 126 - 16 - (ROWS - 1) * GAP                // header + hint line, paddings
   const size   = Math.min(Math.floor(availW / COLS), Math.floor(availH / ROWS))
   tileSize.value = Math.max(MIN_TILE, Math.min(MAX_TILE, size))
 }
@@ -164,10 +164,10 @@ function onAnswer(right) {
 </script>
 
 <style scoped>
-.layout { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+.layout { height: 100vh; display: flex; flex-direction: column; overflow: hidden; touch-action: manipulation; }   /* no double-tap zoom when tapping tiles quickly */
 .hint { min-height: 2.2em; padding: 4px 12px; text-align: center; font-size: 1.2rem; font-weight: bold; flex-shrink: 0; }
 .main { flex: 1; min-height: 0; display: flex; gap: 12px; padding: 0 12px 12px; }
-.grid-wrap { flex: 1; min-width: 0; overflow: auto; display: flex; align-items: flex-start; }
+.grid-wrap { flex: 1; min-width: 0; overflow: auto; display: flex; align-items: flex-start; padding: 8px; }   /* room for the pick frame */
 .board { display: grid; gap: 10px; margin: 0 auto; }   /* margin, not justify-content: never crops an overflowing board */
 
 .tile {
