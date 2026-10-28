@@ -1,0 +1,30 @@
+{
+  "name": "Bauernhof",
+  "tts": "Rate mal! Wähle dein geheimes Bauernhof-Tier.",
+  "animals": [
+    {"id": "kuh", "image": "../../memory/bauernhof/images/kuh.svg", "label": "Kuh", "the": "die Kuh"},
+    {"id": "schwein", "image": "../../memory/bauernhof/images/schwein.svg", "label": "Schwein", "the": "das Schwein"},
+    {"id": "schaf", "image": "../../memory/bauernhof/images/schaf.svg", "label": "Schaf", "the": "das Schaf"},
+    {"id": "ziege", "image": "../../memory/bauernhof/images/ziege.svg", "label": "Ziege", "the": "die Ziege"},
+    {"id": "pferd", "image": "../../memory/bauernhof/images/pferd.svg", "label": "Pferd", "the": "das Pferd"},
+    {"id": "esel", "image": "images/esel.svg", "label": "Esel", "the": "der Esel"},
+    {"id": "hund", "image": "../../memory/bauernhof/images/hund.svg", "label": "Hund", "the": "der Hund"},
+    {"id": "katze", "image": "../../memory/bauernhof/images/katze.svg", "label": "Katze", "the": "die Katze"},
+    {"id": "maus", "image": "../../memory/bauernhof/images/maus.svg", "label": "Maus", "the": "die Maus"},
+    {"id": "ratte", "image": "images/ratte.svg", "label": "Ratte", "the": "die Ratte"},
+    {"id": "hase", "image": "../../memory/bauernhof/images/hase.svg", "label": "Hase", "the": "der Hase"},
+    {"id": "igel", "image": "../../memory/bauernhof/images/igel.svg", "label": "Igel", "the": "der Igel"},
+    {"id": "hahn", "image": "../../memory/bauernhof/images/hahn.svg", "label": "Hahn", "the": "der Hahn"},
+    {"id": "huhn", "image": "../../memory/bauernhof/images/huhn.svg", "label": "Huhn", "the": "das Huhn"},
+    {"id": "kueken", "image": "../../memory/bauernhof/images/kueken.svg", "label": "Küken", "the": "das Küken"},
+    {"id": "ente", "image": "../../memory/bauernhof/images/ente.svg", "label": "Ente", "the": "die Ente"},
+    {"id": "gans", "image": "images/gans.svg", "label": "Gans", "the": "die Gans"},
+    {"id": "truthahn", "image": "../../memory/bauernhof/images/truthahn.svg", "label": "Truthahn", "the": "der Truthahn"},
+    {"id": "eule", "image": "../../memory/bauernhof/images/eule.svg", "label": "Eule", "the": "die Eule"},
+    {"id": "frosch", "image": "../../memory/bauernhof/images/frosch.svg", "label": "Frosch", "the": "der Frosch"},
+    {"id": "biene", "image": "../../memory/bauernhof/images/biene.svg", "label": "Biene", "the": "die Biene"},
+    {"id": "marienkaefer", "image": "../../memory/bauernhof/images/marienkaefer.svg", "label": "Marienkäfer", "the": "der Marienkäfer"},
+    {"id": "schmetterling", "image": "images/schmetterling.svg", "label": "Schmetterling", "the": "der Schmetterling"},
+    {"id": "schnecke", "image": "../../memory/bauernhof/images/schnecke.svg", "label": "Schnecke", "the": "die Schnecke"}
+  ]
+}
