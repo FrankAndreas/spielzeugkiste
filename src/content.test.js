@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { readFileSync } from 'node:fs'
+import { readFileSync, existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { SOUND_KINDS } from './services/sound.js'
 import { GLYPHS } from './logic/letters.js'
@@ -95,6 +95,27 @@ describe('Memory content', () => {
       expect(p.tts, p.id).toBeTruthy()
       const svg = new DOMParser().parseFromString(readFileSync(resolve('public/content/memory', id, p.image), 'utf8'), 'image/svg+xml')
       expect(svg.querySelector('parsererror'), p.image).toBeNull()
+    }
+  })
+})
+
+describe('Rate mal! content', () => {
+  const RATEN = ['bauernhof', 'meer']
+
+  it('lists the themes in games.json', () => {
+    expect(read('games.json').games.find(g => g.id === 'raten').themes).toEqual(RATEN)
+  })
+
+  it.each(RATEN)('%s has exactly 24 different animals with a picture and a name', id => {
+    const theme = read(`raten/${id}/theme.json`)
+    expect(theme.name).toBeTruthy()
+    expect(theme.tts).toBeTruthy()
+    expect(theme.animals).toHaveLength(24)
+    expect(new Set(theme.animals.map(a => a.id)).size).toBe(24)
+    for (const a of theme.animals) {
+      expect(a.label, a.id).toBeTruthy()
+      expect(a.the, a.id).toMatch(new RegExp(`^(der|die|das) ${a.label}$`))
+      expect(existsSync(resolve('public/content/raten', id, a.image)), a.image).toBe(true)
     }
   })
 })

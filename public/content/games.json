@@ -89,6 +89,16 @@
       "shadow": "#1b7a71",
       "tts": "Malen! Mach ein neues Bild oder mal weiter.",
       "themes": []
+    },
+    {
+      "id": "raten",
+      "name": "Rate mal!",
+      "emoji": "🕵️",
+      "description": "Geheimes Tier raten",
+      "color": "#8D6E63",
+      "shadow": "#5f4339",
+      "tts": "Rate mal! Wähle ein Thema. Jeder braucht ein eigenes iPad.",
+      "themes": ["bauernhof", "meer"]
     }
   ]
 }

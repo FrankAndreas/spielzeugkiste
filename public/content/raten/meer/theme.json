@@ -1,0 +1,30 @@
+{
+  "name": "Meer",
+  "tts": "Rate mal! Wähle dein geheimes Meer-Tier.",
+  "animals": [
+    {"id": "fisch", "image": "../../memory/meer/images/fisch.svg", "label": "Fisch", "the": "der Fisch"},
+    {"id": "tropenfisch", "image": "../../memory/meer/images/tropenfisch.svg", "label": "Tropenfisch", "the": "der Tropenfisch"},
+    {"id": "kugelfisch", "image": "../../memory/meer/images/kugelfisch.svg", "label": "Kugelfisch", "the": "der Kugelfisch"},
+    {"id": "hai", "image": "../../memory/meer/images/hai.svg", "label": "Hai", "the": "der Hai"},
+    {"id": "wal", "image": "../../memory/meer/images/wal.svg", "label": "Wal", "the": "der Wal"},
+    {"id": "delfin", "image": "../../memory/meer/images/delfin.svg", "label": "Delfin", "the": "der Delfin"},
+    {"id": "robbe", "image": "../../memory/meer/images/robbe.svg", "label": "Robbe", "the": "die Robbe"},
+    {"id": "otter", "image": "../../memory/meer/images/otter.svg", "label": "Otter", "the": "der Otter"},
+    {"id": "eisbaer", "image": "images/eisbaer.svg", "label": "Eisbär", "the": "der Eisbär"},
+    {"id": "pinguin", "image": "../../memory/meer/images/pinguin.svg", "label": "Pinguin", "the": "der Pinguin"},
+    {"id": "moewe", "image": "images/moewe.svg", "label": "Möwe", "the": "die Möwe"},
+    {"id": "flamingo", "image": "../../memory/meer/images/flamingo.svg", "label": "Flamingo", "the": "der Flamingo"},
+    {"id": "krokodil", "image": "../../memory/meer/images/krokodil.svg", "label": "Krokodil", "the": "das Krokodil"},
+    {"id": "schildkroete", "image": "../../memory/meer/images/schildkroete.svg", "label": "Schildkröte", "the": "die Schildkröte"},
+    {"id": "seeschlange", "image": "images/seeschlange.svg", "label": "Seeschlange", "the": "die Seeschlange"},
+    {"id": "krake", "image": "../../memory/meer/images/krake.svg", "label": "Krake", "the": "der Krake"},
+    {"id": "tintenfisch", "image": "../../memory/meer/images/tintenfisch.svg", "label": "Tintenfisch", "the": "der Tintenfisch"},
+    {"id": "qualle", "image": "images/qualle.svg", "label": "Qualle", "the": "die Qualle"},
+    {"id": "krabbe", "image": "../../memory/meer/images/krabbe.svg", "label": "Krabbe", "the": "die Krabbe"},
+    {"id": "hummer", "image": "../../memory/meer/images/hummer.svg", "label": "Hummer", "the": "der Hummer"},
+    {"id": "garnele", "image": "../../memory/meer/images/garnele.svg", "label": "Garnele", "the": "die Garnele"},
+    {"id": "muschel", "image": "../../memory/meer/images/muschel.svg", "label": "Muschel", "the": "die Muschel"},
+    {"id": "koralle", "image": "images/koralle.svg", "label": "Koralle", "the": "die Koralle"},
+    {"id": "meerjungfrau", "image": "../../memory/meer/images/meerjungfrau.svg", "label": "Meerjungfrau", "the": "die Meerjungfrau"}
+  ]
+}

@@ -15,6 +15,7 @@ const SchreibenMenu   = () => import('../views/games/SchreibenMenu.vue')
 const SchreibenWords  = () => import('../views/games/SchreibenWords.vue')
 const MalenGallery    = () => import('../views/games/MalenGallery.vue')
 const MalenCanvas     = () => import('../views/games/MalenCanvas.vue')
+const RatenGame       = () => import('../views/games/RatenGame.vue')
 
 export default createRouter({
   history: createWebHashHistory(),
@@ -28,6 +29,7 @@ export default createRouter({
     { path: '/snake/:theme/play',        component: SnakeGame },
     { path: '/pacman/:theme/play',       component: PacmanGame },
     { path: '/zahlen/:theme/play',       component: ZahlenGame },
+    { path: '/raten/:theme/play',        component: RatenGame },
     { path: '/schreiben/play',           component: SchreibenMenu },
     { path: '/schreiben/words',          component: SchreibenWords },
     { path: '/malen/play',               component: MalenGallery },
