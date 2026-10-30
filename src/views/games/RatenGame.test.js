@@ -75,11 +75,54 @@ describe('RatenGame', () => {
     for (const text of said()) for (const label of LABELS) expect(text).not.toContain(label)
   })
 
-  it('shows the own animal and starts with all 24 on the board', async () => {
+  it('starts with the own animal face down and all 24 on the board', async () => {
     wrapper = await started()
-    expect(wrapper.find('.mine').text()).toContain('TierH')
+    expect(wrapper.find('.mine').text()).not.toContain('TierH')
     expect(said()).toContain("Los geht's! Stell eine Frage.")
     expect(wrapper.find('.count').text()).toBe('Noch 24 übrig')
+  })
+
+  describe('the face-down own animal', () => {
+    beforeEach(() => vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] }))
+    afterEach(() => vi.useRealTimers())
+
+    it('shows the animal on a tap and turns it back after 3 seconds', async () => {
+      wrapper = await started()
+      await wrapper.find('.mine-card').trigger('click')
+      expect(wrapper.find('.mine').text()).toContain('TierH')
+      vi.advanceTimersByTime(2999)
+      await wrapper.vm.$nextTick()
+      expect(wrapper.find('.mine').text()).toContain('TierH')
+      vi.advanceTimersByTime(1)
+      await wrapper.vm.$nextTick()
+      expect(wrapper.find('.mine').text()).not.toContain('TierH')
+    })
+
+    it('turns it back at once on a second tap', async () => {
+      wrapper = await started()
+      await wrapper.find('.mine-card').trigger('click')
+      await wrapper.find('.mine-card').trigger('click')
+      expect(wrapper.find('.mine').text()).not.toContain('TierH')
+    })
+
+    it('keeps it shown for 3 seconds from the last tap', async () => {
+      wrapper = await started()
+      await wrapper.find('.mine-card').trigger('click')
+      await wrapper.find('.mine-card').trigger('click')
+      await wrapper.find('.mine-card').trigger('click')
+      vi.advanceTimersByTime(2000)
+      await wrapper.vm.$nextTick()
+      expect(wrapper.find('.mine').text()).toContain('TierH')
+    })
+
+    it('is face down again in a new game', async () => {
+      wrapper = await started()
+      await wrapper.find('.mine-card').trigger('click')
+      await wrapper.find('.new-game').trigger('click')
+      await tile(wrapper, 'TierB').trigger('click')
+      await wrapper.find('.start').trigger('click')
+      expect(wrapper.find('.mine').text()).not.toContain('TierB')
+    })
   })
 
   it('greys an animal out on a tap and brings it back with Zurück', async () => {

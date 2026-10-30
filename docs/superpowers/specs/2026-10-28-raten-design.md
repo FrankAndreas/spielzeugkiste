@@ -98,8 +98,9 @@ Meerjungfrau, Muschel
 
 - Name "Rate mal!" and id `raten` are placeholders, chosen to avoid the trademarked "Wer ist es?".
 - "Falsch" greys out the guessed animal and the game continues.
-- "Dein Tier" is always visible. The user didn't say whether the other kid peeking is a problem;
-  if it is, a later version can hide it behind a tap.
+- "Dein Tier" lies face down after "Los geht's!" (🕵️, "Tippen zum Anschauen"), so the other kid
+  can't see it. A tap shows it for 3 seconds; a second tap turns it back at once. (Asked for by the
+  user on 2026-10-29; the first version showed it all the time.)
 - The new Meer animals (Qualle, Koralle, Eisbär, Seeschlange, Möwe) and that Meerjungfrau and
   Muschel count as "animals" here.
 - Picking needs a "Los geht's!" tap, so a mis-tap on the pick screen doesn't start the game.

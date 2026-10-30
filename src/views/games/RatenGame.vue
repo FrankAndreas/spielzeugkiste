@@ -31,10 +31,16 @@
         <template v-else>
           <div class="mine">
             <div class="mine-title">Dein Tier</div>
-            <div class="tile big">
-              <img :src="src(secret)" :alt="secret.label" />
-              <span class="label">{{ secret.label }}</span>
-            </div>
+            <button class="tile big mine-card" :class="{ open: peek }" @click="togglePeek">
+              <template v-if="peek">
+                <img :src="src(secret)" :alt="secret.label" />
+                <span class="label">{{ secret.label }}</span>
+              </template>
+              <template v-else>
+                <span class="cover">🕵️</span>
+                <span class="label">Tippen zum Anschauen</span>
+              </template>
+            </button>
           </div>
           <div class="count">Noch {{ left }} übrig</div>
           <button class="btn undo" :disabled="game.phase !== 'play' || !game.history.length" @click="game = undo(game)">↩ Zurück</button>
@@ -92,6 +98,7 @@ const ROWS = 4
 const MIN_TILE = 56
 const MAX_TILE = 150
 const SIDE_W   = 210   // the column with "Dein Tier" and the buttons
+const PEEK_MS  = 3000  // how long the own animal stays face up after a tap
 const GAP      = 10
 
 const route   = useRoute()
@@ -103,6 +110,8 @@ const animals = computed(() => theme.value?.animals ?? [])
 
 const game     = ref(newGame())
 const tileSize = ref(100)
+const peek     = ref(false)   // own animal face up; face down so the other kid can't see it
+let peekTimer  = null
 
 const byId    = id => animals.value.find(a => a.id === id)
 const secret  = computed(() => byId(game.value.secret))
@@ -130,9 +139,13 @@ onMounted(async () => {
   restart()
 })
 
-onUnmounted(() => window.removeEventListener('resize', fitTileSize))
+onUnmounted(() => {
+  window.removeEventListener('resize', fitTileSize)
+  clearTimeout(peekTimer)
+})
 
 function restart() {
+  hidePeek()
   game.value = newGame()
   speak(theme.value?.tts ?? '')
 }
@@ -146,6 +159,18 @@ function onTile(a) {
     game.value = pickGuess(game.value, a.id)
     if (guessed.value) speak(`Ist es ${guessed.value.the}?`)
   }
+}
+
+function hidePeek() {
+  clearTimeout(peekTimer)
+  peek.value = false
+}
+
+// A tap turns the own animal face up for a moment; another tap turns it back at once
+function togglePeek() {
+  if (peek.value) return hidePeek()
+  peek.value = true
+  peekTimer = setTimeout(hidePeek, PEEK_MS)
 }
 
 function onStart() {
@@ -184,6 +209,12 @@ function onAnswer(right) {
 .tile.aiming:not(.off) { border-color: #4D96FF; }
 .tile.big { width: 150px; margin: 0 auto; }
 .tile.big .label { font-size: 1rem; }
+.mine-card { transition: transform 0.3s; }
+.mine-card:not(.open) { background: #8D6E63; border-color: #5f4339; }
+.mine-card:not(.open) .label { color: white; font-size: 0.85rem; white-space: normal; }
+.mine-card.open { animation: turn 0.3s; }
+.cover { font-size: 3.5rem; line-height: 1; }
+@keyframes turn { from { transform: rotateY(90deg); } to { transform: rotateY(0); } }
 
 .side { width: 210px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px; }
 .mine { background: white; border-radius: 20px; padding: 10px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
