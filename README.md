@@ -62,6 +62,10 @@ docker compose up -d --build   # or build from your local checkout
 
 To run it on a Synology NAS, with nightly automatic updates, see [docs/deploy-nas.md](docs/deploy-nas.md).
 
+## Pre-commit checks
+
+`.githooks/pre-commit` runs the fast checks CI runs (lint, types) for the parts a commit touches. `npm install` in the repo root enables it; or once per clone: `git config core.hooksPath .githooks`. Skip once with `git commit --no-verify`.
+
 ## License
 
 [MIT](LICENSE)

@@ -23,7 +23,6 @@ jobs:
           cache: npm
 
       - run: npm ci --ignore-scripts
-      - run: npx lefthook install   # restore hooks after --ignore-scripts skipped prepare
       - run: npm audit --audit-level=high
       - run: npm test
       - run: npm run lint
