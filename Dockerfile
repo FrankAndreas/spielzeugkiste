@@ -8,7 +8,7 @@ RUN npm run test
 RUN npm run build
 
 # Stage 2 — serve
-FROM nginx:alpine AS serve
+FROM nginx:1.31.9-alpine AS serve
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY nginx/traces.js /etc/nginx/njs/traces.js
